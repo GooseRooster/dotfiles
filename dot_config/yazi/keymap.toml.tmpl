@@ -20,9 +20,11 @@ on = [ ".", "s" ]
 run  = "plugin what-size"
 desc = "Calc size of selection or cwd" 
 
+{{ if ne .chezmoi.os "windows" -}}
 [[mgr.prepend_keymap]]
 on  = "M"
 run = "plugin mount"
+{{ end -}}
 
 [[mgr.prepend_keymap]]
 on  = ["m", "c"]
