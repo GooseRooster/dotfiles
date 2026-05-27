@@ -1,0 +1,126 @@
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    "logo": {
+        "type": "file",
+        "source": "/home/gooze/.config/fastfetch/logo.txt",
+        "padding": {
+            "top": 1,
+            "left": 2
+        }
+    },
+    "display": {
+        "separator": "  "
+    },
+    "modules": [
+        {
+            "type": "title",
+            "key": "ホスト",
+            "keyColor": "blue"
+        },
+        "break",
+        {
+            "type": "os",
+            "key": "╭─󰣇",
+            "keyColor": "green"
+        },
+        {
+            "type": "kernel",
+            "key": "├─",
+            "format": "{1} {2}",
+            "keyColor": "green"
+        },
+        {
+            "type": "packages",
+            "key": "├─󰮯",
+            "keyColor": "green"
+        },
+        {
+            "type": "wm",
+            "key": "╰─",
+            "keyColor": "green"
+        },
+        "break",
+        // One entry for every partition
+        // {
+        //     "type": "disk",
+        //     "key": "├─",
+        //     "keyColor": "green"
+        // },
+        // {
+        //     "type": "brightness",
+        //     "key": "├─󰃞",
+        //     "keyColor": "green"
+        // },
+        // {
+        //     "type": "battery",
+        //     "key": "├─",
+        //     "keyColor": "green"
+        // },
+        // {
+        //     "type": "poweradapter",
+        //     "key": "├─",
+        //     "keyColor": "green"
+        // },
+        // {
+        //     "type": "gamepad",
+        //     "key": "├─",
+        //     "keyColor": "green"
+        // },
+        // {
+        //     "type": "bluetooth",
+        //     "key": "├─",
+        //     "keyColor": "green"
+        // },
+        // {
+        //     "type": "sound",
+        //     "key": "╰─",
+        //     "keyColor": "green"
+        // },
+        {
+            "type": "terminal",
+            "key": "╭─",
+            "keyColor": "green"
+        },
+        {
+            "type": "shell",
+            "key": "╰─",
+            "keyColor": "green"
+        },
+        "break",
+        {
+            "type": "cpu",
+            "key": "╭─󰍛",
+            "keyColor": "green"
+        },
+        {
+            "type": "gpu",
+            "key": "├─󰘚",
+            "keyColor": "green"
+        },
+        {
+            "type": "display",
+            "key": "├─󰍹",
+            "keyColor": "green"
+        },
+        // {
+        //     "type": "wallpaper",
+        //     "key": "╰─󰸉",
+        //     "keyColor": "green"
+        // },
+        {
+            "type": "memory",
+            "key": "├─󰑭",
+            "keyColor": "green"
+        },
+        // {
+        //     "type": "swap",
+        //     "key": "├─󰓡",
+        //     "keyColor": "green"
+        // },
+        {
+            "type": "uptime",
+            "key": "╰─󰅐",
+            "keyColor": "green"
+        }
+    ]
+}
