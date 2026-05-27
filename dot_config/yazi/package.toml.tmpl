@@ -23,10 +23,12 @@ use = "Rolv-Apneseth/starship"
 rev = "a837101"
 hash = "635b0feb9215772d22020eb0abf0bb34"
 
+{{if ne .chezmoi.os "windows" -}}
 [[plugin.deps]]
 use = "yazi-rs/plugins:mount"
 rev = "be524fb"
 hash = "e3260d0b1feded8c8e3ae3afa1169e30"
+{{ end -}}
 
 [[plugin.deps]]
 use = "pirafrank/what-size"
