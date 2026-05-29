@@ -10,7 +10,7 @@ hl.on("hyprland.start", function()
 	-- Noctalia shell (bar, notifications, control center, launcher).
 	-- If installed manually into ~/.config/quickshell/, use: qs -c noctalia-shell
 	--hl.exec_cmd("uwsm app -- qs -c noctalia-shell")
-	hl.exec_cmd("uwsm app -- qs -c noctalia-shell")
+	hl.exec_cmd("uwsm app -- noctalia")
 	hl.exec_cmd("uwsm app -- udiskie")
 end)
 
