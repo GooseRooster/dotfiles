@@ -137,8 +137,8 @@ hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(ipc .. " screen-lock"))
 -- Lock and suspend (no v5 IPC equivalent yet — manual chain)
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd(ipc .. " screen-lock && systemctl suspend"))
 
--- Calendar (no v5 IPC equivalent yet — remove or substitute)
--- hl.bind(mainMod .. " + F1", hl.dsp.exec_cmd(ipc .. " calendar toggle"))
+-- Calendar
+hl.bind(mainMod .. " + F1", hl.dsp.exec_cmd(ipc .. " panel-toggle calendar"))
 
 -- Settings
 hl.bind(mainMod .. " + End", hl.dsp.exec_cmd(ipc .. " settings-toggle"))

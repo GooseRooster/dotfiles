@@ -33,3 +33,6 @@ hl.env("HYPRCURSOR_SIZE", "24")
 require("modules.display")
 require("modules.input")
 require("modules.windows")
+
+-- For Noctalia Color templates
+require("noctalia")
