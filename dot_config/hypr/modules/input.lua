@@ -138,13 +138,13 @@ hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(ipc .. " screen-lock"))
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd(ipc .. " screen-lock && systemctl suspend"))
 
 -- Calendar
-hl.bind(mainMod .. " + F1", hl.dsp.exec_cmd(ipc .. " panel-toggle calendar"))
+hl.bind(mainMod .. " + F1", hl.dsp.exec_cmd(ipc .. " panel-toggle control-center calendar"))
 
 -- Settings
 hl.bind(mainMod .. " + End", hl.dsp.exec_cmd(ipc .. " settings-toggle"))
 
 -- System monitor (no v5 IPC equivalent yet — remove or launch directly)
--- hl.bind(mainMod .. " + F2", hl.dsp.exec_cmd(ipc .. " systemMonitor toggle"))
+hl.bind(mainMod .. " + F2", hl.dsp.exec_cmd(ipc .. " panel-toggle control-center system"))
 
 -- Media / volume keys (via Noctalia IPC)
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. " volume-up"), { locked = true, repeating = true })
