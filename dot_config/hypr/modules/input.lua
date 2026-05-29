@@ -123,40 +123,36 @@ hl.bind(
 
 ---- NOCTALIA IPC ----
 
-local ipc = "qs -c noctalia-shell ipc call"
+local ipc = "noctalia msg"
 
 -- Control center (panel/quick settings)
-hl.bind(mainMod .. " + comma", hl.dsp.exec_cmd(ipc .. " controlCenter toggle"))
+hl.bind(mainMod .. " + comma", hl.dsp.exec_cmd(ipc .. " panel-toggle control-center"))
 
 -- Session menu (logout / reboot / shutdown)
-hl.bind(mainMod .. " + Delete", hl.dsp.exec_cmd(ipc .. " sessionMenu toggle"))
+hl.bind(mainMod .. " + Delete", hl.dsp.exec_cmd(ipc .. " panel-toggle session"))
 
 -- Lock screen
-hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(ipc .. " lockScreen lock"))
+hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(ipc .. " screen-lock"))
 
--- Lock and suspend
-hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd(ipc .. " sessionMenu lockAndSuspend"))
+-- Lock and suspend (no v5 IPC equivalent yet — manual chain)
+hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd(ipc .. " screen-lock && systemctl suspend"))
 
--- Calendar
-hl.bind(mainMod .. " + F1", hl.dsp.exec_cmd(ipc .. " calendar toggle"))
+-- Calendar (no v5 IPC equivalent yet — remove or substitute)
+-- hl.bind(mainMod .. " + F1", hl.dsp.exec_cmd(ipc .. " calendar toggle"))
 
 -- Settings
-hl.bind(mainMod .. " + End", hl.dsp.exec_cmd(ipc .. " settings toggle"))
+hl.bind(mainMod .. " + End", hl.dsp.exec_cmd(ipc .. " settings-toggle"))
 
--- System monitor
-hl.bind(mainMod .. " + F2", hl.dsp.exec_cmd(ipc .. " systemMonitor toggle"))
-
--- Clipboard plugin via cliphist
-
-hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(ipc .. " plugin:clipper toggle"))
+-- System monitor (no v5 IPC equivalent yet — remove or launch directly)
+-- hl.bind(mainMod .. " + F2", hl.dsp.exec_cmd(ipc .. " systemMonitor toggle"))
 
 -- Media / volume keys (via Noctalia IPC)
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. " volume increase"), { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc .. " volume decrease"), { locked = true, repeating = true })
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd(ipc .. " volume muteOutput"), { locked = true })
-hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd(ipc .. " volume muteInput"), { locked = true })
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(ipc .. " brightness increase"), { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(ipc .. " brightness decrease"), { locked = true, repeating = true })
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. " volume-up"), { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc .. " volume-down"), { locked = true, repeating = true })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd(ipc .. " volume-mute"), { locked = true })
+hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd(ipc .. " mic-mute"), { locked = true })
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(ipc .. " brightness-up"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(ipc .. " brightness-down"), { locked = true, repeating = true })
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd(ipc .. " media next"), { locked = true })
-hl.bind("XF86AudioPlay", hl.dsp.exec_cmd(ipc .. " media playPause"), { locked = true })
+hl.bind("XF86AudioPlay", hl.dsp.exec_cmd(ipc .. " media toggle"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd(ipc .. " media previous"), { locked = true })
