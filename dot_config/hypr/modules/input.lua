@@ -76,16 +76,6 @@ for i = 1, 10 do
 	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
 
--- Special "show desktop" workspace
-hl.bind("SUPER + D", function()
-	local mon = hl.get_active_monitor()
-	if mon.active_workspace.name == "desktop" then
-		hl.dispatch(hl.dsp.workspace.change({ workspace = "previous" }))
-	else
-		hl.dispatch(hl.dsp.workspace.change({ workspace = "name:desktop" }))
-	end
-end)
-
 -- Scratchpad
 hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
