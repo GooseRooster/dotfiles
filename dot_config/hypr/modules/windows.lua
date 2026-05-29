@@ -146,10 +146,12 @@ hl.window_rule({
 
 hl.layer_rule({
 	name = "noctalia",
-	match = { namespace = "noctalia-background-.*" },
+	match = {
+		namespace = "^noctalia-(bar-.+|notification|dock|panel)$",
+	},
+	ignore_alpha = 0.5,
 	blur = true,
 	blur_popups = true,
-	ignore_alpha = 0.5,
 })
 
 hl.on("window.fullscreen", function(w)
