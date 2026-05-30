@@ -121,19 +121,6 @@ hl.bind(
 	hl.dsp.exec_cmd("grimblast --notify copysave active ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png")
 )
 
----- SCREEN RECORDING ----
-
--- Start recording current monitor (10-bit HEVC for HDR)
-hl.bind(
-	mainMod .. " + F9",
-	hl.dsp.exec_cmd(
-		"bash -c 'wl-screenrec --codec hevc --encode-pixfmt xrgb10 --audio -f ~/Videos/Recordings/$(date +%Y%m%d_%H%M%S).mp4 &'"
-	)
-)
-
--- Stop recording
-hl.bind(mainMod .. " + F10", hl.dsp.exec_cmd("pkill -INT wl-screenrec"))
-
 ---- NOCTALIA IPC ----
 
 local ipc = "noctalia msg"
