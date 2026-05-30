@@ -146,7 +146,7 @@ hl.window_rule({
 
 -- term file picker
 hl.window_rule({
-	match = { class = "^file_chooser$" },
+	match = { class = "^filechooser$" },
 	float = true,
 	center = true,
 	size = "1000 650",
