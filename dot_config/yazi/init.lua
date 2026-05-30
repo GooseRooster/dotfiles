@@ -9,7 +9,7 @@ require("bunny"):setup({
 		{ key = "h", path = "~", desc = "Home" },
 		{ key = "m", path = "~/Modding/", desc = "Modding" },
 		{ key = "d", path = "~/Downloads", desc = "Downloads" },
-		{ key = "D", path = "~/Documents", desc = "Documents" },
+		{ key = "D", path = "~/Development", desc = "Development" },
 		{ key = "v", path = "~/Videos", desc = "Videos" },
 		{ key = "M", path = "~/Music", desc = "Music" },
 		{ key = "e", path = "~/Emulation", desc = "Emulation" },
