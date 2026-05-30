@@ -144,6 +144,14 @@ hl.window_rule({
 	float = true,
 })
 
+-- term file picker
+hl.window_rule({
+	match = { class = "^file_chooser$" },
+	float = true,
+	center = true,
+	size = "1000 650",
+})
+
 hl.layer_rule({
 	name = "noctalia",
 	match = {
