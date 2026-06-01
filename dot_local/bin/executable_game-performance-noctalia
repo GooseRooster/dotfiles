@@ -3,6 +3,8 @@ profile=$(powerprofilesctl get)
 
 if [ "$profile" = "performance" ]; then
   /usr/bin/noctalia msg caffeine-enable
+  /usr/bin/noctalia msg nightlight-disable
 else
   /usr/bin/noctalia msg caffeine-disable
+  /usr/bin/noctalia msg nightlight-enable
 fi
