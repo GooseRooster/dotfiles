@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# game-performance-noctalia — wraps game-performance with Noctalia caffeine IPC
+
+noctalia msg caffeine-enable
+
+# Forward all args to the real game-performance, which chains into scb etc.
+game-performance "$@"
+exit_code=$?
+
+noctalia msg caffeine-disable
+
+exit $exit_code
