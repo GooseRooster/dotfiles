@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-noctalia msg caffeine-enable
-game-performance "$@" &
-wait $!
-noctalia msg caffeine-disable
+profile=$(powerprofilesctl get)
+
+if [ "$profile" = "performance" ]; then
+  /usr/bin/noctalia msg caffeine-enable
+else
+  /usr/bin/noctalia msg caffeine-disable
+fi
