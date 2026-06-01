@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-echo "$(date): profile=$(powerprofilesctl get)" >>/tmp/profile-hook.log
-
 profile=$(powerprofilesctl get)
+
 if [ "$profile" = "performance" ]; then
   /usr/bin/noctalia msg caffeine-enable
 else
