@@ -50,6 +50,7 @@ hl.bind(mainMod .. " + I", hl.dsp.exec_cmd(terminal .. " -e yazi ~/.config")) --
 --hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu)) -- App launchers
 hl.bind(mainMod .. " + G", hl.dsp.exec_cmd(steam)) -- steam
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(music)) -- sone
+hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu)) -- sone
 -- WINDOW MANAGEMENT -----
 --
 hl.bind(mainMod .. " + Q", function()
@@ -163,7 +164,7 @@ hl.bind(mainMod .. " + F2", hl.dsp.exec_cmd(ipc .. " panel-toggle control-center
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(ipc .. " panel-toggle clipboard"))
 
 --launcher
-hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(ipc .. " panel-toggle launcher"))
+--hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(ipc .. " panel-toggle launcher"))
 
 -- Media / volume keys (via Noctalia IPC)
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. " volume-up"), { locked = true, repeating = true })
