@@ -4,6 +4,9 @@
 #   GTK_USE_PORTAL, GDK_DEBUG, GTK_FILE_CHOOSER_BACKEND
 # This file adds Scroll/wlroots-specific variables only.
 
+#Vulkan renderer for HDR
+export WLR_RENDERER=vulkan
+
 export XCURSOR_SIZE=24
 
 # Ensure Wayland-native rendering for common toolkits
