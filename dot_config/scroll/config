@@ -41,11 +41,6 @@ default_decoration border_radius 10 shadow true shadow_dynamic true shadow_size 
 gaps inner 5
 gaps outer 20
 
-# Noctalia / Catppuccin Mocha color scheme
-# client.focused        <border>  <bg>      <text>    <indicator> <child_border>
-client.focused          #94e2d5   #1e1e2e   #cdd6f4   #94e2d5     #94e2d5
-client.focused_inactive #1e1e2e   #1e1e2e   #585b70   #1e1e2e     #1e1e2e
-client.unfocused        #1e1e2e   #1e1e2e   #585b70   #1e1e2e     #1e1e2e
 
 ### Scroll layout
 layout_default_width 0.5
@@ -58,10 +53,10 @@ maximize_if_single true
 ### Animations
 animations {
     enabled yes
-    default yes 300 var 3 [ 0.215 0.61 0.355 1 ]
-    window_open yes 300 var 3 [ 0 0 1 1 ]
-    window_move yes 300 var 3 [ 0.215 0.61 0.355 1 ] off 0.05 6 [0 0.6 0.4 0 1 0 0.4 -0.6 1 -0.6]
-    window_size yes 300 var 3 [ -0.35 0 0 0.5 ]
+    default yes 150 var 3 [ 0.215 0.61 0.355 1 ]
+    window_open yes 150 var 3 [ 0 0 1 1 ]
+    window_move yes 150 var 3 [ 0.215 0.61 0.355 1 ] off 0.05 6 [0 0.6 0.4 0 1 0 0.4 -0.6 1 -0.6]
+    window_size yes 150 var 3 [ -0.35 0 0 0.5 ]
     workspace_switch yes 400 var 3 [ 0.215 0.61 0.355 1 ]
     window_fullscreen yes 500 var 3 [ 0.3 0.5 0.4 1 ]
 }
@@ -141,8 +136,14 @@ bindsym $mod+Shift+Left resize shrink width 20px
 bindsym $mod+Shift+Down resize grow height 20px
 bindsym $mod+Shift+Up resize shrink height 20px
 
-## Soft-maximize current column (full width, stays in layout)
-bindsym $mod+Shift+m set_size h 1.0
+## half a windows size in stack
+bindsym $mod+Shift+h set_size v 0.5
+
+## auto size all in column to fit on screen
+bindsym $mod+Ctrl+h fit_size v all equal
+
+## Soft-maximize or revert current column (full width, stays in layout)
+bindsym $mod+Shift+m toggle_size this 1.0 1.0
 
 ## Workspaces
 bindsym $mod+1 workspace number 1
