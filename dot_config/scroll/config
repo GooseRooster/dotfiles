@@ -25,7 +25,7 @@ set $ipc noctalia msg
 output * {
     resolution 3440x1440@165Hz
     hdr on
-    adaptive_sync on
+    adaptive_sync off
 }
 # output DP-1 {
 #     resolution 3440x1440@165
@@ -53,7 +53,7 @@ layout_default_height 1.0
 layout_widths [0.33333333 0.5 0.666666667 1.0]
 layout_heights [0.33333333 0.5 0.666666667 1.0]
 focus_wrapping no
-maximize_if_single false
+maximize_if_single true
 
 ### Animations
 animations {
@@ -86,6 +86,7 @@ input type:touchpad {
 exec uwsm finalize SWAYSOCK I3SOCK
 exec uwsm app -- noctalia
 exec uwsm app -- udiskie
+exec ~/.config/scroll/scripts/vrr-fullscreen.sh
 
 ### Gestures (3-finger swipe = workspace, 4-finger up = overview)
 bindgesture swipe:3:right workspace next
@@ -128,11 +129,20 @@ bindsym $mod+Alt+Right move right
 bindsym $mod+Alt+Up move up
 bindsym $mod+Alt+Down move down
 
+## Move individual window into adjacent column (stack it)
+bindsym $mod+Ctrl+Alt+Right move right nomode
+bindsym $mod+Ctrl+Alt+Left move left nomode
+bindsym $mod+Ctrl+Alt+Up move up nomode
+bindsym $mod+Ctrl+Alt+Down move down nomode
+
 ## Resize windows (Shift + arrows — mirrors Hyprland behaviour)
 bindsym $mod+Shift+Right resize grow width 20px
 bindsym $mod+Shift+Left resize shrink width 20px
 bindsym $mod+Shift+Down resize grow height 20px
 bindsym $mod+Shift+Up resize shrink height 20px
+
+## Soft-maximize current column (full width, stays in layout)
+bindsym $mod+Shift+m set_size h 1.0
 
 ## Workspaces
 bindsym $mod+1 workspace number 1
