@@ -36,6 +36,7 @@ output * {
 
 ### Appearance
 default_border pixel 2
+default_floating_border pixel 2
 default_decoration border_radius 10 shadow true shadow_dynamic true shadow_size 10 shadow_blur 20 shadow_offset 10 10 shadow_color #1a1a1aee dim false dim_color #00000040
 
 gaps inner 5
@@ -194,10 +195,9 @@ bindsym $mod+Shift+c reload
 ## Screenshots (grim + slurp + swappy)
 # swappy handles save location, annotation, and clipboard copy.
 # Configure save dir in ~/.config/swappy/config (save_dir=~/Pictures/Screenshots)
-set $satty swappy -f -
-bindsym Print exec grim -g "$(slurp -d)" - | $satty
-bindsym $mod+Print exec grim -o "$(scrollmsg -t get_outputs | jq -r '.[] | select(.focused) | .name')" - | $satty
-bindsym $mod+Shift+Print exec scrollmsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | grim -g - - | $satty
+bindsym Print exec ~/.config/scroll/scripts/screenshot.sh region
+bindsym $mod+Print exec ~/.config/scroll/scripts/screenshot.sh output
+bindsym $mod+Shift+Print exec ~/.config/scroll/scripts/screenshot.sh window
 
 ## Screen recording (wl-screenrec, 10-bit HEVC for HDR)
 bindsym $mod+F9 exec bash -c 'wl-screenrec --codec hevc --encode-pixfmt p010 --audio -f ~/Videos/Recordings/$(date +%Y%m%d_%H%M%S).mp4 &'
