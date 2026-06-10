@@ -36,7 +36,7 @@ output * {
 
 ### Appearance
 default_border pixel 2
-default_decoration border_radius 10 shadow true shadow_dynamic true shadow_size 40 shadow_blur 20 shadow_offset 10 10 shadow_color #1a1a1aee dim false dim_color #00000040
+default_decoration border_radius 10 shadow true shadow_dynamic true shadow_size 10 shadow_blur 20 shadow_offset 10 10 shadow_color #1a1a1aee dim false dim_color #00000040
 
 gaps inner 5
 gaps outer 20
@@ -158,8 +158,8 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
 ## Scroll workspaces
-bindsym $mod+Ctrl+Right workspace next
-bindsym $mod+Ctrl+Left workspace prev
+bindsym $mod+Ctrl+Down workspace next
+bindsym $mod+Ctrl+Up workspace prev
 bindsym --whole-window $mod+button5 workspace next
 bindsym --whole-window $mod+button4 workspace prev
 
@@ -212,3 +212,6 @@ bindsym --locked XF86MonBrightnessDown exec $ipc brightness-down
 bindsym --locked XF86AudioNext exec $ipc media next
 bindsym --locked XF86AudioPlay exec $ipc media toggle
 bindsym --locked XF86AudioPrev exec $ipc media previous
+
+
+include /home/gooze/.config/scroll/noctalia
