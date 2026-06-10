@@ -83,6 +83,7 @@ input type:touchpad {
 }
 
 ### Autostart
+exec uwsm finalize SWAYSOCK I3SOCK
 exec uwsm app -- noctalia
 exec uwsm app -- udiskie
 
