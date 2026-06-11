@@ -22,10 +22,11 @@ set $ipc noctalia msg
 # Run `scrollmsg -t get_outputs` to find your connector name (e.g. DP-1),
 # then replace * with that name and uncomment position if needed.
 #
-output * {
+output DP-3 {
     resolution 3440x1440@165Hz
     hdr on
     adaptive_sync off
+    allow_tearing on
 }
 # output DP-1 {
 #     resolution 3440x1440@165
