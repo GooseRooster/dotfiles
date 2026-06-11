@@ -100,7 +100,6 @@ floating_modifier $mod normal
 
 ### Window rules
 for_window [all] inhibit_idle fullscreen
-for_window [app_id="filechooser"] floating enable, resize set 1000 650, move position center
 
 ### Key bindings
 
