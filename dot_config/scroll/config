@@ -38,7 +38,7 @@ output DP-3 {
 ### Appearance
 default_border pixel 2
 default_floating_border pixel 2
-default_decoration border_radius 8 shadow true shadow_dynamic true shadow_size 3 shadow_blur 20 shadow_offset 10 10 shadow_color #1a1a1aee dim false dim_color #00000040
+default_decoration border_radius 4 shadow true shadow_dynamic true shadow_size 3 shadow_blur 20 shadow_offset 10 10 shadow_color #1a1a1aee dim false dim_color #00000040
 
 gaps inner 5
 gaps outer 20
