@@ -116,7 +116,7 @@ for_window [all] inhibit_idle fullscreen
 ### Key bindings
 
 ## App launchers
-bindsym $mod+; exec $term
+bindsym $mod+semicolon exec $term
 bindsym $mod+e exec $filemanager
 bindsym $mod+b exec $browser
 bindsym $mod+i exec kitty -e yazi ~/.config
