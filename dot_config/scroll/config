@@ -72,8 +72,6 @@ animations {
     # Negative x on the first control point is what causes the initial "pull back"
     window_size yes 300 var 3 [ -0.35 0 0 0.5 ]
 
-    # THE hero: expo deceleration (instant launch, feathery landing) + subtle vertical arc
-    workspace_switch yes 480 var simple [ 0.16 1 0.3 1 ] off 0.015 3 [0.2 1.0 0.8 0.3]
 
     # Overview: slower and more deliberate — it's a bigger visual shift
     overview yes 380 var simple [ 0.22 1 0.36 1 ]
