@@ -244,3 +244,5 @@ bindsym --locked XF86AudioPrev exec $ipc media previous
 
 
 include /home/gooze/.config/scroll/noctalia
+
+lua ~/.config/scroll/scripts/inactive_opacity.lua
