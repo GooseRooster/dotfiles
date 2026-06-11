@@ -59,7 +59,7 @@ animations {
     style clip
 
     # Snappy ease-out baseline — most operations inherit this
-    default yes 250 var simple [ 0.25 0.46 0.45 0.94 ]
+    default yes 300 var simple [ 0.25 0.46 0.45 0.94 ]
 
     # Windows pop in with a spring overshoot
     # P1y > 1.0 is what creates the bounce past the destination
@@ -116,7 +116,7 @@ for_window [all] inhibit_idle fullscreen
 ### Key bindings
 
 ## App launchers
-bindsym $mod+Home exec $term
+bindsym $mod+; exec $term
 bindsym $mod+e exec $filemanager
 bindsym $mod+b exec $browser
 bindsym $mod+i exec kitty -e yazi ~/.config
