@@ -155,7 +155,7 @@ bindsym $mod+Shift+Down resize grow height 20px
 bindsym $mod+Shift+Up resize shrink height 20px
 
 ## half a windows size in stack and reset
-bindsym $mod+Shift+h toggle_size this 0.5 1.0
+bindsym $mod+Shift+h toggle_size this 1.0 0.5
 
 ## auto size all in column to fit on screen
 bindsym $mod+Ctrl+h fit_size v all equal
