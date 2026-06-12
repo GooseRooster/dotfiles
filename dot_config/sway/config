@@ -168,7 +168,7 @@ bindsym $mod+F10 exec pkill -INT wl-screenrec
 
 ## Noctalia IPC
 bindsym $mod+comma exec $ipc panel-toggle control-center
-bindsym $mod+Space exec $ipc panel-toggle launcher
+bindsym $mod+space exec $ipc panel-toggle launcher
 bindsym $mod+Delete exec $ipc panel-toggle session
 bindsym $mod+l exec $ipc screen-lock
 bindsym $mod+Shift+l exec bash -c 'noctalia msg screen-lock && systemctl suspend'
