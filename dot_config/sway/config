@@ -7,7 +7,7 @@ set $down Down
 
 set $term kitty
 set $filemanager kitty -e yazi
-set $menu fuzzel
+set $menu rofi
 set $browser zen-browser
 set $steam steam
 set $music flatpak run io.github.lullabyX.sone
