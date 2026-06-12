@@ -81,7 +81,7 @@ for_window [all] inhibit_idle fullscreen
 for_window [app_id="scratchpad-term"] move scratchpad, resize set 80ppt 70ppt
 exec foot --app-id=scratchpad-term
 
-bindsym $mod+enter exec ~/.config/sway/scripts/scratchpad-term.sh
+bindsym $mod+Return exec ~/.config/sway/scripts/scratchpad-term.sh
 
 ### Key bindings
 
