@@ -6,6 +6,7 @@ set $up Up
 set $down Down
 
 set $term kitty
+set $menu rofi -show combi
 set $filemanager kitty -e yazi
 set $browser zen-browser
 set $steam steam
@@ -76,12 +77,7 @@ bindgesture swipe:3:left workspace prev
 ### Drag/resize floating windows with mod + mouse
 floating_modifier $mod normal
 
-### Window rules
-for_window [all] inhibit_idle fullscreen
-for_window [app_id="scratchpad-term"] move scratchpad, resize set 80ppt 70ppt
-exec foot --app-id=scratchpad-term
 
-bindsym $mod+Return exec ~/.config/sway/scripts/scratchpad-term.sh
 
 ### Key bindings
 
@@ -90,7 +86,7 @@ bindsym $mod+semicolon exec $term
 bindsym $mod+e exec $filemanager
 bindsym $mod+b exec $browser
 bindsym $mod+i exec kitty -e yazi ~/.config
-##bindsym $mod+space exec $menu
+bindsym $mod+space exec $menu
 bindsym $mod+g exec $steam
 bindsym $mod+m exec $music
 
@@ -172,7 +168,7 @@ bindsym $mod+F10 exec pkill -INT wl-screenrec
 
 ## Noctalia IPC
 bindsym $mod+comma exec $ipc panel-toggle control-center
-bindsym $mod+space exec $ipc panel-toggle launcher
+##bindsym $mod+space exec $ipc panel-toggle launcher
 bindsym $mod+Delete exec $ipc panel-toggle session
 bindsym $mod+l exec $ipc screen-lock
 bindsym $mod+Shift+l exec bash -c 'noctalia msg screen-lock && systemctl suspend'
