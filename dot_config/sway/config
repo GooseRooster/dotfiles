@@ -7,7 +7,6 @@ set $down Down
 
 set $term kitty
 set $filemanager kitty -e yazi
-set $menu rofi -show drun
 set $browser zen-browser
 set $steam steam
 set $music flatpak run io.github.lullabyX.sone
@@ -169,6 +168,7 @@ bindsym $mod+F10 exec pkill -INT wl-screenrec
 
 ## Noctalia IPC
 bindsym $mod+comma exec $ipc panel-toggle control-center
+bindsym $mod+Space exec $ipc panel-toggle launcher
 bindsym $mod+Delete exec $ipc panel-toggle session
 bindsym $mod+l exec $ipc screen-lock
 bindsym $mod+Shift+l exec bash -c 'noctalia msg screen-lock && systemctl suspend'
