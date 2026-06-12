@@ -86,7 +86,7 @@ bindsym $mod+semicolon exec $term
 bindsym $mod+e exec $filemanager
 bindsym $mod+b exec $browser
 bindsym $mod+i exec kitty -e yazi ~/.config
-bindsym $mod+space exec $menu
+##bindsym $mod+space exec $menu
 bindsym $mod+g exec $steam
 bindsym $mod+m exec $music
 
