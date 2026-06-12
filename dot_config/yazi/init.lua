@@ -32,20 +32,17 @@ require("yatline"):setup({
 
 	padding = { inner = 1, outer = 1 },
 
-	-- style_a: teal accent for tabs, mode indicator, and highlighted sections
-	-- style_b: mid-dark surface for secondary info
-	-- style_c: darkest bg for tertiary/path sections
 	style_a = {
-		bg = "#94e2d5", -- mocha teal
-		fg = "#1e1e2e", -- mocha base (dark text on teal reads cleanly)
+		bg = "light_cyan",
+		fg = "black",
 		bg_mode = {
-			normal = "#94e2d5", -- teal
-			select = "#f9e2af", -- mocha yellow
-			un_set = "#f38ba8", -- mocha red
+			normal = "light_cyan",
+			select = "light_yellow",
+			un_set = "light_red",
 		},
 	},
-	style_b = { bg = "#313244", fg = "#cdd6f4" }, -- surface0 / text
-	style_c = { bg = "#181825", fg = "#bac2de" }, -- mantle / subtext1
+	style_b = { bg = "dark_gray", fg = "white" }, -- surface0 / text
+	style_c = { bg = "reset", fg = "white" }, -- mantle / subtext1
 
 	permissions_t_fg = "green",
 	permissions_r_fg = "yellow",
@@ -79,9 +76,6 @@ require("yatline"):setup({
 			section_c = {},
 		},
 		right = {
-			-- Disk usage sits in section_a so it gets the teal background.
-			-- The addon's green/yellow/red text colors read well on the darker mantle
-			-- section_c, so swap these if you prefer the traffic-light text on dark.
 			section_a = {},
 			section_b = {},
 			section_c = {
