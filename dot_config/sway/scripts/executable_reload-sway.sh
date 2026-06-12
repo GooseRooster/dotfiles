@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
-sleep 0.2
+sleep 1
 
 swaymsg reload
+
+pkill -SIGWINCH yazi

@@ -1,4 +1,4 @@
-# UWSM environment variables loaded for Scroll sessions.
+# UWSM environment variables loaded for Sway sessions.
 # The general ~/.config/uwsm/env already sets:
 #   GNOME_KEYRING_CONTROL, SSH_AUTH_SOCK, QT_QPA_PLATFORMTHEME=qt6ct,
 #   GTK_USE_PORTAL, GDK_DEBUG, GTK_FILE_CHOOSER_BACKEND
