@@ -153,21 +153,14 @@ bindsym --whole-window $mod+button4 workspace prev
 ## Reload config
 bindsym $mod+Shift+c reload
 
-## Screenshots (grimshot + swappy)
-# swappy still handles annotation and save destination (~/.config/swappy/config).
-# grimshot doesn't support stdout, so a temp file is used as the handoff.
-# bindsym Print exec bash -c 'f=$(mktemp /tmp/shot-XXXXXX.png) && grimshot save area "$f" && swappy -f "$f"'
-# bindsym $mod+Print exec bash -c 'f=$(mktemp /tmp/shot-XXXXXX.png) && grimshot save output "$f" && swappy -f "$f"'
-# bindsym $mod+Shift+Print exec bash -c 'f=$(mktemp /tmp/shot-XXXXXX.png) && grimshot save window "$f" && swappy -f "$f"'
-
-## Screenshots (custom wrapper script with optional HDR Tonemap - grim, slurp, ffmpeg)
-bindsym Print         exec ~/.config/sway/scripts/screenshot.sh full
-bindsym $mod+Print    exec ~/.config/sway/scripts/screenshot.sh region
-
-## Screen recording (wl-screenrec, 10-bit HEVC for HDR)
-# HDR capture works if sway is running with WLR_RENDERER=vulkan and hdr is on.
-bindsym $mod+F9 exec bash -c 'wl-screenrec --codec hevc --encode-pixfmt p010 --audio -f ~/Videos/Recordings/$(date +%Y%m%d_%H%M%S).mp4 &'
-bindsym $mod+F10 exec pkill -INT wl-screenrec
+# Wrapper script for screenshots/video with gpu-screenrec
+#
+bindsym Print         exec ~/.config/sway/scripts/capture.sh screenshot full
+bindsym $mod+Print    exec ~/.config/sway/scripts/capture.sh screenshot region
+bindsym $mod+r        exec ~/.config/sway/scripts/capture.sh record
+bindsym $mod+Shift+r  exec ~/.config/sway/scripts/capture.sh record region
+bindsym $mod+Ctrl+r        exec ~/.config/sway/scripts/capture.sh record full mic
+bindsym $mod+Ctrl+Shift+r  exec ~/.config/sway/scripts/capture.sh record region mic
 
 ## Noctalia IPC
 bindsym $mod+comma exec $ipc panel-toggle control-center

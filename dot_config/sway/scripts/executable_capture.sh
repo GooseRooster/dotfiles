@@ -4,23 +4,26 @@
 # Dependencies: gpu-screen-recorder, grim, slurp, ffmpeg, wl-clipboard, jq, libnotify
 #
 # Sway config:
-#   bindsym Print         exec ~/.config/sway/scripts/capture.sh screenshot full
-#   bindsym $mod+Print    exec ~/.config/sway/scripts/capture.sh screenshot region
-#   bindsym $mod+r        exec ~/.config/sway/scripts/capture.sh record
-#   bindsym $mod+shift+r  exec ~/.config/sway/scripts/capture.sh record region
+#   bindsym Print              exec ~/.config/sway/scripts/capture.sh screenshot full
+#   bindsym $mod+Print         exec ~/.config/sway/scripts/capture.sh screenshot region
+#   bindsym $mod+r             exec ~/.config/sway/scripts/capture.sh record
+#   bindsym $mod+Shift+r       exec ~/.config/sway/scripts/capture.sh record region
+#   bindsym $mod+Ctrl+r        exec ~/.config/sway/scripts/capture.sh record full mic
+#   bindsym $mod+Ctrl+Shift+r  exec ~/.config/sway/scripts/capture.sh record region mic
 
 # ── User config ───────────────────────────────────────────────────────────────
 SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"
 RECORDINGS_DIR="$HOME/Videos/Recordings"
 RECORD_FPS=60
-# Run 'gpu-screen-recorder --list-audio-devices' to find your source
 AUDIO_SOURCE="default_output"
+MIC_SOURCE="default_input"
 # ─────────────────────────────────────────────────────────────────────────────
 
 set -euo pipefail
 
 ACTION="${1:-screenshot}"
 MODE="${2:-full}"
+MIC="${3:-}"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 
 RECORD_PIDFILE="/tmp/capture-recording.pid"
@@ -28,8 +31,10 @@ RECORD_OUTFILE="/tmp/capture-recording-outfile"
 
 mkdir -p "$SCREENSHOTS_DIR" "$RECORDINGS_DIR"
 
-# HDR detection
-HDR_ACTIVE=$(swaymsg -t get_outputs | jq 'any(.[]; .hdr == true)')
+# Query swaymsg once for both HDR detection and focused output name
+OUTPUTS=$(swaymsg -t get_outputs)
+HDR_ACTIVE=$(echo "$OUTPUTS" | jq 'any(.[]; .hdr == true)')
+FOCUSED_OUTPUT=$(echo "$OUTPUTS" | jq -r '.[] | select(.focused == true) | .name')
 
 # Convert slurp geometry (X,Y WxH) → gpu-screen-recorder region (WxH+X+Y)
 slurp_to_gsr_region() {
@@ -56,7 +61,7 @@ screenshot)
       GEO=$(slurp -d) || exit 0
       GSR_ARGS=(-w region -region "$(slurp_to_gsr_region "$GEO")" "${GSR_ARGS[@]}")
     else
-      GSR_ARGS=(-w focused "${GSR_ARGS[@]}")
+      GSR_ARGS=(-w "$FOCUSED_OUTPUT" "${GSR_ARGS[@]}")
     fi
 
     gpu-screen-recorder "${GSR_ARGS[@]}" &
@@ -109,7 +114,7 @@ record)
       GEO=$(slurp -d) || exit 0
       GSR_ARGS+=(-w region -region "$(slurp_to_gsr_region "$GEO")")
     else
-      GSR_ARGS+=(-w focused)
+      GSR_ARGS+=(-w "$FOCUSED_OUTPUT")
     fi
 
     if [[ "$HDR_ACTIVE" == "true" ]]; then
@@ -119,11 +124,13 @@ record)
     fi
 
     GSR_ARGS+=(-f "$RECORD_FPS" -a "$AUDIO_SOURCE" -cursor yes -v no -o "$OUT")
+    [[ "$MIC" == "mic" ]] && GSR_ARGS+=(-a "$MIC_SOURCE")
 
     gpu-screen-recorder "${GSR_ARGS[@]}" &
     echo $! >"$RECORD_PIDFILE"
     echo "$OUT" >"$RECORD_OUTFILE"
-    notify-send -i "media-record" -t 3000 "Recording started" "$(basename "$OUT")"
+    NOTIFY_BODY="$(basename "$OUT")$([[ "$MIC" == "mic" ]] && echo " · mic on" || true)"
+    notify-send -i "media-record" -t 3000 "Recording started" "$NOTIFY_BODY"
   fi
   ;;
 
