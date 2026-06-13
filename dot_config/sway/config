@@ -1,9 +1,9 @@
 ### Variables
 set $mod Mod4
-set $left Left
-set $right Right
-set $up Up
-set $down Down
+set $left h
+set $right l
+set $up k
+set $down j
 
 set $term kitty
 set $menu rofi -show combi
@@ -64,11 +64,10 @@ exec uwsm app -- noctalia
 exec uwsm app -- udiskie
 exec ~/.config/sway/scripts/vrr-fullscreen.sh
 # autotiling: -l 2 limits split depth to approximate master-stack style.
-# exec_always ensures it respawns on config reload.
 # Install: yay -S autotiling  (AUR) | apt install autotiling | dnf install autotiling
-exec_always autotiling -l 2
+exec autotiling -l 2
 ## Requires sway-contrib
-exec_always /usr/share/sway-contrib/inactive-windows-transparency.py -o 0.85
+exec /usr/share/sway-contrib/inactive-windows-transparency.py -o 0.85
 
 ### Gestures (3-finger swipe = workspace navigation)
 bindgesture swipe:3:right workspace next
@@ -96,30 +95,30 @@ bindsym $mod+f fullscreen
 bindsym $mod+Shift+f floating toggle
 
 ## Focus (arrow keys)
-bindsym $mod+Left focus left
-bindsym $mod+Right focus right
-bindsym $mod+Up focus up
-bindsym $mod+Down focus down
+bindsym $mod+$left focus left
+bindsym $mod+$right focus right
+bindsym $mod+$up focus up
+bindsym $mod+$down focus down
 
 ## Move windows (Alt + arrows)
-bindsym $mod+Alt+Left move left
-bindsym $mod+Alt+Right move right
-bindsym $mod+Alt+Up move up
-bindsym $mod+Alt+Down move down
+bindsym $mod+Alt+$left move left
+bindsym $mod+Alt+$right move right
+bindsym $mod+Alt+$up move up
+bindsym $mod+Alt+$down move down
 
 ## Move window into adjacent container (Ctrl+Alt+arrows)
 # Scroll's `nomode` flag has no sway equivalent; plain move used.
 # Behaviour will differ from Scroll — sway `move` targets the tree, not a column.
-bindsym $mod+Ctrl+Alt+Right move right
-bindsym $mod+Ctrl+Alt+Left move left
-bindsym $mod+Ctrl+Alt+Up move up
-bindsym $mod+Ctrl+Alt+Down move down
+bindsym $mod+Ctrl+Alt+$right move right
+bindsym $mod+Ctrl+Alt+$left move left
+bindsym $mod+Ctrl+Alt+$up move up
+bindsym $mod+Ctrl+Alt+$down move down
 
 ## Resize windows (Shift + arrows)
-bindsym $mod+Shift+Right resize grow width 20px
-bindsym $mod+Shift+Left resize shrink width 20px
-bindsym $mod+Shift+Down resize grow height 20px
-bindsym $mod+Shift+Up resize shrink height 20px
+bindsym $mod+Shift+$right resize grow width 20px
+bindsym $mod+Shift+$left resize shrink width 20px
+bindsym $mod+Shift+$down resize grow height 20px
+bindsym $mod+Shift+$up resize shrink height 20px
 
 
 ## Workspaces
@@ -146,8 +145,8 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
 ## Cycle workspaces
-bindsym $mod+Ctrl+Right workspace next
-bindsym $mod+Ctrl+Left workspace prev
+bindsym $mod+Ctrl+$right workspace next
+bindsym $mod+Ctrl+$left workspace prev
 bindsym --whole-window $mod+button5 workspace next
 bindsym --whole-window $mod+button4 workspace prev
 
@@ -157,9 +156,13 @@ bindsym $mod+Shift+c reload
 ## Screenshots (grimshot + swappy)
 # swappy still handles annotation and save destination (~/.config/swappy/config).
 # grimshot doesn't support stdout, so a temp file is used as the handoff.
-bindsym Print exec bash -c 'f=$(mktemp /tmp/shot-XXXXXX.png) && grimshot save area "$f" && swappy -f "$f"'
-bindsym $mod+Print exec bash -c 'f=$(mktemp /tmp/shot-XXXXXX.png) && grimshot save output "$f" && swappy -f "$f"'
-bindsym $mod+Shift+Print exec bash -c 'f=$(mktemp /tmp/shot-XXXXXX.png) && grimshot save window "$f" && swappy -f "$f"'
+# bindsym Print exec bash -c 'f=$(mktemp /tmp/shot-XXXXXX.png) && grimshot save area "$f" && swappy -f "$f"'
+# bindsym $mod+Print exec bash -c 'f=$(mktemp /tmp/shot-XXXXXX.png) && grimshot save output "$f" && swappy -f "$f"'
+# bindsym $mod+Shift+Print exec bash -c 'f=$(mktemp /tmp/shot-XXXXXX.png) && grimshot save window "$f" && swappy -f "$f"'
+
+## Screenshots (custom wrapper script with optional HDR Tonemap - grim, slurp, ffmpeg)
+bindsym Print         exec ~/.config/sway/scripts/screenshot.sh full
+bindsym $mod+Print    exec ~/.config/sway/scripts/screenshot.sh region
 
 ## Screen recording (wl-screenrec, 10-bit HEVC for HDR)
 # HDR capture works if sway is running with WLR_RENDERER=vulkan and hdr is on.
@@ -170,8 +173,7 @@ bindsym $mod+F10 exec pkill -INT wl-screenrec
 bindsym $mod+comma exec $ipc panel-toggle control-center
 ##bindsym $mod+space exec $ipc panel-toggle launcher
 bindsym $mod+Delete exec $ipc panel-toggle session
-bindsym $mod+l exec $ipc screen-lock
-bindsym $mod+Shift+l exec bash -c 'noctalia msg screen-lock && systemctl suspend'
+bindsym $mod+Escape exec $ipc screen-lock 
 bindsym $mod+F1 exec $ipc panel-toggle control-center calendar
 bindsym $mod+End exec $ipc settings-toggle
 bindsym $mod+F2 exec $ipc panel-toggle control-center system

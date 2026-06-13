@@ -12,6 +12,7 @@ export XCURSOR_SIZE=24
 # Ensure Wayland-native rendering for common toolkits
 export XDG_CURRENT_DESKTOP=sway
 export QT_QPA_PLATFORM=wayland
+export XDG_SESSION_DESKTOP=sway
 export SDL_VIDEODRIVER=wayland
 
 # Java apps (IntelliJ, Android Studio, etc.) need this to render correctly
