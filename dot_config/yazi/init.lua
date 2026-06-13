@@ -163,3 +163,6 @@ require("linemode-plus"):setup({
 		year_digits = 4,
 	},
 })
+require("session"):setup({
+	sync_yanked = true,
+})
