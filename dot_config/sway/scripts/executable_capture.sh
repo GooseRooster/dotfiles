@@ -74,7 +74,7 @@ screenshot)
     # zscale auto-detects input colorspace from hevc_hdr metadata
     ffmpeg -loglevel error -i "$TMPVID" -vframes 1 \
       -vf "zscale=transfer=linear:npl=100,\
-tonemap=hable,\
+tonemap=reinhard:desat=0,\
 zscale=transfer=bt709:primaries=bt709:matrix=bt709,\
 format=rgb24" \
       "$OUTFILE"
