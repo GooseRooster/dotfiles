@@ -16,7 +16,7 @@ set $ipc noctalia msg
 ### Output configuration
 #
 # HDR10 requires the Vulkan renderer: set WLR_RENDERER=vulkan in your environment
-# (e.g. via a UWSM env file or wrapper). allow_tearing uses yes/no in sway, not on/off.
+# (e.g. via a UWSM env file or wrapper).
 # Run `swaymsg -t get_outputs` to verify your connector name.
 #
 output DP-3 {
