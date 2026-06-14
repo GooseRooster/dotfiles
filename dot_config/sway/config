@@ -25,12 +25,6 @@ output DP-3 {
     adaptive_sync off
     allow_tearing yes
 }
-# output DP-1 {
-#     resolution 3440x1440@165
-#     position 0,0
-#     hdr on
-#     adaptive_sync on
-# }
 
 ### Appearance
 default_border pixel 2
