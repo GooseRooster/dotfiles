@@ -81,7 +81,6 @@ for_window [app_id="scratchpad-term"] {
     floating enable
     resize set 1200 700
     move position center
-    move scratchpad
 }
 
 ### Key bindings
