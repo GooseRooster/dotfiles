@@ -6,7 +6,7 @@ set $up k
 set $down j
 
 set $term kitty
-set $menu rofi -show combi
+set $menu rofi -show combi -show-icons
 set $filemanager kitty -e yazi
 set $browser zen-browser
 set $steam steam

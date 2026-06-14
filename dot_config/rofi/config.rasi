@@ -1,6 +1,17 @@
 configuration {
   modes: [ combi ];
-  combi-modes: [ window, drun, run ];
+  combi-modes: [ window, drun ];
 }
 
 @theme "noctalia"
+
+// For monochrome icons, create a consistent dark background. Also add some spacing before the text.
+element {
+    spacing: 8px;
+}
+
+element-icon {
+    background-color: @bg;
+    border-radius:    4px;
+    padding:          2px;
+}
