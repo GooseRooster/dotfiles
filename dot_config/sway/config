@@ -127,7 +127,7 @@ bindsym $mod+Shift+$down resize grow height 20px
 bindsym $mod+Shift+$up resize shrink height 20px
 
 ## Open scratchpad-term
-bindsym $mod+Return exec ~/.config/sway/scripts/scratchpad-term.sh
+bindsym $mod+grave exec ~/.config/sway/scripts/scratchpad-term.sh
 
 
 ## Workspaces
