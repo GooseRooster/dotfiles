@@ -4,9 +4,9 @@ return {
     config = function()
       local pywal16 = require("pywal16")
       pywal16.setup()
+
       vim.cmd.colorscheme("pywal16")
 
-      -- Watch for pywal color regeneration and reload
       local watcher = (vim.uv or vim.loop).new_fs_event()
       watcher:start(
         vim.fn.expand("~/.cache/wal/colors.json"),
