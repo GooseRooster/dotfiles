@@ -1,4 +1,5 @@
 :root {
+  /*requires a symlink*/
     --theme-color: "pywal16";
     --hue-rotate: 0deg;
 
