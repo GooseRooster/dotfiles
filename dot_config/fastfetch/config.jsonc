@@ -20,7 +20,7 @@
         "break",
         {
             "type": "os",
-            "key": "╭─󰣇",
+            "key": "╭─",
             "keyColor": "green"
         },
         {
