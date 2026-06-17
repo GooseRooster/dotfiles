@@ -70,7 +70,7 @@ pipx install pywal16
 ### materialyoucolor
 
 ```bash
-pip install --user materialyoucolor
+pip3 install --user materialyoucolor
 ```
 
 ---
