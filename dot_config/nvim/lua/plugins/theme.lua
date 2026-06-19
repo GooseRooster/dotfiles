@@ -1,37 +1,31 @@
 return {
   {
-    "uZer/pywal16.nvim",
-    config = function()
-      local pywal16 = require("pywal16")
-      pywal16.setup()
-
-      vim.cmd.colorscheme("pywal16")
-
-      local watcher = (vim.uv or vim.loop).new_fs_event()
-      watcher:start(
-        vim.fn.expand("~/.cache/wal/colors.json"),
-        {},
-        vim.schedule_wrap(function()
-          pywal16.setup()
-          vim.cmd.colorscheme("pywal16")
-        end)
-      )
-    end,
+    "tinted-theming/tinted-nvim",
+    priority = 1000, -- load colorscheme early
+    lazy = false, -- apply on startup
+    opts = {
+      selector = {
+        enabled = true,
+        mode = "file",
+        path = "~/.local/share/tinted-theming/tinty/current_scheme",
+        watch = true,
+      },
+    },
   },
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = function()
-        local pywal16 = require("pywal16")
-        pywal16.setup()
+      colorscheme = function() -- deferred, not evaluated at spec-parse time
+        require("tinted-nvim").load(require("tinted-nvim").get_scheme())
       end,
     },
   },
-  { "folke/tokyonight.nvim", enabled = false },
   {
     "nvim-lualine/lualine.nvim",
     opts = {
-      options = { theme = "pywal16-nvim" },
+      options = {
+        theme = "tinted",
+      },
     },
   },
 }

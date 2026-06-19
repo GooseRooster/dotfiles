@@ -44,6 +44,8 @@ function reset
     fastfetch
 end
 
+set -gx LG_CONFIG_FILE "$XDG_CONFIG_HOME/lazygit/config.yml,$XDG_DATA_HOME/tinted-theming/tinty/tinted-lazygit-themes-file.yml"
+
 zoxide init fish | source
 
 starship init fish | source
