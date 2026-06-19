@@ -1,0 +1,919 @@
+# : Manager [[[
+
+[mgr]
+cwd = { fg = "white" }
+
+# Find
+find_keyword  = { fg = "light_red", bold = true, italic = true, underline = true }
+find_position = { fg = "light_red", bold = true, italic = true }
+
+# Marker
+marker_copied   = { fg = "magenta",       bg = "magenta" }
+marker_cut      = { fg = "magenta",       bg = "magenta" }
+marker_marked   = { fg = "light_red",     bg = "light_red" }
+marker_selected = { fg = "light_magenta", bg = "light_magenta" }
+
+# Count
+count_copied   = { fg = "light_magenta", bg = "magenta" }
+count_cut      = { fg = "light_magenta", bg = "magenta" }
+count_selected = { fg = "black",         bg = "light_magenta" }
+
+# Border
+border_style = { fg = "light_magenta" }
+
+# : ]]]
+
+
+# : Status [[[
+
+[status]
+overall   = { fg = "light_magenta" }
+sep_left  = { open = "", close = "" }
+sep_right = { open = "", close = "" }
+
+# Progress
+progress_label  = { bold = true }
+progress_normal = { fg = "light_magenta", bg = "reset" }
+progress_error  = { fg = "light_red",     bg = "reset" }
+
+# Permissions
+perm_type  = { fg = "white" }
+perm_write = { fg = "light_magenta" }
+perm_exec  = { fg = "light_red" }
+perm_read  = { fg = "magenta" }
+perm_sep   = { fg = "magenta" }
+
+# : ]]]
+
+
+# : Mode [[[
+
+[mode]
+
+normal_main = { bg = "light_magenta", fg = "black", bold = true }
+normal_alt  = { bg = "dark_gray",     fg = "white" }
+
+select_main = { bg = "white",         fg = "black", bold = true }
+select_alt  = { bg = "dark_gray",     fg = "white" }
+
+unset_main  = { bg = "light_magenta", fg = "black", bold = true }
+unset_alt   = { bg = "dark_gray",     fg = "white" }
+
+# : ]]]
+
+
+# : Input [[[
+
+[input]
+border   = { fg = "light_magenta" }
+title    = {}
+value    = { fg = "white" }
+selected = { reversed = true }
+
+# : ]]]
+
+
+# : Tabs [[[
+
+[tabs]
+active    = { fg = "black", bold = true, bg = "light_magenta" }
+inactive  = { fg = "white", bg = "reset" }
+sep_inner = { open = "", close = "" }
+
+# : ]]]
+
+
+# : Completion [[[
+
+[cmp]
+border = { fg = "light_magenta", bg = "black" }
+
+# : ]]]
+
+
+# : Tasks [[[
+
+[tasks]
+border  = { fg = "light_magenta" }
+title   = {}
+hovered = { fg = "magenta", underline = true }
+
+# : ]]]
+
+
+# : Which [[[
+
+[which]
+cols = 3
+mask            = { bg = "reset" }
+cand            = { fg = "light_magenta" }
+rest            = { fg = "dark_gray" }
+desc            = { fg = "white" }
+separator       = " ▶ "
+separator_style = { fg = "white" }
+
+# : ]]]
+
+
+# : Spotter [[[
+
+[spot]
+border   = { fg = "light_magenta" }
+title    = { fg = "light_magenta" }
+tbl_col  = { fg = "white" }
+tbl_cell = { fg = "white", bg = "reset" }
+
+# : ]]]
+
+
+# : Help [[[
+
+[help]
+on      = { fg = "white" }
+run     = { fg = "white" }
+hovered = { reversed = true, bold = true }
+footer  = { fg = "black", bg = "white" }
+
+# : ]]]
+
+
+# : Notify [[[
+
+[notify]
+title_info  = { fg = "light_magenta" }
+title_warn  = { fg = "light_magenta" }
+title_error = { fg = "light_red" }
+
+# : ]]]
+
+
+# : File-specific styles [[[
+
+[filetype]
+
+rules = [
+    # Images
+    { mime = "image/*", fg = "light_cyan" },
+
+    # Media
+    { mime = "{audio,video}/*", fg = "light_yellow" },
+
+    # Archives
+    { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "light_magenta" },
+
+    # Documents
+    { mime = "application/{pdf,doc,rtf}", fg = "light_green" },
+
+    # Special files
+    { mime = "*", is = "orphan", fg = "light_red", bg = "red" },
+    { mime = "application/*exec*", fg = "light_red" },
+
+    # Fallback
+    { url = "*",  fg = "white" },
+    { url = "*/", fg = "light_magenta" },
+]
+
+# : ]]]
+
+
+# : Icons {{{
+
+[icon]
+globs = []
+dirs  = [
+	{ name = ".config",     text = "", fg = "light_magenta" },
+	{ name = ".git",        text = "", fg = "light_magenta" },
+	{ name = ".github",     text = "", fg = "light_magenta" },
+	{ name = ".npm",        text = "", fg = "light_magenta" },
+	{ name = "Desktop",     text = "", fg = "light_magenta" },
+	{ name = "Development", text = "", fg = "light_magenta" },
+	{ name = "Documents",   text = "", fg = "light_magenta" },
+	{ name = "Downloads",   text = "", fg = "light_magenta" },
+	{ name = "Library",     text = "", fg = "light_magenta" },
+	{ name = "Movies",      text = "", fg = "light_magenta" },
+	{ name = "Music",       text = "", fg = "light_magenta" },
+	{ name = "Pictures",    text = "", fg = "light_magenta" },
+	{ name = "Public",      text = "", fg = "light_magenta" },
+	{ name = "Videos",      text = "", fg = "light_magenta" },
+]
+files = [
+	{ name = ".babelrc",                   text = "", fg = "light_magenta" },
+	{ name = ".bash_profile",              text = "", fg = "light_magenta" },
+	{ name = ".bashrc",                    text = "", fg = "light_magenta" },
+	{ name = ".clang-format",              text = "", fg = "light_magenta" },
+	{ name = ".clang-tidy",                text = "", fg = "light_magenta" },
+	{ name = ".codespellrc",               text = "󰓆", fg = "light_magenta" },
+	{ name = ".condarc",                   text = "", fg = "light_magenta" },
+	{ name = ".dockerignore",              text = "󰡨", fg = "light_magenta" },
+	{ name = ".ds_store",                  text = "", fg = "light_magenta" },
+	{ name = ".editorconfig",              text = "", fg = "light_magenta" },
+	{ name = ".env",                       text = "", fg = "light_magenta" },
+	{ name = ".eslintignore",              text = "", fg = "light_magenta" },
+	{ name = ".eslintrc",                  text = "", fg = "light_magenta" },
+	{ name = ".git-blame-ignore-revs",     text = "", fg = "light_magenta" },
+	{ name = ".gitattributes",             text = "", fg = "light_magenta" },
+	{ name = ".gitconfig",                 text = "", fg = "light_magenta" },
+	{ name = ".gitignore",                 text = "", fg = "light_magenta" },
+	{ name = ".gitlab-ci.yml",             text = "", fg = "light_magenta" },
+	{ name = ".gitmodules",                text = "", fg = "light_magenta" },
+	{ name = ".gtkrc-2.0",                 text = "", fg = "light_magenta" },
+	{ name = ".gvimrc",                    text = "", fg = "light_magenta" },
+	{ name = ".justfile",                  text = "", fg = "light_magenta" },
+	{ name = ".luacheckrc",                text = "", fg = "light_magenta" },
+	{ name = ".luaurc",                    text = "", fg = "light_magenta" },
+	{ name = ".mailmap",                   text = "󰊢", fg = "light_magenta" },
+	{ name = ".nanorc",                    text = "", fg = "light_magenta" },
+	{ name = ".npmignore",                 text = "", fg = "light_magenta" },
+	{ name = ".npmrc",                     text = "", fg = "light_magenta" },
+	{ name = ".nuxtrc",                    text = "󱄆", fg = "light_magenta" },
+	{ name = ".nvmrc",                     text = "", fg = "light_magenta" },
+	{ name = ".pnpmfile.cjs",              text = "", fg = "light_magenta" },
+	{ name = ".pre-commit-config.yaml",    text = "󰛢", fg = "light_magenta" },
+	{ name = ".prettierignore",            text = "", fg = "light_magenta" },
+	{ name = ".prettierrc",                text = "", fg = "light_magenta" },
+	{ name = ".prettierrc.cjs",            text = "", fg = "light_magenta" },
+	{ name = ".prettierrc.js",             text = "", fg = "light_magenta" },
+	{ name = ".prettierrc.json",           text = "", fg = "light_magenta" },
+	{ name = ".prettierrc.json5",          text = "", fg = "light_magenta" },
+	{ name = ".prettierrc.mjs",            text = "", fg = "light_magenta" },
+	{ name = ".prettierrc.toml",           text = "", fg = "light_magenta" },
+	{ name = ".prettierrc.yaml",           text = "", fg = "light_magenta" },
+	{ name = ".prettierrc.yml",            text = "", fg = "light_magenta" },
+	{ name = ".pylintrc",                  text = "", fg = "light_magenta" },
+	{ name = ".settings.json",             text = "", fg = "light_magenta" },
+	{ name = ".SRCINFO",                   text = "󰣇", fg = "light_magenta" },
+	{ name = ".vimrc",                     text = "", fg = "light_magenta" },
+	{ name = ".Xauthority",                text = "", fg = "light_magenta" },
+	{ name = ".xinitrc",                   text = "", fg = "light_magenta" },
+	{ name = ".Xresources",                text = "", fg = "light_magenta" },
+	{ name = ".xsession",                  text = "", fg = "light_magenta" },
+	{ name = ".zprofile",                  text = "", fg = "light_magenta" },
+	{ name = ".zshenv",                    text = "", fg = "light_magenta" },
+	{ name = ".zshrc",                     text = "", fg = "light_magenta" },
+	{ name = "_gvimrc",                    text = "", fg = "light_magenta" },
+	{ name = "_vimrc",                     text = "", fg = "light_magenta" },
+	{ name = "AUTHORS",                    text = "", fg = "light_magenta" },
+	{ name = "AUTHORS.txt",                text = "", fg = "light_magenta" },
+	{ name = "brewfile",                   text = "", fg = "light_magenta" },
+	{ name = "bspwmrc",                    text = "", fg = "light_magenta" },
+	{ name = "build",                      text = "", fg = "light_magenta" },
+	{ name = "build.gradle",               text = "", fg = "light_magenta" },
+	{ name = "build.zig.zon",              text = "", fg = "light_magenta" },
+	{ name = "bun.lock",                   text = "", fg = "light_magenta" },
+	{ name = "bun.lockb",                  text = "", fg = "light_magenta" },
+	{ name = "cantorrc",                   text = "", fg = "light_magenta" },
+	{ name = "checkhealth",                text = "󰓙", fg = "light_magenta" },
+	{ name = "cmakelists.txt",             text = "", fg = "light_magenta" },
+	{ name = "code_of_conduct",            text = "", fg = "light_magenta" },
+	{ name = "code_of_conduct.md",         text = "", fg = "light_magenta" },
+	{ name = "commit_editmsg",             text = "", fg = "light_magenta" },
+	{ name = "commitlint.config.js",       text = "󰜘", fg = "light_magenta" },
+	{ name = "commitlint.config.ts",       text = "󰜘", fg = "light_magenta" },
+	{ name = "compose.yaml",               text = "󰡨", fg = "light_magenta" },
+	{ name = "compose.yml",                text = "󰡨", fg = "light_magenta" },
+	{ name = "config",                     text = "", fg = "light_magenta" },
+	{ name = "containerfile",              text = "󰡨", fg = "light_magenta" },
+	{ name = "copying",                    text = "", fg = "light_magenta" },
+	{ name = "copying.lesser",             text = "", fg = "light_magenta" },
+	{ name = "Directory.Build.props",      text = "", fg = "light_magenta" },
+	{ name = "Directory.Build.targets",    text = "", fg = "light_magenta" },
+	{ name = "Directory.Packages.props",   text = "", fg = "light_magenta" },
+	{ name = "docker-compose.yaml",        text = "󰡨", fg = "light_magenta" },
+	{ name = "docker-compose.yml",         text = "󰡨", fg = "light_magenta" },
+	{ name = "dockerfile",                 text = "󰡨", fg = "light_magenta" },
+	{ name = "eslint.config.cjs",          text = "", fg = "light_magenta" },
+	{ name = "eslint.config.js",           text = "", fg = "light_magenta" },
+	{ name = "eslint.config.mjs",          text = "", fg = "light_magenta" },
+	{ name = "eslint.config.ts",           text = "", fg = "light_magenta" },
+	{ name = "ext_typoscript_setup.txt",   text = "", fg = "light_magenta" },
+	{ name = "favicon.ico",                text = "", fg = "light_magenta" },
+	{ name = "fp-info-cache",              text = "", fg = "light_magenta" },
+	{ name = "fp-lib-table",               text = "", fg = "light_magenta" },
+	{ name = "FreeCAD.conf",               text = "", fg = "light_magenta" },
+	{ name = "Gemfile",                    text = "", fg = "light_magenta" },
+	{ name = "gnumakefile",                text = "", fg = "light_magenta" },
+	{ name = "go.mod",                     text = "", fg = "light_magenta" },
+	{ name = "go.sum",                     text = "", fg = "light_magenta" },
+	{ name = "go.work",                    text = "", fg = "light_magenta" },
+	{ name = "gradle-wrapper.properties",  text = "", fg = "light_magenta" },
+	{ name = "gradle.properties",          text = "", fg = "light_magenta" },
+	{ name = "gradlew",                    text = "", fg = "light_magenta" },
+	{ name = "groovy",                     text = "", fg = "light_magenta" },
+	{ name = "gruntfile.babel.js",         text = "", fg = "light_magenta" },
+	{ name = "gruntfile.coffee",           text = "", fg = "light_magenta" },
+	{ name = "gruntfile.js",               text = "", fg = "light_magenta" },
+	{ name = "gruntfile.ts",               text = "", fg = "light_magenta" },
+	{ name = "gtkrc",                      text = "", fg = "light_magenta" },
+	{ name = "gulpfile.babel.js",          text = "", fg = "light_magenta" },
+	{ name = "gulpfile.coffee",            text = "", fg = "light_magenta" },
+	{ name = "gulpfile.js",                text = "", fg = "light_magenta" },
+	{ name = "gulpfile.ts",                text = "", fg = "light_magenta" },
+	{ name = "hypridle.conf",              text = "", fg = "light_magenta" },
+	{ name = "hyprland.conf",              text = "", fg = "light_magenta" },
+	{ name = "hyprlandd.conf",             text = "", fg = "light_magenta" },
+	{ name = "hyprlock.conf",              text = "", fg = "light_magenta" },
+	{ name = "hyprpaper.conf",             text = "", fg = "light_magenta" },
+	{ name = "hyprsunset.conf",            text = "", fg = "light_magenta" },
+	{ name = "i18n.config.js",             text = "󰗊", fg = "light_magenta" },
+	{ name = "i18n.config.ts",             text = "󰗊", fg = "light_magenta" },
+	{ name = "i3blocks.conf",              text = "", fg = "light_magenta" },
+	{ name = "i3status.conf",              text = "", fg = "light_magenta" },
+	{ name = "index.theme",                text = "", fg = "light_magenta" },
+	{ name = "ionic.config.json",          text = "", fg = "light_magenta" },
+	{ name = "Jenkinsfile",                text = "", fg = "light_magenta" },
+	{ name = "justfile",                   text = "", fg = "light_magenta" },
+	{ name = "kalgebrarc",                 text = "", fg = "light_magenta" },
+	{ name = "kdeglobals",                 text = "", fg = "light_magenta" },
+	{ name = "kdenlive-layoutsrc",         text = "", fg = "light_magenta" },
+	{ name = "kdenliverc",                 text = "", fg = "light_magenta" },
+	{ name = "kritadisplayrc",             text = "", fg = "light_magenta" },
+	{ name = "kritarc",                    text = "", fg = "light_magenta" },
+	{ name = "license",                    text = "", fg = "light_magenta" },
+	{ name = "license.md",                 text = "", fg = "light_magenta" },
+	{ name = "lxde-rc.xml",                text = "", fg = "light_magenta" },
+	{ name = "lxqt.conf",                  text = "", fg = "light_magenta" },
+	{ name = "makefile",                   text = "", fg = "light_magenta" },
+	{ name = "mix.lock",                   text = "", fg = "light_magenta" },
+	{ name = "mpv.conf",                   text = "", fg = "light_magenta" },
+	{ name = "next.config.cjs",            text = "", fg = "light_magenta" },
+	{ name = "next.config.js",             text = "", fg = "light_magenta" },
+	{ name = "next.config.ts",             text = "", fg = "light_magenta" },
+	{ name = "node_modules",               text = "", fg = "light_magenta" },
+	{ name = "nuxt.config.cjs",            text = "󱄆", fg = "light_magenta" },
+	{ name = "nuxt.config.js",             text = "󱄆", fg = "light_magenta" },
+	{ name = "nuxt.config.mjs",            text = "󱄆", fg = "light_magenta" },
+	{ name = "nuxt.config.ts",             text = "󱄆", fg = "light_magenta" },
+	{ name = "package-lock.json",          text = "", fg = "light_magenta" },
+	{ name = "package.json",               text = "", fg = "light_magenta" },
+	{ name = "PKGBUILD",                   text = "", fg = "light_magenta" },
+	{ name = "platformio.ini",             text = "", fg = "light_magenta" },
+	{ name = "playwright.config.cjs",      text = "", fg = "light_magenta" },
+	{ name = "playwright.config.cts",      text = "", fg = "light_magenta" },
+	{ name = "playwright.config.js",       text = "", fg = "light_magenta" },
+	{ name = "playwright.config.mjs",      text = "", fg = "light_magenta" },
+	{ name = "playwright.config.mts",      text = "", fg = "light_magenta" },
+	{ name = "playwright.config.ts",       text = "", fg = "light_magenta" },
+	{ name = "pnpm-lock.yaml",             text = "", fg = "light_magenta" },
+	{ name = "pnpm-workspace.yaml",        text = "", fg = "light_magenta" },
+	{ name = "pom.xml",                    text = "", fg = "light_magenta" },
+	{ name = "prettier.config.cjs",        text = "", fg = "light_magenta" },
+	{ name = "prettier.config.js",         text = "", fg = "light_magenta" },
+	{ name = "prettier.config.mjs",        text = "", fg = "light_magenta" },
+	{ name = "prettier.config.ts",         text = "", fg = "light_magenta" },
+	{ name = "prisma.config.mts",          text = "", fg = "light_magenta" },
+	{ name = "prisma.config.ts",           text = "", fg = "light_magenta" },
+	{ name = "procfile",                   text = "", fg = "light_magenta" },
+	{ name = "PrusaSlicer.ini",            text = "", fg = "light_magenta" },
+	{ name = "PrusaSlicerGcodeViewer.ini", text = "", fg = "light_magenta" },
+	{ name = "py.typed",                   text = "", fg = "light_magenta" },
+	{ name = "QtProject.conf",             text = "", fg = "light_magenta" },
+	{ name = "rakefile",                   text = "", fg = "light_magenta" },
+	{ name = "readme",                     text = "󰂺", fg = "light_magenta" },
+	{ name = "readme.md",                  text = "󰂺", fg = "light_magenta" },
+	{ name = "rmd",                        text = "", fg = "light_magenta" },
+	{ name = "robots.txt",                 text = "󰚩", fg = "light_magenta" },
+	{ name = "security",                   text = "󰒃", fg = "light_magenta" },
+	{ name = "security.md",                text = "󰒃", fg = "light_magenta" },
+	{ name = "settings.gradle",            text = "", fg = "light_magenta" },
+	{ name = "svelte.config.js",           text = "", fg = "light_magenta" },
+	{ name = "sxhkdrc",                    text = "", fg = "light_magenta" },
+	{ name = "sym-lib-table",              text = "", fg = "light_magenta" },
+	{ name = "tailwind.config.js",         text = "󱏿", fg = "light_magenta" },
+	{ name = "tailwind.config.mjs",        text = "󱏿", fg = "light_magenta" },
+	{ name = "tailwind.config.ts",         text = "󱏿", fg = "light_magenta" },
+	{ name = "tmux.conf",                  text = "", fg = "light_magenta" },
+	{ name = "tmux.conf.local",            text = "", fg = "light_magenta" },
+	{ name = "tsconfig.json",              text = "", fg = "light_magenta" },
+	{ name = "unlicense",                  text = "", fg = "light_magenta" },
+	{ name = "vagrantfile",                text = "", fg = "light_magenta" },
+	{ name = "vercel.json",                text = "", fg = "light_magenta" },
+	{ name = "vite.config.cjs",            text = "", fg = "light_magenta" },
+	{ name = "vite.config.cts",            text = "", fg = "light_magenta" },
+	{ name = "vite.config.js",             text = "", fg = "light_magenta" },
+	{ name = "vite.config.mjs",            text = "", fg = "light_magenta" },
+	{ name = "vite.config.mts",            text = "", fg = "light_magenta" },
+	{ name = "vite.config.ts",             text = "", fg = "light_magenta" },
+	{ name = "vitest.config.cjs",          text = "", fg = "light_magenta" },
+	{ name = "vitest.config.cts",          text = "", fg = "light_magenta" },
+	{ name = "vitest.config.js",           text = "", fg = "light_magenta" },
+	{ name = "vitest.config.mjs",          text = "", fg = "light_magenta" },
+	{ name = "vitest.config.mts",          text = "", fg = "light_magenta" },
+	{ name = "vitest.config.ts",           text = "", fg = "light_magenta" },
+	{ name = "vlcrc",                      text = "󰕼", fg = "light_magenta" },
+	{ name = "webpack",                    text = "󰜫", fg = "light_magenta" },
+	{ name = "weston.ini",                 text = "", fg = "light_magenta" },
+	{ name = "workspace",                  text = "", fg = "light_magenta" },
+	{ name = "wrangler.jsonc",             text = "", fg = "light_magenta" },
+	{ name = "wrangler.toml",              text = "", fg = "light_magenta" },
+	{ name = "xdph.conf",                  text = "", fg = "light_magenta" },
+	{ name = "xmobarrc",                   text = "", fg = "light_magenta" },
+	{ name = "xmobarrc.hs",                text = "", fg = "light_magenta" },
+	{ name = "xmonad.hs",                  text = "", fg = "light_magenta" },
+	{ name = "xorg.conf",                  text = "", fg = "light_magenta" },
+	{ name = "xsettingsd.conf",            text = "", fg = "light_magenta" },
+]
+exts = [
+	{ name = "3gp",          text = "", fg = "light_magenta" },
+	{ name = "3mf",          text = "󰆧", fg = "light_magenta" },
+	{ name = "7z",           text = "", fg = "light_magenta" },
+	{ name = "a",            text = "", fg = "light_magenta" },
+	{ name = "aac",          text = "", fg = "light_magenta" },
+	{ name = "ada",          text = "", fg = "light_magenta" },
+	{ name = "adb",          text = "", fg = "light_magenta" },
+	{ name = "ads",          text = "", fg = "light_magenta" },
+	{ name = "ai",           text = "", fg = "light_magenta" },
+	{ name = "aif",          text = "", fg = "light_magenta" },
+	{ name = "aiff",         text = "", fg = "light_magenta" },
+	{ name = "android",      text = "", fg = "light_magenta" },
+	{ name = "ape",          text = "", fg = "light_magenta" },
+	{ name = "apk",          text = "", fg = "light_magenta" },
+	{ name = "apl",          text = "", fg = "light_magenta" },
+	{ name = "app",          text = "", fg = "light_magenta" },
+	{ name = "applescript",  text = "", fg = "light_magenta" },
+	{ name = "asc",          text = "󰦝", fg = "light_magenta" },
+	{ name = "asm",          text = "", fg = "light_magenta" },
+	{ name = "ass",          text = "󰨖", fg = "light_magenta" },
+	{ name = "astro",        text = "", fg = "light_magenta" },
+	{ name = "avif",         text = "", fg = "light_magenta" },
+	{ name = "awk",          text = "", fg = "light_magenta" },
+	{ name = "azcli",        text = "", fg = "light_magenta" },
+	{ name = "bak",          text = "󰁯", fg = "light_magenta" },
+	{ name = "bash",         text = "", fg = "light_magenta" },
+	{ name = "bat",          text = "", fg = "light_magenta" },
+	{ name = "bazel",        text = "", fg = "light_magenta" },
+	{ name = "bib",          text = "󱉟", fg = "light_magenta" },
+	{ name = "bicep",        text = "", fg = "light_magenta" },
+	{ name = "bicepparam",   text = "", fg = "light_magenta" },
+	{ name = "bin",          text = "", fg = "light_magenta" },
+	{ name = "blade.php",    text = "", fg = "light_magenta" },
+	{ name = "blend",        text = "󰂫", fg = "light_magenta" },
+	{ name = "blp",          text = "󰺾", fg = "light_magenta" },
+	{ name = "bmp",          text = "", fg = "light_magenta" },
+	{ name = "bqn",          text = "", fg = "light_magenta" },
+	{ name = "brep",         text = "󰻫", fg = "light_magenta" },
+	{ name = "bz",           text = "", fg = "light_magenta" },
+	{ name = "bz2",          text = "", fg = "light_magenta" },
+	{ name = "bz3",          text = "", fg = "light_magenta" },
+	{ name = "bzl",          text = "", fg = "light_magenta" },
+	{ name = "c",            text = "", fg = "light_magenta" },
+	{ name = "c++",          text = "", fg = "light_magenta" },
+	{ name = "cache",        text = "", fg = "light_magenta" },
+	{ name = "cast",         text = "", fg = "light_magenta" },
+	{ name = "cbl",          text = "", fg = "light_magenta" },
+	{ name = "cc",           text = "", fg = "light_magenta" },
+	{ name = "ccm",          text = "", fg = "light_magenta" },
+	{ name = "cfc",          text = "", fg = "light_magenta" },
+	{ name = "cfg",          text = "", fg = "light_magenta" },
+	{ name = "cfm",          text = "", fg = "light_magenta" },
+	{ name = "cjs",          text = "", fg = "light_magenta" },
+	{ name = "clj",          text = "", fg = "light_magenta" },
+	{ name = "cljc",         text = "", fg = "light_magenta" },
+	{ name = "cljd",         text = "", fg = "light_magenta" },
+	{ name = "cljs",         text = "", fg = "light_magenta" },
+	{ name = "cmake",        text = "", fg = "light_magenta" },
+	{ name = "cob",          text = "", fg = "light_magenta" },
+	{ name = "cobol",        text = "", fg = "light_magenta" },
+	{ name = "coffee",       text = "", fg = "light_magenta" },
+	{ name = "conda",        text = "", fg = "light_magenta" },
+	{ name = "conf",         text = "", fg = "light_magenta" },
+	{ name = "config.ru",    text = "", fg = "light_magenta" },
+	{ name = "cow",          text = "󰆚", fg = "light_magenta" },
+	{ name = "cp",           text = "", fg = "light_magenta" },
+	{ name = "cpp",          text = "", fg = "light_magenta" },
+	{ name = "cppm",         text = "", fg = "light_magenta" },
+	{ name = "cpy",          text = "", fg = "light_magenta" },
+	{ name = "cr",           text = "", fg = "light_magenta" },
+	{ name = "crdownload",   text = "", fg = "light_magenta" },
+	{ name = "cs",           text = "󰌛", fg = "light_magenta" },
+	{ name = "csh",          text = "", fg = "light_magenta" },
+	{ name = "cshtml",       text = "󱦗", fg = "light_magenta" },
+	{ name = "cson",         text = "", fg = "light_magenta" },
+	{ name = "csproj",       text = "󰪮", fg = "light_magenta" },
+	{ name = "css",          text = "", fg = "light_magenta" },
+	{ name = "csv",          text = "", fg = "light_magenta" },
+	{ name = "cts",          text = "", fg = "light_magenta" },
+	{ name = "cu",           text = "", fg = "light_magenta" },
+	{ name = "cue",          text = "󰲹", fg = "light_magenta" },
+	{ name = "cuh",          text = "", fg = "light_magenta" },
+	{ name = "cxx",          text = "", fg = "light_magenta" },
+	{ name = "cxxm",         text = "", fg = "light_magenta" },
+	{ name = "d",            text = "", fg = "light_magenta" },
+	{ name = "d.ts",         text = "", fg = "light_magenta" },
+	{ name = "dart",         text = "", fg = "light_magenta" },
+	{ name = "db",           text = "", fg = "light_magenta" },
+	{ name = "dconf",        text = "", fg = "light_magenta" },
+	{ name = "desktop",      text = "", fg = "light_magenta" },
+	{ name = "diff",         text = "", fg = "light_magenta" },
+	{ name = "dll",          text = "", fg = "light_magenta" },
+	{ name = "doc",          text = "󰈬", fg = "light_magenta" },
+	{ name = "Dockerfile",   text = "󰡨", fg = "light_magenta" },
+	{ name = "dockerignore", text = "󰡨", fg = "light_magenta" },
+	{ name = "docx",         text = "󰈬", fg = "light_magenta" },
+	{ name = "dot",          text = "󱁉", fg = "light_magenta" },
+	{ name = "download",     text = "", fg = "light_magenta" },
+	{ name = "drl",          text = "", fg = "light_magenta" },
+	{ name = "dropbox",      text = "", fg = "light_magenta" },
+	{ name = "dump",         text = "", fg = "light_magenta" },
+	{ name = "dwg",          text = "󰻫", fg = "light_magenta" },
+	{ name = "dxf",          text = "󰻫", fg = "light_magenta" },
+	{ name = "ebook",        text = "", fg = "light_magenta" },
+	{ name = "ebuild",       text = "", fg = "light_magenta" },
+	{ name = "edn",          text = "", fg = "light_magenta" },
+	{ name = "eex",          text = "", fg = "light_magenta" },
+	{ name = "ejs",          text = "", fg = "light_magenta" },
+	{ name = "el",           text = "", fg = "light_magenta" },
+	{ name = "elc",          text = "", fg = "light_magenta" },
+	{ name = "elf",          text = "", fg = "light_magenta" },
+	{ name = "elm",          text = "", fg = "light_magenta" },
+	{ name = "eln",          text = "", fg = "light_magenta" },
+	{ name = "env",          text = "", fg = "light_magenta" },
+	{ name = "eot",          text = "", fg = "light_magenta" },
+	{ name = "epp",          text = "", fg = "light_magenta" },
+	{ name = "epub",         text = "", fg = "light_magenta" },
+	{ name = "erb",          text = "", fg = "light_magenta" },
+	{ name = "erl",          text = "", fg = "light_magenta" },
+	{ name = "ex",           text = "", fg = "light_magenta" },
+	{ name = "exe",          text = "", fg = "light_magenta" },
+	{ name = "exs",          text = "", fg = "light_magenta" },
+	{ name = "f#",           text = "", fg = "light_magenta" },
+	{ name = "f3d",          text = "󰻫", fg = "light_magenta" },
+	{ name = "f90",          text = "󱈚", fg = "light_magenta" },
+	{ name = "fbx",          text = "󰆧", fg = "light_magenta" },
+	{ name = "fcbak",        text = "", fg = "light_magenta" },
+	{ name = "fcmacro",      text = "", fg = "light_magenta" },
+	{ name = "fcmat",        text = "", fg = "light_magenta" },
+	{ name = "fcparam",      text = "", fg = "light_magenta" },
+	{ name = "fcscript",     text = "", fg = "light_magenta" },
+	{ name = "fcstd",        text = "", fg = "light_magenta" },
+	{ name = "fcstd1",       text = "", fg = "light_magenta" },
+	{ name = "fctb",         text = "", fg = "light_magenta" },
+	{ name = "fctl",         text = "", fg = "light_magenta" },
+	{ name = "fdmdownload",  text = "", fg = "light_magenta" },
+	{ name = "feature",      text = "", fg = "light_magenta" },
+	{ name = "fish",         text = "", fg = "light_magenta" },
+	{ name = "flac",         text = "", fg = "light_magenta" },
+	{ name = "flc",          text = "", fg = "light_magenta" },
+	{ name = "flf",          text = "", fg = "light_magenta" },
+	{ name = "fnl",          text = "", fg = "light_magenta" },
+	{ name = "fodg",         text = "", fg = "light_magenta" },
+	{ name = "fodp",         text = "", fg = "light_magenta" },
+	{ name = "fods",         text = "", fg = "light_magenta" },
+	{ name = "fodt",         text = "", fg = "light_magenta" },
+	{ name = "frag",         text = "", fg = "light_magenta" },
+	{ name = "fs",           text = "", fg = "light_magenta" },
+	{ name = "fsi",          text = "", fg = "light_magenta" },
+	{ name = "fsscript",     text = "", fg = "light_magenta" },
+	{ name = "fsx",          text = "", fg = "light_magenta" },
+	{ name = "gcode",        text = "󰐫", fg = "light_magenta" },
+	{ name = "gd",           text = "", fg = "light_magenta" },
+	{ name = "gemspec",      text = "", fg = "light_magenta" },
+	{ name = "geom",         text = "", fg = "light_magenta" },
+	{ name = "gif",          text = "", fg = "light_magenta" },
+	{ name = "git",          text = "", fg = "light_magenta" },
+	{ name = "glb",          text = "", fg = "light_magenta" },
+	{ name = "gleam",        text = "", fg = "light_magenta" },
+	{ name = "glsl",         text = "", fg = "light_magenta" },
+	{ name = "gnumakefile",  text = "", fg = "light_magenta" },
+	{ name = "go",           text = "", fg = "light_magenta" },
+	{ name = "godot",        text = "", fg = "light_magenta" },
+	{ name = "gpr",          text = "", fg = "light_magenta" },
+	{ name = "gql",          text = "", fg = "light_magenta" },
+	{ name = "gradle",       text = "", fg = "light_magenta" },
+	{ name = "graphql",      text = "", fg = "light_magenta" },
+	{ name = "gresource",    text = "", fg = "light_magenta" },
+	{ name = "gv",           text = "󱁉", fg = "light_magenta" },
+	{ name = "gz",           text = "", fg = "light_magenta" },
+	{ name = "h",            text = "", fg = "light_magenta" },
+	{ name = "haml",         text = "", fg = "light_magenta" },
+	{ name = "hbs",          text = "", fg = "light_magenta" },
+	{ name = "heex",         text = "", fg = "light_magenta" },
+	{ name = "hex",          text = "", fg = "light_magenta" },
+	{ name = "hh",           text = "", fg = "light_magenta" },
+	{ name = "hpp",          text = "", fg = "light_magenta" },
+	{ name = "hrl",          text = "", fg = "light_magenta" },
+	{ name = "hs",           text = "", fg = "light_magenta" },
+	{ name = "htm",          text = "", fg = "light_magenta" },
+	{ name = "html",         text = "", fg = "light_magenta" },
+	{ name = "http",         text = "", fg = "light_magenta" },
+	{ name = "huff",         text = "󰡘", fg = "light_magenta" },
+	{ name = "hurl",         text = "", fg = "light_magenta" },
+	{ name = "hx",           text = "", fg = "light_magenta" },
+	{ name = "hxx",          text = "", fg = "light_magenta" },
+	{ name = "ical",         text = "", fg = "light_magenta" },
+	{ name = "icalendar",    text = "", fg = "light_magenta" },
+	{ name = "ico",          text = "", fg = "light_magenta" },
+	{ name = "ics",          text = "", fg = "light_magenta" },
+	{ name = "ifb",          text = "", fg = "light_magenta" },
+	{ name = "ifc",          text = "󰻫", fg = "light_magenta" },
+	{ name = "ige",          text = "󰻫", fg = "light_magenta" },
+	{ name = "iges",         text = "󰻫", fg = "light_magenta" },
+	{ name = "igs",          text = "󰻫", fg = "light_magenta" },
+	{ name = "image",        text = "", fg = "light_magenta" },
+	{ name = "img",          text = "", fg = "light_magenta" },
+	{ name = "import",       text = "", fg = "light_magenta" },
+	{ name = "info",         text = "", fg = "light_magenta" },
+	{ name = "ini",          text = "", fg = "light_magenta" },
+	{ name = "ino",          text = "", fg = "light_magenta" },
+	{ name = "ipynb",        text = "", fg = "light_magenta" },
+	{ name = "iso",          text = "", fg = "light_magenta" },
+	{ name = "ixx",          text = "", fg = "light_magenta" },
+	{ name = "jar",          text = "", fg = "light_magenta" },
+	{ name = "java",         text = "", fg = "light_magenta" },
+	{ name = "jl",           text = "", fg = "light_magenta" },
+	{ name = "jpeg",         text = "", fg = "light_magenta" },
+	{ name = "jpg",          text = "", fg = "light_magenta" },
+	{ name = "js",           text = "", fg = "light_magenta" },
+	{ name = "json",         text = "", fg = "light_magenta" },
+	{ name = "json5",        text = "", fg = "light_magenta" },
+	{ name = "jsonc",        text = "", fg = "light_magenta" },
+	{ name = "jsx",          text = "", fg = "light_magenta" },
+	{ name = "jwmrc",        text = "", fg = "light_magenta" },
+	{ name = "jxl",          text = "", fg = "light_magenta" },
+	{ name = "kbx",          text = "󰯄", fg = "light_magenta" },
+	{ name = "kdb",          text = "", fg = "light_magenta" },
+	{ name = "kdbx",         text = "", fg = "light_magenta" },
+	{ name = "kdenlive",     text = "", fg = "light_magenta" },
+	{ name = "kdenlivetitle", text = "", fg = "light_magenta" },
+	{ name = "kicad_dru",    text = "", fg = "light_magenta" },
+	{ name = "kicad_mod",    text = "", fg = "light_magenta" },
+	{ name = "kicad_pcb",    text = "", fg = "light_magenta" },
+	{ name = "kicad_prl",    text = "", fg = "light_magenta" },
+	{ name = "kicad_pro",    text = "", fg = "light_magenta" },
+	{ name = "kicad_sch",    text = "", fg = "light_magenta" },
+	{ name = "kicad_sym",    text = "", fg = "light_magenta" },
+	{ name = "kicad_wks",    text = "", fg = "light_magenta" },
+	{ name = "ko",           text = "", fg = "light_magenta" },
+	{ name = "kpp",          text = "", fg = "light_magenta" },
+	{ name = "kra",          text = "", fg = "light_magenta" },
+	{ name = "krz",          text = "", fg = "light_magenta" },
+	{ name = "ksh",          text = "", fg = "light_magenta" },
+	{ name = "kt",           text = "", fg = "light_magenta" },
+	{ name = "kts",          text = "", fg = "light_magenta" },
+	{ name = "lck",          text = "", fg = "light_magenta" },
+	{ name = "leex",         text = "", fg = "light_magenta" },
+	{ name = "less",         text = "", fg = "light_magenta" },
+	{ name = "lff",          text = "", fg = "light_magenta" },
+	{ name = "lhs",          text = "", fg = "light_magenta" },
+	{ name = "lib",          text = "", fg = "light_magenta" },
+	{ name = "license",      text = "", fg = "light_magenta" },
+	{ name = "liquid",       text = "", fg = "light_magenta" },
+	{ name = "lock",         text = "", fg = "light_magenta" },
+	{ name = "log",          text = "󰌱", fg = "light_magenta" },
+	{ name = "lrc",          text = "󰨖", fg = "light_magenta" },
+	{ name = "lua",          text = "", fg = "light_magenta" },
+	{ name = "luac",         text = "", fg = "light_magenta" },
+	{ name = "luau",         text = "", fg = "light_magenta" },
+	{ name = "m",            text = "", fg = "light_magenta" },
+	{ name = "m3u",          text = "󰲹", fg = "light_magenta" },
+	{ name = "m3u8",         text = "󰲹", fg = "light_magenta" },
+	{ name = "m4a",          text = "", fg = "light_magenta" },
+	{ name = "m4v",          text = "", fg = "light_magenta" },
+	{ name = "magnet",       text = "", fg = "light_magenta" },
+	{ name = "makefile",     text = "", fg = "light_magenta" },
+	{ name = "markdown",     text = "", fg = "light_magenta" },
+	{ name = "material",     text = "", fg = "light_magenta" },
+	{ name = "md",           text = "", fg = "light_magenta" },
+	{ name = "md5",          text = "󰕥", fg = "light_magenta" },
+	{ name = "mdx",          text = "", fg = "light_magenta" },
+	{ name = "mint",         text = "󰌪", fg = "light_magenta" },
+	{ name = "mjs",          text = "", fg = "light_magenta" },
+	{ name = "mk",           text = "", fg = "light_magenta" },
+	{ name = "mkv",          text = "", fg = "light_magenta" },
+	{ name = "ml",           text = "", fg = "light_magenta" },
+	{ name = "mli",          text = "", fg = "light_magenta" },
+	{ name = "mm",           text = "", fg = "light_magenta" },
+	{ name = "mo",           text = "", fg = "light_magenta" },
+	{ name = "mobi",         text = "", fg = "light_magenta" },
+	{ name = "mojo",         text = "", fg = "light_magenta" },
+	{ name = "mov",          text = "", fg = "light_magenta" },
+	{ name = "mp3",          text = "", fg = "light_magenta" },
+	{ name = "mp4",          text = "", fg = "light_magenta" },
+	{ name = "mpp",          text = "", fg = "light_magenta" },
+	{ name = "msf",          text = "", fg = "light_magenta" },
+	{ name = "mts",          text = "", fg = "light_magenta" },
+	{ name = "mustache",     text = "", fg = "light_magenta" },
+	{ name = "nfo",          text = "", fg = "light_magenta" },
+	{ name = "nim",          text = "", fg = "light_magenta" },
+	{ name = "nix",          text = "", fg = "light_magenta" },
+	{ name = "norg",         text = "", fg = "light_magenta" },
+	{ name = "nswag",        text = "", fg = "light_magenta" },
+	{ name = "nu",           text = "", fg = "light_magenta" },
+	{ name = "o",            text = "", fg = "light_magenta" },
+	{ name = "obj",          text = "󰆧", fg = "light_magenta" },
+	{ name = "odf",          text = "", fg = "light_magenta" },
+	{ name = "odg",          text = "", fg = "light_magenta" },
+	{ name = "odin",         text = "󰟢", fg = "light_magenta" },
+	{ name = "odp",          text = "", fg = "light_magenta" },
+	{ name = "ods",          text = "", fg = "light_magenta" },
+	{ name = "odt",          text = "", fg = "light_magenta" },
+	{ name = "oga",          text = "", fg = "light_magenta" },
+	{ name = "ogg",          text = "", fg = "light_magenta" },
+	{ name = "ogv",          text = "", fg = "light_magenta" },
+	{ name = "ogx",          text = "", fg = "light_magenta" },
+	{ name = "opus",         text = "", fg = "light_magenta" },
+	{ name = "org",          text = "", fg = "light_magenta" },
+	{ name = "otf",          text = "", fg = "light_magenta" },
+	{ name = "out",          text = "", fg = "light_magenta" },
+	{ name = "part",         text = "", fg = "light_magenta" },
+	{ name = "patch",        text = "", fg = "light_magenta" },
+	{ name = "pck",          text = "", fg = "light_magenta" },
+	{ name = "pcm",          text = "", fg = "light_magenta" },
+	{ name = "pdf",          text = "", fg = "light_magenta" },
+	{ name = "php",          text = "", fg = "light_magenta" },
+	{ name = "pl",           text = "", fg = "light_magenta" },
+	{ name = "pls",          text = "󰲹", fg = "light_magenta" },
+	{ name = "ply",          text = "󰆧", fg = "light_magenta" },
+	{ name = "pm",           text = "", fg = "light_magenta" },
+	{ name = "png",          text = "", fg = "light_magenta" },
+	{ name = "po",           text = "", fg = "light_magenta" },
+	{ name = "pot",          text = "", fg = "light_magenta" },
+	{ name = "pp",           text = "", fg = "light_magenta" },
+	{ name = "ppt",          text = "󰈧", fg = "light_magenta" },
+	{ name = "pptx",         text = "󰈧", fg = "light_magenta" },
+	{ name = "prisma",       text = "", fg = "light_magenta" },
+	{ name = "pro",          text = "", fg = "light_magenta" },
+	{ name = "ps1",          text = "󰨊", fg = "light_magenta" },
+	{ name = "psb",          text = "", fg = "light_magenta" },
+	{ name = "psd",          text = "", fg = "light_magenta" },
+	{ name = "psd1",         text = "󰨊", fg = "light_magenta" },
+	{ name = "psm1",         text = "󰨊", fg = "light_magenta" },
+	{ name = "pub",          text = "󰷖", fg = "light_magenta" },
+	{ name = "pxd",          text = "", fg = "light_magenta" },
+	{ name = "pxi",          text = "", fg = "light_magenta" },
+	{ name = "py",           text = "", fg = "light_magenta" },
+	{ name = "pyc",          text = "", fg = "light_magenta" },
+	{ name = "pyd",          text = "", fg = "light_magenta" },
+	{ name = "pyi",          text = "", fg = "light_magenta" },
+	{ name = "pyo",          text = "", fg = "light_magenta" },
+	{ name = "pyw",          text = "", fg = "light_magenta" },
+	{ name = "pyx",          text = "", fg = "light_magenta" },
+	{ name = "qm",           text = "", fg = "light_magenta" },
+	{ name = "qml",          text = "", fg = "light_magenta" },
+	{ name = "qrc",          text = "", fg = "light_magenta" },
+	{ name = "qss",          text = "", fg = "light_magenta" },
+	{ name = "query",        text = "", fg = "light_magenta" },
+	{ name = "R",            text = "󰟔", fg = "light_magenta" },
+	{ name = "r",            text = "󰟔", fg = "light_magenta" },
+	{ name = "rake",         text = "", fg = "light_magenta" },
+	{ name = "rar",          text = "", fg = "light_magenta" },
+	{ name = "rasi",         text = "", fg = "light_magenta" },
+	{ name = "razor",        text = "󱦘", fg = "light_magenta" },
+	{ name = "rb",           text = "", fg = "light_magenta" },
+	{ name = "res",          text = "", fg = "light_magenta" },
+	{ name = "resi",         text = "", fg = "light_magenta" },
+	{ name = "rlib",         text = "", fg = "light_magenta" },
+	{ name = "rmd",          text = "", fg = "light_magenta" },
+	{ name = "rproj",        text = "󰗆", fg = "light_magenta" },
+	{ name = "rs",           text = "", fg = "light_magenta" },
+	{ name = "rss",          text = "", fg = "light_magenta" },
+	{ name = "s",            text = "", fg = "light_magenta" },
+	{ name = "sass",         text = "", fg = "light_magenta" },
+	{ name = "sbt",          text = "", fg = "light_magenta" },
+	{ name = "sc",           text = "", fg = "light_magenta" },
+	{ name = "scad",         text = "", fg = "light_magenta" },
+	{ name = "scala",        text = "", fg = "light_magenta" },
+	{ name = "scm",          text = "󰘧", fg = "light_magenta" },
+	{ name = "scss",         text = "", fg = "light_magenta" },
+	{ name = "sh",           text = "", fg = "light_magenta" },
+	{ name = "sha1",         text = "󰕥", fg = "light_magenta" },
+	{ name = "sha224",       text = "󰕥", fg = "light_magenta" },
+	{ name = "sha256",       text = "󰕥", fg = "light_magenta" },
+	{ name = "sha384",       text = "󰕥", fg = "light_magenta" },
+	{ name = "sha512",       text = "󰕥", fg = "light_magenta" },
+	{ name = "sig",          text = "󰘧", fg = "light_magenta" },
+	{ name = "signature",    text = "󰘧", fg = "light_magenta" },
+	{ name = "skp",          text = "󰻫", fg = "light_magenta" },
+	{ name = "sldasm",       text = "󰻫", fg = "light_magenta" },
+	{ name = "sldprt",       text = "󰻫", fg = "light_magenta" },
+	{ name = "slim",         text = "", fg = "light_magenta" },
+	{ name = "sln",          text = "", fg = "light_magenta" },
+	{ name = "slnx",         text = "", fg = "light_magenta" },
+	{ name = "slvs",         text = "󰻫", fg = "light_magenta" },
+	{ name = "sml",          text = "󰘧", fg = "light_magenta" },
+	{ name = "so",           text = "", fg = "light_magenta" },
+	{ name = "sol",          text = "", fg = "light_magenta" },
+	{ name = "spec.js",      text = "", fg = "light_magenta" },
+	{ name = "spec.jsx",     text = "", fg = "light_magenta" },
+	{ name = "spec.ts",      text = "", fg = "light_magenta" },
+	{ name = "spec.tsx",     text = "", fg = "light_magenta" },
+	{ name = "spx",          text = "", fg = "light_magenta" },
+	{ name = "sql",          text = "", fg = "light_magenta" },
+	{ name = "sqlite",       text = "", fg = "light_magenta" },
+	{ name = "sqlite3",      text = "", fg = "light_magenta" },
+	{ name = "srt",          text = "󰨖", fg = "light_magenta" },
+	{ name = "ssa",          text = "󰨖", fg = "light_magenta" },
+	{ name = "ste",          text = "󰻫", fg = "light_magenta" },
+	{ name = "step",         text = "󰻫", fg = "light_magenta" },
+	{ name = "stl",          text = "󰆧", fg = "light_magenta" },
+	{ name = "stories.js",   text = "", fg = "light_magenta" },
+	{ name = "stories.jsx",  text = "", fg = "light_magenta" },
+	{ name = "stories.mjs",  text = "", fg = "light_magenta" },
+	{ name = "stories.svelte", text = "", fg = "light_magenta" },
+	{ name = "stories.ts",   text = "", fg = "light_magenta" },
+	{ name = "stories.tsx",  text = "", fg = "light_magenta" },
+	{ name = "stories.vue",  text = "", fg = "light_magenta" },
+	{ name = "stp",          text = "󰻫", fg = "light_magenta" },
+	{ name = "strings",      text = "", fg = "light_magenta" },
+	{ name = "styl",         text = "", fg = "light_magenta" },
+	{ name = "sub",          text = "󰨖", fg = "light_magenta" },
+	{ name = "sublime",      text = "", fg = "light_magenta" },
+	{ name = "suo",          text = "", fg = "light_magenta" },
+	{ name = "sv",           text = "󰍛", fg = "light_magenta" },
+	{ name = "svelte",       text = "", fg = "light_magenta" },
+	{ name = "svg",          text = "󰜡", fg = "light_magenta" },
+	{ name = "svgz",         text = "󰜡", fg = "light_magenta" },
+	{ name = "svh",          text = "󰍛", fg = "light_magenta" },
+	{ name = "swift",        text = "", fg = "light_magenta" },
+	{ name = "t",            text = "", fg = "light_magenta" },
+	{ name = "tbc",          text = "󰛓", fg = "light_magenta" },
+	{ name = "tcl",          text = "󰛓", fg = "light_magenta" },
+	{ name = "templ",        text = "", fg = "light_magenta" },
+	{ name = "terminal",     text = "", fg = "light_magenta" },
+	{ name = "test.js",      text = "", fg = "light_magenta" },
+	{ name = "test.jsx",     text = "", fg = "light_magenta" },
+	{ name = "test.ts",      text = "", fg = "light_magenta" },
+	{ name = "test.tsx",     text = "", fg = "light_magenta" },
+	{ name = "tex",          text = "", fg = "light_magenta" },
+	{ name = "tf",           text = "", fg = "light_magenta" },
+	{ name = "tfvars",       text = "", fg = "light_magenta" },
+	{ name = "tgz",          text = "", fg = "light_magenta" },
+	{ name = "tmpl",         text = "", fg = "light_magenta" },
+	{ name = "tmux",         text = "", fg = "light_magenta" },
+	{ name = "toml",         text = "", fg = "light_magenta" },
+	{ name = "torrent",      text = "", fg = "light_magenta" },
+	{ name = "tres",         text = "", fg = "light_magenta" },
+	{ name = "ts",           text = "", fg = "light_magenta" },
+	{ name = "tscn",         text = "", fg = "light_magenta" },
+	{ name = "tsconfig",     text = "", fg = "light_magenta" },
+	{ name = "tsx",          text = "", fg = "light_magenta" },
+	{ name = "ttf",          text = "", fg = "light_magenta" },
+	{ name = "twig",         text = "", fg = "light_magenta" },
+	{ name = "txt",          text = "󰈙", fg = "light_magenta" },
+	{ name = "txz",          text = "", fg = "light_magenta" },
+	{ name = "typ",          text = "", fg = "light_magenta" },
+	{ name = "typoscript",   text = "", fg = "light_magenta" },
+	{ name = "ui",           text = "", fg = "light_magenta" },
+	{ name = "v",            text = "󰍛", fg = "light_magenta" },
+	{ name = "vala",         text = "", fg = "light_magenta" },
+	{ name = "vert",         text = "", fg = "light_magenta" },
+	{ name = "vh",           text = "󰍛", fg = "light_magenta" },
+	{ name = "vhd",          text = "󰍛", fg = "light_magenta" },
+	{ name = "vhdl",         text = "󰍛", fg = "light_magenta" },
+	{ name = "vi",           text = "", fg = "light_magenta" },
+	{ name = "vim",          text = "", fg = "light_magenta" },
+	{ name = "vsh",          text = "", fg = "light_magenta" },
+	{ name = "vsix",         text = "", fg = "light_magenta" },
+	{ name = "vue",          text = "", fg = "light_magenta" },
+	{ name = "wasm",         text = "", fg = "light_magenta" },
+	{ name = "wav",          text = "", fg = "light_magenta" },
+	{ name = "webm",         text = "", fg = "light_magenta" },
+	{ name = "webmanifest",  text = "", fg = "light_magenta" },
+	{ name = "webp",         text = "", fg = "light_magenta" },
+	{ name = "webpack",      text = "󰜫", fg = "light_magenta" },
+	{ name = "wma",          text = "", fg = "light_magenta" },
+	{ name = "wmv",          text = "", fg = "light_magenta" },
+	{ name = "woff",         text = "", fg = "light_magenta" },
+	{ name = "woff2",        text = "", fg = "light_magenta" },
+	{ name = "wrl",          text = "󰆧", fg = "light_magenta" },
+	{ name = "wrz",          text = "󰆧", fg = "light_magenta" },
+	{ name = "wv",           text = "", fg = "light_magenta" },
+	{ name = "wvc",          text = "", fg = "light_magenta" },
+	{ name = "x",            text = "", fg = "light_magenta" },
+	{ name = "xaml",         text = "󰙳", fg = "light_magenta" },
+	{ name = "xcf",          text = "", fg = "light_magenta" },
+	{ name = "xcplayground", text = "", fg = "light_magenta" },
+	{ name = "xcstrings",    text = "", fg = "light_magenta" },
+	{ name = "xls",          text = "󰈛", fg = "light_magenta" },
+	{ name = "xlsx",         text = "󰈛", fg = "light_magenta" },
+	{ name = "xm",           text = "", fg = "light_magenta" },
+	{ name = "xml",          text = "󰗀", fg = "light_magenta" },
+	{ name = "xpi",          text = "", fg = "light_magenta" },
+	{ name = "xslt",         text = "󰗀", fg = "light_magenta" },
+	{ name = "xul",          text = "", fg = "light_magenta" },
+	{ name = "xz",           text = "", fg = "light_magenta" },
+	{ name = "yaml",         text = "", fg = "light_magenta" },
+	{ name = "yml",          text = "", fg = "light_magenta" },
+	{ name = "zig",          text = "", fg = "light_magenta" },
+	{ name = "zip",          text = "", fg = "light_magenta" },
+	{ name = "zsh",          text = "", fg = "light_magenta" },
+	{ name = "zst",          text = "", fg = "light_magenta" },
+	{ name = "🔥",           text = "", fg = "light_magenta" },
+]
+conds = [
+	# Special files
+	{ if = "orphan", text = "", fg = "light_magenta" },
+	{ if = "link",   text = "", fg = "light_magenta" },
+	{ if = "block",  text = "", fg = "light_magenta" },
+	{ if = "char",   text = "", fg = "light_magenta" },
+	{ if = "fifo",   text = "", fg = "light_magenta" },
+	{ if = "sock",   text = "", fg = "light_magenta" },
+	{ if = "sticky", text = "", fg = "light_magenta" },
+	{ if = "dummy",  text = "", fg = "light_magenta" },
+
+	# Fallback
+	{ if = "dir",  text = "", fg = "light_magenta" },
+	{ if = "exec", text = "", fg = "light_magenta" },
+	{ if = "!dir", text = "", fg = "light_magenta" },
+]
+
+# : }}}
