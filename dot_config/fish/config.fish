@@ -2,6 +2,15 @@ function fish_greeting
     fastfetch
 end
 
+function y
+    set tmp (mktemp -t "yazi-cwd.XXXXXX")
+    command yazi $argv --cwd-file="$tmp"
+    if read -z cwd <"$tmp"; and [ "$cwd" != "$PWD" ]; and test -d "$cwd"
+        builtin cd -- "$cwd"
+    end
+    command rm -f -- "$tmp"
+end
+
 function history
     builtin history --show-time='%F %T ' $argv
 end
@@ -25,10 +34,10 @@ end
 ## Useful aliases
 # Replace ls with eza
 alias ls='eza -al --color=always --group-directories-first --icons=always' # preferred listing
-alias la='eza -a --color=always --group-directories-first --icons=always'  # all files and dirs
-alias ll='eza -l --color=always --group-directories-first --icons=always'  # long format
+alias la='eza -a --color=always --group-directories-first --icons=always' # all files and dirs
+alias ll='eza -l --color=always --group-directories-first --icons=always' # long format
 alias lt='eza -aT --color=always --group-directories-first --icons=always' # tree listing
-alias l.="eza -a | grep -e '^\.'"                                     # show only dotfiles
+alias l.="eza -a | grep -e '^\.'" # show only dotfiles
 
 function reset
     clear
@@ -38,4 +47,3 @@ end
 zoxide init fish | source
 
 starship init fish | source
-
