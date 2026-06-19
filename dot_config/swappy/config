@@ -1,4 +1,0 @@
- [Default]
-  save_dir=~/Pictures/Screenshots
-  save_filename_format=swappy-%Y%m%d_%H%M%S.png
-  show_panel=true
