@@ -1,0 +1,3 @@
+theme = "tinted-theming"
+command = fish
+confirm-close-surface = false
