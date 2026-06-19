@@ -7,6 +7,7 @@ to stamp all wal templates, then nudges GTK to reload CSS in running apps.
 """
 
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -20,8 +21,10 @@ from materialyoucolor.quantize import ImageQuantizeCelebi
 from materialyoucolor.score.score import Score
 from materialyoucolor.palettes.core_palette import CorePalette
 
-WAL_BIN   = Path.home() / ".local" / "bin" / "wal"
-CACHE_DIR = Path.home() / ".cache" / "wal"
+WAL_BIN          = Path.home() / ".local" / "bin" / "wal"
+CACHE_DIR        = Path.home() / ".cache" / "wal"
+CC_ACCENT_CSS    = Path.home() / ".config" / "gtk-4.0" / "custom-accent.css"
+_ACCENT_RE       = re.compile(r'@define-color\s+accent_color\s+(#[0-9a-fA-F]{6})\s*;')
 
 # How long to wait after wal finishes before starting the gtk-theme toggle.
 # Gives Chroma Chameleon time to finish writing its CSS files first.
@@ -76,6 +79,15 @@ def extract_palette(image_path: Path) -> list[str]:
     return [argb_to_hex(t) for t in tones]
 
 
+def chroma_chameleon_accent() -> str | None:
+    """Read the accent color Chroma Chameleon wrote to the GTK4 CSS, if available."""
+    try:
+        m = _ACCENT_RE.search(CC_ACCENT_CSS.read_text())
+        return m.group(1) if m else None
+    except OSError:
+        return None
+
+
 def write_wal_cache(wallpaper_path: Path, colors: list[str]) -> None:
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     data = {
@@ -100,27 +112,21 @@ def run_wal() -> None:
 
 
 def schedule_gtk_reload() -> None:
-    """Toggle color-scheme after a delay so running GTK apps re-read their CSS."""
+    """Toggle color-scheme in-process so running GTK apps re-read their CSS.
+
+    Uses Gio.Settings directly instead of spawning gsettings subprocesses —
+    the write goes to dconf over a local socket and returns immediately, with
+    the D-Bus notification to other apps sent asynchronously by GLib. No
+    subprocess overhead, no blocking the event loop.
+    """
+    iface = Gio.Settings.new("org.gnome.desktop.interface")
+
     def _reload() -> bool:
         try:
-            current = subprocess.check_output(
-                ["gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
-                text=True,
-            ).strip().strip("'")
+            current = iface.get_string("color-scheme")
             opposite = "prefer-light" if "dark" in current else "prefer-dark"
-            subprocess.run(
-                ["gsettings", "set", "org.gnome.desktop.interface", "color-scheme", opposite],
-                check=True,
-            )
-            # Restore on the very next event-loop iteration — no visible delay,
-            # but the intermediate signal is enough to wake up CSS providers.
-            GLib.idle_add(lambda: (
-                subprocess.run(
-                    ["gsettings", "set", "org.gnome.desktop.interface", "color-scheme", current],
-                    check=True,
-                ),
-                False,
-            )[1])
+            iface.set_string("color-scheme", opposite)
+            GLib.idle_add(lambda: (iface.set_string("color-scheme", current), False)[1])
         except Exception as exc:
             print(f"[wallpaper-theme] GTK reload failed: {exc}", file=sys.stderr, flush=True)
         return False  # do not repeat
@@ -140,6 +146,15 @@ def process_wallpaper(uri: str) -> None:
     print(f"[wallpaper-theme] processing {image_path}", flush=True)
     try:
         colors = extract_palette(image_path)
+
+        # Let Chroma Chameleon's accent override color4 and the cursor so
+        # terminal themes stay in sync with the GTK accent. By the time
+        # materialyoucolor finishes (~0.5–1 s), CC has already written its CSS.
+        cc_accent = chroma_chameleon_accent()
+        if cc_accent:
+            colors[4] = cc_accent
+            print(f"[wallpaper-theme] using CC accent {cc_accent}", flush=True)
+
         write_wal_cache(image_path, colors)
         run_wal()
         schedule_gtk_reload()
