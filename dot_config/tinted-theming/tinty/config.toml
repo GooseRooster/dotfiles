@@ -28,9 +28,22 @@ supported-systems = ["base16", "base24", "tinted8"]
 hook = "mkdir -p \"$HOME/.claude/themes\" && node \"$TINTY_THEME_FILE_PATH\" > \"$HOME/.claude/themes/tinty.json\""
 
 #kitty
+#[[items]]
+#path = "https://github.com/tinted-theming/tinted-terminal"
+#name = "tinted-terminal"
+#themes-dir = "themes/kitty"
+#hook = "kill -USR1 $(pgrep -x kitty)"
+#supported-systems = ["base16", "base24"]
+
+#Ghostty
 [[items]]
 path = "https://github.com/tinted-theming/tinted-terminal"
 name = "tinted-terminal"
-themes-dir = "themes/kitty"
-hook = "kill -USR1 $(pgrep -x kitty)"
+themes-dir = "themes/ghostty"
+# With `theme` set to "tinted-theming", this will be where Ghostty looks for the theme file:
+hook = """
+mkdir -p ~/.config/ghostty/themes
+command cp -f "$TINTY_THEME_FILE_PATH" ~/.config/ghostty/themes/tinted-theming
+killall -SIGUSR2 ghostty 2>/dev/null || true
+"""
 supported-systems = ["base16", "base24"]
