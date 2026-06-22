@@ -62,3 +62,11 @@ name = "tinted-material-millennium"
 themes-dir = "output"
 hook = "cp \"$TINTY_THEME_FILE_PATH\" ~/.steam/steam/steamui/skins/Material-Theme/css/main/colors/matugen.css"
 supported-systems = ["base16"]
+
+#Zen
+[[items]]
+path = "https://github.com/GooseRooster/base16-tinted-zen"
+name = "base16-tinted-zen"
+themes-dir = "output"
+hook = "cp \"$TINTY_THEME_FILE_PATH\" \"$HOME/.var/app/app.zen_browser.zen/.zen/$(ls ~/.var/app/app.zen_browser.zen/.zen | grep -i 'Default' | head -1)/chrome/userChrome.css\""
+supported-systems = ["base16"]
