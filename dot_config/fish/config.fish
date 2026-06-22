@@ -47,3 +47,5 @@ end
 zoxide init fish | source
 
 starship init fish | source
+
+set -gx SSL_CERT_DIR "$HOME/.aspnet/dev-certs/trust:/etc/pki/tls/certs"

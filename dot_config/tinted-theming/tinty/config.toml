@@ -47,3 +47,18 @@ command cp -f "$TINTY_THEME_FILE_PATH" ~/.config/ghostty/themes/tinted-theming
 killall -SIGUSR2 ghostty 2>/dev/null || true
 """
 supported-systems = ["base16", "base24"]
+
+#gowall
+[[items]]
+path = "https://github.com/tinted-theming/tinted-gowall"
+name = "wallpaper"
+themes-dir = "themes" 
+supported-systems = ["base16", "base24"]
+
+#Steam millennium material
+[[items]]
+path = "https://github.com/GooseRooster/tinted-material-millennium"
+name = "tinted-material-millennium"
+themes-dir = "output"
+hook = "cp \"$TINTY_THEME_FILE_PATH\" ~/.steam/steam/steamui/skins/Material-Theme/css/main/colors/matugen.css"
+supported-systems = ["base16"]
