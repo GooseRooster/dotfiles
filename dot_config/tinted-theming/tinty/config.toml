@@ -63,6 +63,15 @@ themes-dir = "output"
 hook = "cp \"$TINTY_THEME_FILE_PATH\" ~/.steam/steam/steamui/skins/Material-Theme/css/main/colors/matugen.css"
 supported-systems = ["base16"]
 
+#Vesktop (Discord)
+[[items]]
+path = "https://github.com/deathbeam/base16-discord.git"
+name = "base16-discord"
+themes-dir = "themes"
+theme-file-extension = ".theme.css"
+supported-systems = ["base16"]
+hook = "cp \"$TINTY_THEME_FILE_PATH\" \"$HOME/.config/vesktop/settings/quickCss.css\""
+
 #Zen
 [[items]]
 path = "https://github.com/GooseRooster/base16-tinted-zen"
