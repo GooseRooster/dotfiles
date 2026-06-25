@@ -3,9 +3,6 @@
     "logo": {
         "type": "file",
         "source": "/home/gooze/.config/fastfetch/logo.txt",
-        "padding": {
-            "left": 2
-        }
     },
     "display": {
         "separator": "  "
