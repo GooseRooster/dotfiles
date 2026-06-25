@@ -4,7 +4,6 @@
         "type": "file",
         "source": "/home/gooze/.config/fastfetch/logo.txt",
         "padding": {
-            "top": 1,
             "left": 2
         }
     },
