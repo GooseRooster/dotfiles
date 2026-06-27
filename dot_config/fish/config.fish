@@ -48,5 +48,7 @@ zoxide init fish | source
 
 starship init fish | source
 
+set -gx SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/ssh-agent.socket"
 set -gx SSL_CERT_DIR "$HOME/.aspnet/dev-certs/trust:/etc/pki/tls/certs"
 fish_add_path ~/.dotnet/tools
+
