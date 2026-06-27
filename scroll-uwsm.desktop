@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Scroll (UWSM)
+Comment=An i3-compatible Wayland compositor with a PaperWM layout, managed by UWSM
+Exec=uwsm start scroll.desktop
+Type=Application
+DesktopNames=scroll;wlroots

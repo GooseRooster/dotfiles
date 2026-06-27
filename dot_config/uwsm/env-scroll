@@ -1,0 +1,19 @@
+# UWSM environment variables loaded for Scroll sessions.
+# The general ~/.config/uwsm/env already sets:
+#   GNOME_KEYRING_CONTROL, SSH_AUTH_SOCK, QT_QPA_PLATFORMTHEME=qt6ct,
+#   GTK_USE_PORTAL, GDK_DEBUG, GTK_FILE_CHOOSER_BACKEND
+# This file adds Scroll/wlroots-specific variables only.
+
+#Vulkan renderer for HDR
+export WLR_RENDERER=vulkan
+
+export XCURSOR_SIZE=24
+
+# Ensure Wayland-native rendering for common toolkits
+export XDG_CURRENT_DESKTOP=scroll
+export XDG_SESSION_DESKTOP=scroll
+export QT_QPA_PLATFORM=wayland
+export SDL_VIDEODRIVER=wayland
+
+# Java apps (IntelliJ, Android Studio, etc.) need this to render correctly
+export _JAVA_AWT_WM_NONREPARENTING=1

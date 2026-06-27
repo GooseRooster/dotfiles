@@ -77,5 +77,5 @@ hook = "cp \"$TINTY_THEME_FILE_PATH\" \"$HOME/.config/vesktop/settings/quickCss.
 path = "https://github.com/GooseRooster/base16-tinted-zen"
 name = "base16-tinted-zen"
 themes-dir = "output"
-hook = "cp \"$TINTY_THEME_FILE_PATH\" \"$HOME/.var/app/app.zen_browser.zen/.zen/$(ls ~/.var/app/app.zen_browser.zen/.zen | grep -i 'Default' | head -1)/chrome/userChrome.css\""
+hook = "cp \"$TINTY_THEME_FILE_PATH\" \"$HOME/.var/app/app.zen_browser.zen/.zen/$(ls ~/.var/app/app.zen_browser.zen/.zen | grep -i 'release' | head -1)/chrome/userChrome.css\""
 supported-systems = ["base16"]
