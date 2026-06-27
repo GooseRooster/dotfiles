@@ -84,7 +84,7 @@ exec ~/.config/scroll/scripts/vrr-fullscreen.sh
 
 
 ## Warmup scratchpad-term
-exec ghostty --class=scratchpad-term
+##exec ghostty --class=scratchpad-term
 
 ### Gestures (3-finger swipe = workspace navigation)
 bindgesture swipe:3:right workspace next
@@ -101,7 +101,7 @@ for_window [app_id="scratchpad-term"] {
     move position center
 }
 
-bindsym $mod+Return exec ~/.config/scroll/scripts/scratchpad-term.sh
+#bindsym $mod+Return exec ~/.config/scroll/scripts/scratchpad-term.sh
 
 ### Key bindings
 
