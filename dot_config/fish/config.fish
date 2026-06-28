@@ -52,5 +52,7 @@ starship init fish | source
 
 set -gx SSL_CERT_DIR "$HOME/.aspnet/dev-certs/trust:/etc/pki/tls/certs"
 fish_add_path ~/.dotnet/tools
+set -gx DOTNET_ROOT (brew --prefix dotnet)/libexec
 
 fish_add_path (brew --prefix rustup)/bin
+fish_add_path ~/.cargo/bin
