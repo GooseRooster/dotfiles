@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+# We need to bootstrap homebrew first so nu is available.
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# use the explicit path to be safe, let it bootstrap nu env, then execute whatever we want to run
 exec /var/home/linuxbrew/.linuxbrew/bin/nu \
   --config "$HOME/.config/nushell/config.nu" \
   --env-config "$HOME/.config/nushell/env.nu" \
