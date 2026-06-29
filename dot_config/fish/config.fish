@@ -42,6 +42,7 @@ alias lt='eza -aT --color=always --group-directories-first --icons=always' # tre
 alias l.="eza -a | grep -e '^\.'" # show only dotfiles
 
 function reset
+    cd
     clear
     fastfetch
 end

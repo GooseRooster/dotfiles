@@ -26,11 +26,6 @@
             "keyColor": "green"
         },
         {
-            "type": "packages",
-            "key": "├─󰮯",
-            "keyColor": "green"
-        },
-        {
             "type": "wm",
             "key": "╰─",
             "keyColor": "green"
