@@ -1,36 +1,62 @@
-# config.nu
-#
-# Installed by:
-# version = "0.112.2"
-#
-# This file is used to override default Nushell settings, define
-# (or import) custom commands, or run any other startup tasks.
-# See https://www.nushell.sh/book/configuration.html
-#
-# Nushell sets "sensible defaults" for most configuration settings, 
-# so your `config.nu` only needs to override these defaults if desired.
-#
-# You can open this file in your default editor using:
-#     config nu
-#
-# You can also pretty-print and page through the documentation for configuration
-# options using:
-#     config nu --doc | nu-highlight | less -R
+# ── Environment ───────────────────────────────────────────────────────────────
+$env.SSL_CERT_DIR = $"($env.HOME)/.aspnet/dev-certs/trust:/etc/pki/tls/certs"
+$env.DOTNET_ROOT  = $"(^brew --prefix dotnet | str trim)/libexec"
+
+$env.PATH = ($env.PATH | prepend [
+    $"($env.HOME)/.dotnet/tools"
+    $"(^brew --prefix rustup | str trim)/bin"
+    $"($env.HOME)/.cargo/bin"
+])
 
 $env.config.show_banner = false
 
-$env.EDITOR = 'nvim'
+# ── fastfetch shorthand ───────────────────────────────────────────────────────
+def fastfetch [...args: string] {
+    ^fastfetch --config ~/.config/fastfetch/config.jsonc ...$args
+}
 
-$env.PATH = ($env.PATH | prepend ($env.HOME | path join ".local" "bin"))
+# ── Dotfile listing ───────────────────────────────────────────────────────────
+def "l." [] {
+    ls -a | where name =~ '^\.'
+}
 
+# ── Yazi — cd on exit ─────────────────────────────────────────────────────────
+def --env y [...args: string] {
+    let tmp = (mktemp -t "yazi-cwd.XXXXXX" | str trim)
+    yazi ...$args --cwd-file $tmp
+    let cwd = (open $tmp | str trim)
+    if $cwd != "" and $cwd != $env.PWD and ($cwd | path type) == "dir" {
+        cd $cwd
+    }
+    rm -f $tmp
+}
 
-#ssh
-$env.SSH_AUTH_SOCK = $"($env.XDG_RUNTIME_DIR)/ssh-agent.socket"
+# ── Backup a file ─────────────────────────────────────────────────────────────
+def backup [filename: path] {
+    cp $filename $"($filename).bak"
+}
 
+# ── Smart copy — auto-recurse if source is a directory ───────────────────────
+def copy [...args: string] {
+    if ($args | length) == 2 and ($args.0 | path type) == "dir" {
+        let from = ($args.0 | str trim --right --char "/")
+        cp -r $from $args.1
+    } else {
+        cp ...$args
+    }
+}
+
+# ── Reset — home, clear, greeting ────────────────────────────────────────────
+def --env reset [] {
+    cd ~
+    clear
+    fastfetch
+}
+
+# ── Greeting ──────────────────────────────────────────────────────────────────
+fastfetch
+
+# ── Prompt & navigation ───────────────────────────────────────────────────────
 mkdir ($nu.data-dir | path join "vendor/autoload")
 starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
-
-
 source ~/.zoxide.nu
-
-fastfetch
