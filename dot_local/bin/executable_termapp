@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+exec /var/home/linuxbrew/.linuxbrew/bin/nu \
+  --config "$HOME/.config/nushell/config.nu" \
+  --env-config "$HOME/.config/nushell/env.nu" \
+  -c "$*"
