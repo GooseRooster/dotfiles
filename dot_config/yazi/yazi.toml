@@ -1,20 +1,13 @@
 [opener]
 edit = [
-	{ run = "nvim %s", block = true, for = "unix" },
+	{ run = "/var/home/linuxbrew/.linuxbrew/bin/nvim %s", block = true, for = "unix" },
 	{ run = "%EDITOR% %s", block = true, for = "windows" },
-]
-image = [
-  { run = "imv %s", desc = "imv", block = false },
 ]
 
 [mgr]
 show_hidden = true
 linemode = "size_mtime"
 
-[open]
-prepend_rules = [
-  { mime = "image/*", use = "image" },
-]
 
 
 [plugin]
