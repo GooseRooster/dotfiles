@@ -94,10 +94,9 @@ starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.n
 # See env.nu for script bootstrap - zoxide makes folder nav way easier.
 source ~/.zoxide.nu
 
-# See env.nu for bootstrap - command history
-source ~/.local/share/atuin/init.nu
-
-
+# Shell integration for tv - fuzzy finder for lots of cool things.
+mkdir ($nu.data-dir | path join "vendor/autoload")
+tv init nu | save -f ($nu.data-dir | path join "vendor/autoload/tv.nu")
 
 # ── Greeting ──────────────────────────────────────────────────────────────────
 fastfetch

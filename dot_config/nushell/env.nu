@@ -9,14 +9,15 @@ $env.PATH = ($env.PATH | prepend [
     $"($brew_prefix)/sbin"
 ])
 
-#Some integrations need to be setup here before they can be sourced in config.
+
+# ── Shell integration bootstrap ───────────────────────────────────────────────
+# Nu's `source` requires a static file path, so integrations that generate
+# their init scripts dynamically must write to disk here in env.nu first.
+# The resulting files are sourced in config.nu once the environment is ready.
 
 #zoxide
 zoxide init nushell | save -f ~/.zoxide.nu
 
-#atuin command history 
-mkdir ~/.local/share/atuin/
-atuin init nu | save -f ~/.local/share/atuin/init.nu
 
 #carapace completions
 $env.CARAPACE_BRIDGES = 'cobra,argcomplete,clap'
