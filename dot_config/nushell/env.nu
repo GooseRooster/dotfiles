@@ -9,8 +9,11 @@ $env.PATH = ($env.PATH | prepend [
     $"($brew_prefix)/sbin"
 ])
 
+#Some integrations need to be setup here before they can be sourced in config.
+#zoxide
 zoxide init nushell | save -f ~/.zoxide.nu
 
+#carapace completions
 $env.CARAPACE_BRIDGES = 'cobra,argcomplete,clap'
 mkdir $"($nu.cache-dir)"
 carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"
