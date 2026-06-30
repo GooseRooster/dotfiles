@@ -88,8 +88,12 @@ export extern "dotnet" [
 # ── Prompt & navigation ───────────────────────────────────────────────────────
 mkdir ($nu.data-dir | path join "vendor/autoload")
 starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
+
 # See env.nu for script bootstrap - zoxide makes folder nav way easier.
 source ~/.zoxide.nu
+
+# See env.nu for bootstrap - command history
+source ~/.local/share/atuin/init.nu
 
 
 
