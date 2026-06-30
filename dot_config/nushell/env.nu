@@ -10,3 +10,7 @@ $env.PATH = ($env.PATH | prepend [
 ])
 
 zoxide init nushell | save -f ~/.zoxide.nu
+
+$env.CARAPACE_BRIDGES = 'cobra,argcomplete,clap'
+mkdir $"($nu.cache-dir)"
+carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"
