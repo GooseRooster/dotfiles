@@ -3,4 +3,4 @@
 -- Add any additional options here
 
 vim.o.exrc = true
-vim.opt.shell = "/usr/bin/fish"
+vim.opt.shell = "/var/home/linuxbrew/.linuxbrew/bin/nu"
