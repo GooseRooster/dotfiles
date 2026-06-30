@@ -15,6 +15,7 @@ $env.config.show_banner = false
 # ── Functions and aliases ───────────────────────────────────────────────────────
 export alias grep = rg
 
+
 # ── fastfetch shorthand ───────────────────────────────────────────────────────
 def fastfetch [...args: string] {
   # Only want the greeting to fire if we are not within a container. 
