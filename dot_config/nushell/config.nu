@@ -12,7 +12,10 @@ $env.config.show_banner = false
 
 # ── fastfetch shorthand ───────────────────────────────────────────────────────
 def fastfetch [...args: string] {
+  # Only want the greeting to fire if we are not within a container. 
+  if not ("CONTAINER_ID" in $env) {
     ^fastfetch --config ~/.config/fastfetch/config.jsonc ...$args
+  }
 }
 
 # ── Dotfile listing ───────────────────────────────────────────────────────────
@@ -51,6 +54,11 @@ def --env reset [] {
     cd ~
     clear
     fastfetch
+}
+
+# ── Distrobox : enter container, bootstrap nu ──────────────────────────────────────────── 
+def dbx [name: string] {
+  ^distrobox enter $name -- nu
 }
 
 # ── Greeting ──────────────────────────────────────────────────────────────────
