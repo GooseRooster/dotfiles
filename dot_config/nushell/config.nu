@@ -9,8 +9,9 @@ export alias grep = rg
 
 # ── Functions: misc ───────────────────────────────────────────────────────────
 def fastfetch [...args: string] {
-  # Only want the greeting to fire if we are not within a container.
-  if not ("CONTAINER_ID" in $env) {
+  # Only want the greeting to fire if we are not within a container, 
+  # and not cd'ing into dotfiles via chezmoi. 
+  if not ("CONTAINER_ID" in $env) and not ("CHEZMOI" in $env) {
     ^fastfetch --config ~/.config/fastfetch/config.jsonc ...$args
   }
 }
