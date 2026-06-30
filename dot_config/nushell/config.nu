@@ -8,7 +8,12 @@ $env.PATH = ($env.PATH | prepend [
     $"($env.HOME)/.cargo/bin"
 ])
 
+# ── General nu config ───────────────────────────────────────────────────────
 $env.config.show_banner = false
+
+
+# ── Functions and aliases ───────────────────────────────────────────────────────
+export alias grep = rg
 
 # ── fastfetch shorthand ───────────────────────────────────────────────────────
 def fastfetch [...args: string] {
@@ -61,14 +66,31 @@ def dbx [name: string] {
   ^distrobox enter $name -- nu
 }
 
-# ── Greeting ──────────────────────────────────────────────────────────────────
-fastfetch
+
+
+# ── Custom completions ────────────────────────────────────────────
+# Carapace - see env.nu for script bootstrap
+# Should handle the vast majority of things
+source $"($nu.cache-dir)/carapace.nu"
+
+# dotnet - we delegate to dotnet's built in completion library.
+def "nu-complete dotnet" [context: string] {
+    dotnet complete $context | lines
+}
+
+export extern "dotnet" [
+    ...args: string@"nu-complete dotnet"
+]
+
+
 
 # ── Prompt & navigation ───────────────────────────────────────────────────────
 mkdir ($nu.data-dir | path join "vendor/autoload")
 starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
+# See env.nu for script bootstrap - zoxide makes folder nav way easier.
 source ~/.zoxide.nu
 
-# Carapace
 
-source $"($nu.cache-dir)/carapace.nu"
+
+# ── Greeting ──────────────────────────────────────────────────────────────────
+fastfetch
