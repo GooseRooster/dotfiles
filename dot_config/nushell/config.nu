@@ -11,6 +11,8 @@ $env.PATH = ($env.PATH | prepend [
 # ── General nu config ───────────────────────────────────────────────────────
 $env.config.show_banner = false
 
+$env.config.edit_mode = 'vi'
+
 
 # ── Functions and aliases ───────────────────────────────────────────────────────
 export alias grep = rg
