@@ -3,6 +3,7 @@
 # game-performance.sh — switch to a "performance" power profile via
 # tuned-ppd while a Steam game runs, then restore whatever was active
 # before. Fedora 41+ default backend, driven through tuned-adm.
+# Also disables GNOME Night Light for the duration and restores it.
 #
 # Steam: Properties -> General -> Launch Options:
 #   /home/cam/.local/bin/game-performance.sh %command%
@@ -26,9 +27,21 @@ prev_profile="${active_line#Current active profile: }"
 perf_profile="$(awk -F= '/^[[:space:]]*performance[[:space:]]*=/{gsub(/[[:space:]]/,"",$2); print $2}' /etc/tuned/ppd.conf 2>/dev/null)"
 perf_profile="${perf_profile:-throughput-performance}"
 
+# --- Night Light state -------------------------------------------------
+NIGHT_LIGHT_SCHEMA="org.gnome.settings-daemon.plugins.color"
+NIGHT_LIGHT_KEY="night-light-enabled"
+night_light_prev=""
+if command -v gsettings &>/dev/null; then
+  night_light_prev="$(gsettings get "$NIGHT_LIGHT_SCHEMA" "$NIGHT_LIGHT_KEY" 2>/dev/null)"
+fi
+
 restore_profile() {
   if tuned-adm profile $prev_profile 2>/dev/null; then
     notify "power-profile-balanced-symbolic" "Power profile restored" "$prev_profile"
+  fi
+
+  if [[ -n "$night_light_prev" ]]; then
+    gsettings set "$NIGHT_LIGHT_SCHEMA" "$NIGHT_LIGHT_KEY" "$night_light_prev" 2>/dev/null
   fi
 }
 trap restore_profile EXIT INT TERM
@@ -39,6 +52,10 @@ if [[ "$prev_profile" != "$perf_profile" ]]; then
   else
     echo "game-performance.sh: couldn't switch to '$perf_profile' profile" >&2
   fi
+fi
+
+if [[ "$night_light_prev" == "true" ]]; then
+  gsettings set "$NIGHT_LIGHT_SCHEMA" "$NIGHT_LIGHT_KEY" false 2>/dev/null
 fi
 
 "$@"
