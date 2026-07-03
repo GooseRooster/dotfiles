@@ -107,6 +107,23 @@ The termapp script sets up brew and nushell before calling whatever application 
 ```bash
 ghostty -e termapp yazi
 ```
+## Game performance script
+If the gaming option is enabled, game-performance.sh script will also be installed. You can use this in steam launch options like so:
+
+```
+WINEDLLOVERRIDES="dwmapi=n,b" PROTON_ENABLE_WAYLAND=1 /var/home/gooze/.local/bin/game-performance.sh %command%
+
+```
+
+Always use the full path as Steam has trouble with home directory expansion.
+
+What it does:
+
+- Enables performance power profile
+- Disables nightlight
+
+When the game closes, performance profile will be restored to Balanced and nightlight will be restored.
+
 
 ## Distrobox
 
