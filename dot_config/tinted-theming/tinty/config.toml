@@ -27,13 +27,6 @@ theme-file-extension = ".js"
 supported-systems = ["base16", "base24", "tinted8"]
 hook = "mkdir -p \"$HOME/.claude/themes\" && node \"$TINTY_THEME_FILE_PATH\" > \"$HOME/.claude/themes/tinty.json\""
 
-#kitty
-#[[items]]
-#path = "https://github.com/tinted-theming/tinted-terminal"
-#name = "tinted-terminal"
-#themes-dir = "themes/kitty"
-#hook = "kill -USR1 $(pgrep -x kitty)"
-#supported-systems = ["base16", "base24"]
 
 #Ghostty
 [[items]]
@@ -48,20 +41,6 @@ killall -SIGUSR2 ghostty 2>/dev/null || true
 """
 supported-systems = ["base16", "base24"]
 
-#gowall
-[[items]]
-path = "https://github.com/tinted-theming/tinted-gowall"
-name = "wallpaper"
-themes-dir = "themes" 
-supported-systems = ["base16", "base24"]
-
-#Steam millennium material
-[[items]]
-path = "https://github.com/GooseRooster/tinted-material-millennium"
-name = "tinted-material-millennium"
-themes-dir = "output"
-hook = "cp \"$TINTY_THEME_FILE_PATH\" ~/.steam/steam/steamui/skins/Material-Theme/css/main/colors/matugen.css"
-supported-systems = ["base16"]
 
 #Vesktop (Discord)
 [[items]]
