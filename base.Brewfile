@@ -1,3 +1,4 @@
+tap "ublue-os/tap"
 tap "valkyrie00/bbrew", "https://github.com/Valkyrie00/homebrew-bbrew"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
@@ -9,6 +10,10 @@ brew "cava"
 brew "chafa"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# Reference implementation for the Development Containers specification
+brew "devcontainer"
 # .NET Core
 brew "dotnet"
 # More intuitive version of du in rust
@@ -47,12 +52,12 @@ brew "media-info"
 brew "meson"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-# Open-source, cross-platform JavaScript runtime environment
-brew "node"
 # Modern shell for the GitHub era
 brew "nushell"
 # 7-Zip (high compression file archiver) implementation
 brew "p7zip"
+# Podman Terminal User Interface
+brew "podman-tui"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
 # SVG rendering tool and library
@@ -73,6 +78,8 @@ brew "television"
 brew "trash-cli"
 # Parser generator tool
 brew "tree-sitter-cli"
+# Cross-platform Rust rewrite of the GNU coreutils
+brew "uutils-coreutils"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
 # Compression and file packaging/archive utility
@@ -83,4 +90,10 @@ brew "zoxide"
 brew "valkyrie00/bbrew/bbrew", trusted: true
 # Terminal-based AI coding assistant
 cask "claude-code"
+cask "font-fira-code-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-sauce-code-pro-nerd-font"
 cask "font-symbols-only-nerd-font"
+cask "font-ubuntu-nerd-font"
+# Open-source code editor
+cask "ublue-os/tap/visual-studio-code-linux", trusted: true
