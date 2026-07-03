@@ -100,6 +100,14 @@ The Brewfile layout:
 
 ---
 
+## Running terminal apps from gnome kb shortcuts
+
+The termapp script sets up brew and nushell before calling whatever application was passed as an argument. You can use any terminal emulator with this but the example here is for Ghostty. Use it in your GNOME keyboard shortcuts:
+
+```bash
+ghostty -e termapp yazi
+```
+
 ## Distrobox
 
 [Distrobox](https://distrobox.it) is useful for packages that aren't available via Homebrew or Flatpak — things like distro-specific toolchains, system libraries, or packages that need root access to install properly.
