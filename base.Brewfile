@@ -64,8 +64,6 @@ brew "poppler"
 brew "resvg"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
-# Rust toolchain installer
-brew "rustup"
 # 7-Zip is a file archiver with a high compression ratio
 brew "sevenzip"
 # Cross-shell prompt for astronauts
