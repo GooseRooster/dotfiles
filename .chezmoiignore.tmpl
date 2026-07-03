@@ -1,0 +1,3 @@
+{{ if not (index . "gaming_enabled" | default false) -}}
+dot_local/bin/executable_game-performance.sh
+{{- end }}

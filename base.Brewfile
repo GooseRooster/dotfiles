@@ -36,8 +36,6 @@ brew "fish"
 brew "fzf"
 # GitHub command-line tool
 brew "gh"
-# Tool to convert a Wallpaper's color scheme / palette
-brew "gowall"
 # Tools and libraries to manipulate images in many formats
 brew "imagemagick-full", link: true
 # Lightweight and flexible command-line JSON processor
