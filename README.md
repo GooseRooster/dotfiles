@@ -127,7 +127,7 @@ When the game closes, performance profile will be restored to Balanced and night
 Note: For Steam on flatpak, you will need to give it access to this directory: 
 
 ```bash
-flatpak --user override --filesystem=$HOME/.local/bin:ro com.valvesoftware.Steam
+flatpak --user override --filesystem=~/.local/bin:ro com.valvesoftware.Steam
 ```
 
 ## Distrobox
