@@ -1,5 +1,5 @@
-tap "ublue-os/tap"
-tap "valkyrie00/bbrew", "https://github.com/Valkyrie00/homebrew-bbrew"
+tap "ublue-os/tap", trusted: true
+tap "valkyrie00/bbrew", "https://github.com/Valkyrie00/homebrew-bbrew", trusted: true
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Multi-shell multi-command argument completer
