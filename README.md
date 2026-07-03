@@ -110,7 +110,7 @@ ghostty -e termapp yazi
 ## Game performance script
 If the gaming option is enabled, game-performance.sh script will also be installed. You can use this in steam launch options like so:
 
-```
+```bash
 WINEDLLOVERRIDES="dwmapi=n,b" PROTON_ENABLE_WAYLAND=1 /var/home/gooze/.local/bin/game-performance.sh %command%
 
 ```
@@ -124,6 +124,11 @@ What it does:
 
 When the game closes, performance profile will be restored to Balanced and nightlight will be restored.
 
+Note: For Steam on flatpak, you will need to give it access to this directory: 
+
+```bash
+flatpak --user override --filesystem=$HOME/.local/bin:ro com.valvesoftware.Steam
+```
 
 ## Distrobox
 
