@@ -49,7 +49,7 @@ name = "base16-discord"
 themes-dir = "themes"
 theme-file-extension = ".theme.css"
 supported-systems = ["base16"]
-hook = "cp \"$TINTY_THEME_FILE_PATH\" \"$HOME/.config/vesktop/settings/quickCss.css\""
+hook = "cp \"$TINTY_THEME_FILE_PATH\" \"$HOME/.var/app/dev.vencord.Vesktop/config/vesktop/settings/quickCss.css\""
 
 #Zen
 [[items]]
