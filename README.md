@@ -124,10 +124,11 @@ What it does:
 
 When the game closes, performance profile will be restored to Balanced and nightlight will be restored.
 
-Note: For Steam on flatpak, you will need to give it access to this directory: 
+Note: For Steam on flatpak, you will need to give it access to this directory, and the ability to spawn on the host: 
 
 ```bash
 flatpak --user override --filesystem=~/.local/bin:ro com.valvesoftware.Steam
+flatpak --user override --talk-name=org.freedesktop.Flatpak com.valvesoftware.Steam
 ```
 
 ## Distrobox
