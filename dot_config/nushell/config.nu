@@ -4,7 +4,7 @@ $env.config.edit_mode = 'vi'
 
 
 # ── Aliases ──────────────────────────────────────────────────────────────────
-export alias grep = rg
+# export alias grep = rg
 
 
 # ── Functions: misc ───────────────────────────────────────────────────────────
