@@ -4,6 +4,8 @@ Personal dotfiles managed with [chezmoi](https://chezmoi.io) for Fedora Atomic /
 
 Focused around GNOME images, currently Bluefin.
 
+Should technically work on any atomic image as long as you have access to an up to date version of Homebrew, use GNOME, and tuned-ppd for power management (only used for gaming performance script) 
+
 ## What's included
 
 - **Nushell** with starship, zoxide, carapace, television, and yazi
