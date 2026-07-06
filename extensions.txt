@@ -10,7 +10,9 @@ medialine@funinkina.co.in
 bazaar-integration@kolunmi.github.io
 blur-my-shell@aunetx
 caffeine@patapon.info
+dash-to-dock@micxgx.gmail.com
 gradia-integration@alexandervanhee.github.io
 gsconnect@andyholmes.github.io
 logomenu@aryan_k
 lock-guard@fthx
+vertical-workspaces@G-dH.github.com

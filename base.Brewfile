@@ -54,6 +54,8 @@ brew "neovim"
 brew "nushell"
 # 7-Zip (high compression file archiver) implementation
 brew "p7zip"
+# Install and run Python applications in isolated environments
+brew "pipx"
 # Podman Terminal User Interface
 brew "podman-tui"
 # PDF rendering library (based on the xpdf-3.0 code base)
@@ -76,6 +78,8 @@ brew "trash-cli"
 brew "tree-sitter-cli"
 # Cross-platform Rust rewrite of the GNU coreutils
 brew "uutils-coreutils"
+# Extremely fast Python package installer and resolver
+brew "uv"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
 # Compression and file packaging/archive utility
