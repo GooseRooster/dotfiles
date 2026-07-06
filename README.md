@@ -1,8 +1,6 @@
 # dotfiles
 
-Personal dotfiles managed with [chezmoi](https://chezmoi.io) for Fedora Atomic / Universal Blue desktops.
-
-Focused around GNOME images, currently Bluefin.
+Personal dotfiles managed with [chezmoi](https://chezmoi.io) for immutable Linux installations. 
 
 Should technically work on any atomic image as long as you have access to an up to date version of Homebrew, use GNOME, and tuned-adm for power management (only used for gaming performance script) 
 
