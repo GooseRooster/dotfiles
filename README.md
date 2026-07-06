@@ -1,8 +1,15 @@
 # dotfiles
 
-Personal dotfiles managed with [chezmoi](https://chezmoi.io) for immutable Linux installations. 
+Personal dotfiles managed with [chezmoi](https://chezmoi.io) for Linux
 
-Should technically work on any atomic image as long as you have access to an up to date version of Homebrew, use GNOME, and tuned-adm for power management (only used for gaming performance script) 
+Should technically work on any system, the only hard requirements are:
+
+- Bash (obviously)
+- Chezmoi
+- Flatpak
+- Homebrew
+
+The theming tools and extension list are GNOME based, and the gaming performance script assumes tuned-adm availability. 
 
 ## What's included
 
