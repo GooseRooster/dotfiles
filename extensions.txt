@@ -15,4 +15,5 @@ gradia-integration@alexandervanhee.github.io
 gsconnect@andyholmes.github.io
 logomenu@aryan_k
 lock-guard@fthx
-vertical-workspaces@G-dH.github.com
+advanced-alt-tab@G-dH.github.com
+azwallpaper@azwallpaper.gitlab.com

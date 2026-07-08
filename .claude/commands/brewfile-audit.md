@@ -75,6 +75,10 @@ After presenting the findings, ask the user which differences to reconcile. Offe
 - Remove stale entries from the appropriate Brewfile or `extensions.txt`
 - Reclassify entries between Brewfiles (e.g. a base app that should be gaming-gated)
 
+## Known exclusions
+
+- **`rustup`** — appears in `brew bundle dump` output but must NOT be added to any Brewfile. It is installed by a dedicated step in the bootstrap script because `brew bundle` does not handle rustup's install flow correctly.
+
 ## Brewfile Ownership
 
 | File | Purpose |
