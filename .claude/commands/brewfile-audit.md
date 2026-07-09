@@ -12,7 +12,7 @@ Dump all currently installed Homebrew formulae, casks, and taps:
 brew bundle dump --file=/tmp/brew-dump.Brewfile --force
 ```
 
-Filter the dump to brew/tap/cask lines only, then compare against `base.Brewfile` and `theming.Brewfile`:
+Filter the dump to brew/tap/cask lines only, then compare against `base.Brewfile`, `devtools.Brewfile`, and `theming.Brewfile`:
 
 - **Additions** — in the dump but not tracked in any Brewfile (candidates to add)
 - **Removals** — tracked in a Brewfile but not in the dump (candidates to remove or not yet installed)
@@ -83,7 +83,8 @@ After presenting the findings, ask the user which differences to reconcile. Offe
 
 | File | Purpose |
 |------|---------|
-| `base.Brewfile` | Core CLI tools installed on every machine |
+| `base.Brewfile` | Core CLI tools + everything Neovim needs, installed on every machine (incl. dev containers via `bootstrap-cli.sh`) |
+| `devtools.Brewfile` | Language toolchains & container tooling — host bootstrap only, not installed in dev containers |
 | `theming.Brewfile` | Theming tools (tinty, gnomad, gowall) — only when `theming_enabled` |
 | `gaming.Brewfile` | Gaming CLI tools — only when `gaming_enabled` |
 | `cargo.Brewfile` | Cargo packages — installed after rustup |

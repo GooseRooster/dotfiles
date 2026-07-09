@@ -10,12 +10,6 @@ brew "cava"
 brew "chafa"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
-# Open-source, cross-platform JavaScript runtime environment
-brew "node"
-# Reference implementation for the Development Containers specification
-brew "devcontainer"
-# .NET Core
-brew "dotnet"
 # More intuitive version of du in rust
 brew "dust"
 # Linux utility to get information on filesystems, like df but better
@@ -26,7 +20,7 @@ brew "eza"
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
-# GNU compiler collection
+# GNU compiler collection (also needed by tree-sitter-cli to build parsers)
 brew "gcc"
 # Play, record, convert, and stream many audio and video codecs
 brew "ffmpeg-full", link: true
@@ -46,8 +40,6 @@ brew "lazygit"
 brew "libgda"
 # Unified display of technical and tag data for audio/video
 brew "media-info"
-# Fast and user friendly build system
-brew "meson"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Modern shell for the GitHub era
@@ -56,8 +48,6 @@ brew "nushell"
 brew "p7zip"
 # Install and run Python applications in isolated environments
 brew "pipx"
-# Podman Terminal User Interface
-brew "podman-tui"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
 # SVG rendering tool and library
@@ -78,8 +68,6 @@ brew "trash-cli"
 brew "tree-sitter-cli"
 # Cross-platform Rust rewrite of the GNU coreutils
 brew "uutils-coreutils"
-# Extremely fast Python package installer and resolver
-brew "uv"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
 # Compression and file packaging/archive utility

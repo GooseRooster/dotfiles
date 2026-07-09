@@ -17,7 +17,7 @@ The theming tools and extension list are GNOME based, and the gaming performance
 - **Neovim** with tinted-theming live colour sync
 - **Theming** via [tinty](https://github.com/tinted-theming/tinty) (base16/base24 schemes, synced across terminal, editor, browser, and more)
 - **Fastfetch** greeting on shell open
-- **Brewfiles** split by category — base CLI, cargo, theming, gaming, multimedia
+- **Brewfiles** split by category — base CLI, devtools, cargo, theming, gaming, multimedia
 - **GNOME extensions** tracked in `extensions.txt`
 
 ## Prerequisites
@@ -59,16 +59,37 @@ The script is safe to re-run — it skips anything already installed.
 
 ### What bootstrap does
 
-1. Installs base CLI tools from `base.Brewfile`
+1. Delegates to `bootstrap-cli.sh` — base CLI tools, LazyVim starter, `chezmoi apply` (see below)
 2. Installs rustup via Homebrew and bootstraps the stable toolchain
 3. Installs cargo packages (`cargo-cross` for cross-compilation)
-4. Installs theming tools if enabled
-5. Installs Flatpaks (base always; gaming/multimedia conditionally)
-6. Writes `~/.config/chezmoi/chezmoi.toml` with your chosen feature flags
-7. Creates directories tinty needs for its hooks
-8. Runs `chezmoi apply`
+4. Installs the dev tool chain from `devtools.Brewfile` (language toolchains, container tooling)
+5. Installs theming tools if enabled
+6. Installs Flatpaks (base always; gaming/multimedia conditionally)
+7. Writes `~/.config/chezmoi/chezmoi.toml` with your chosen feature flags
+8. Creates directories tinty needs for its hooks
+9. Runs `chezmoi apply` again (idempotent, picks up your feature flags)
 
 GNOME Shell extensions are tracked in `extensions.txt` but not auto-installed — install them manually via the Extensions app or GNOME's web installer.
+
+### Dev container / CLI-only setup
+
+`bootstrap-cli.sh` is a standalone, lean entrypoint meant for dev containers or
+anywhere you just want your shell and editor, not the full desktop setup. Point
+your dev container's dotfile setup at it after `chezmoi init`:
+
+```bash
+chezmoi init https://github.com/<your-username>/<your-fork>.git
+cd "$(chezmoi source-path)"
+chmod +x bootstrap-cli.sh
+./bootstrap-cli.sh
+```
+
+It installs `base.Brewfile` (CLI bling, shell essentials, and everything
+Neovim needs to run — lazygit, tree-sitter-cli, etc.), clones the
+[LazyVim](https://www.lazyvim.org) starter into `~/.config/nvim` since this
+repo's Neovim config is built to sit on top of LazyVim, then runs
+`chezmoi apply`. It does not install language toolchains or container tooling
+(`devtools.Brewfile`) — a dev container is expected to supply its own.
 
 ### Re-running with different flags
 
@@ -97,8 +118,9 @@ The Brewfile layout:
 
 | File | Installed when |
 |------|---------------|
-| `base.Brewfile` | Always |
-| `cargo.Brewfile` | Always (after rustup) |
+| `base.Brewfile` | Always (`bootstrap-cli.sh` or `bootstrap.sh`) |
+| `devtools.Brewfile` | Always, host bootstrap only — language toolchains & container tooling, not installed by `bootstrap-cli.sh` |
+| `cargo.Brewfile` | Always, host bootstrap only (after rustup) |
 | `theming.Brewfile` | `theming_enabled = true` |
 | `gaming.Brewfile` | `gaming_enabled = true` |
 | `base.flatpak.Brewfile` | Always |
