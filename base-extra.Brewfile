@@ -15,3 +15,5 @@ cask "font-symbols-only-nerd-font"
 cask "font-ubuntu-nerd-font"
 # Open-source code editor
 cask "ublue-os/tap/visual-studio-code-linux", trusted: true
+# Terminal-based AI coding assistant
+cask "claude-code"

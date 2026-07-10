@@ -68,5 +68,3 @@ brew "yazi"
 brew "zip"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# Terminal-based AI coding assistant
-cask "claude-code"
