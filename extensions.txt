@@ -18,3 +18,6 @@ lock-guard@fthx
 advanced-alt-tab@G-dH.github.com
 azwallpaper@azwallpaper.gitlab.com
 impatience@gfxmonk.net
+appindicatorsupport@rgcjonas.gmail.com
+mouse-follows-focus@crisidev.org
+search-light@icedman.github.com
