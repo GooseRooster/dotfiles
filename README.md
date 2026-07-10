@@ -81,7 +81,7 @@ your dev container's dotfile setup at it after `chezmoi init`:
 chezmoi init https://github.com/<your-username>/<your-fork>.git
 cd "$(chezmoi source-path)"
 chmod +x bootstrap-cli.sh
-./bootstrap-cli.sh
+./bootstrap-cli.sh --devcontainer
 ```
 
 It installs `base.Brewfile` (CLI bling, shell essentials, and everything
@@ -90,6 +90,39 @@ Neovim needs to run — lazygit, tree-sitter-cli, etc.), clones the
 repo's Neovim config is built to sit on top of LazyVim, then runs
 `chezmoi apply`. It does not install language toolchains or container tooling
 (`devtools.Brewfile`) — a dev container is expected to supply its own.
+
+**Homebrew itself must already be on `PATH` before this script runs** — unlike
+the full host `bootstrap.sh`, it deliberately doesn't install Homebrew for
+you. In a dev container, install it declaratively as part of the container
+spec (e.g. a devcontainer Feature) rather than at script runtime — see
+[Dev container templates](#dev-container-templates) below for working
+examples.
+
+The `--devcontainer` flag doesn't install anything itself — it just records
+`devcontainer_enabled = true` in `~/.config/chezmoi/chezmoi.toml`, so
+`chezmoi apply` skips desktop/GUI/optional-feature dotfiles that have no
+purpose in a container (ghostty, mpv, tinty theming, the GNOME-keyboard-shortcut
+`termapp` helper, etc. — see `.chezmoiignore.tmpl`). Everything `bootstrap-cli.sh`
+actually installs (nushell, starship, fastfetch, Neovim, yazi) is unaffected.
+
+### Dev container templates
+
+`devcontainer-templates/` has two example `.devcontainer` setups:
+
+| Template | Use when |
+|----------|----------|
+| `standalone` | You don't have existing container infra — just a base image + Homebrew (via a Feature) + this repo's `bootstrap-cli.sh`. |
+| `ci-compose` | Your CI already builds/deploys via a `Dockerfile`/`docker-compose.yml` you want the dev container to inherit, with dev-only tweaks (workspace mount, `sleep infinity`, Homebrew) layered on top via `docker-compose.override.yml` and a Feature — without touching the CI compose file itself. |
+
+Both use the [`ghcr.io/meaningful-ooo/devcontainer-features/homebrew`](https://github.com/meaningful-ooo/devcontainer-features) Feature to install Homebrew declaratively before `postCreateCommand` runs `bootstrap-cli.sh --devcontainer`. That Feature's prerequisite installer only branches on `debian`/`ubuntu`/`alpine` base images — an Oracle Linux (or other dnf-based) CI image will need that patched, or its prerequisites (curl, git, a C compiler) baked in ahead of time.
+
+Deploy either template into a repo you're working on with `devcontainer-init` (installed to `~/.local/bin` on full host setups only — see `dot_local/bin/executable_devcontainer-init`):
+
+```bash
+devcontainer-init ci-compose /path/to/some-repo
+```
+
+Then review the `// TODO` comments in the copied `.devcontainer/devcontainer.json` (and `docker-compose.override.yml` for `ci-compose`) to point it at your actual compose file and service name.
 
 ### Re-running with different flags
 

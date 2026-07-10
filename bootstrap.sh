@@ -218,7 +218,8 @@ mkdir -p "$CHEZMOI_DIR"
 if [[ -f "$CHEZMOI_CONFIG" ]] &&
   grep -q "gaming_enabled" "$CHEZMOI_CONFIG" &&
   grep -q "multimedia_enabled" "$CHEZMOI_CONFIG" &&
-  grep -q "theming_enabled" "$CHEZMOI_CONFIG"; then
+  grep -q "theming_enabled" "$CHEZMOI_CONFIG" &&
+  grep -q "devcontainer_enabled" "$CHEZMOI_CONFIG"; then
   echo "  chezmoi.toml already has all [data] keys. Skipping."
   echo "  To update feature flags, edit $CHEZMOI_CONFIG and run 'chezmoi apply'."
 else
@@ -229,7 +230,7 @@ else
   fi
 
   cp "$CHEZMOI_BASE_SRC" "$CHEZMOI_CONFIG"
-  printf '\n[data]\ngaming_enabled = %s\nmultimedia_enabled = %s\ntheming_enabled = %s\n' \
+  printf '\n[data]\ngaming_enabled = %s\nmultimedia_enabled = %s\ntheming_enabled = %s\ndevcontainer_enabled = false\n' \
     "$GAMING" "$MULTIMEDIA" "$THEMING" >>"$CHEZMOI_CONFIG"
 
   echo "  Created $CHEZMOI_CONFIG"

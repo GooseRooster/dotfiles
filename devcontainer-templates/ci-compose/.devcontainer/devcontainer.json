@@ -1,0 +1,26 @@
+// Dev container that inherits an existing CI docker-compose.yml (e.g. the
+// stack your CI pipeline already builds/deploys) and layers dev-only tweaks
+// + Homebrew on top via docker-compose.override.yml and a Feature.
+//
+// dockerComposeFile is an array: the devcontainer CLI merges all listed
+// files, so your real CI compose stays untouched and dev-only bits (workspace
+// mount, "sleep infinity" so the container doesn't exit, etc.) live here.
+{
+  "name": "ci-compose",
+  // TODO: point this at your repo's actual CI docker-compose.yml. This
+  // assumes it lives at the repo root, one level up from .devcontainer/.
+  "dockerComposeFile": ["../docker-compose.yml", "docker-compose.override.yml"],
+  // TODO: set this to the service you want to attach to (must match a
+  // service name in the CI compose file, and in docker-compose.override.yml).
+  "service": "app",
+  // Must match the mount target in docker-compose.override.yml.
+  "workspaceFolder": "/workspace",
+  "features": {
+    // NOTE: this feature's prereq-installer only branches on
+    // debian/ubuntu/alpine base images. If your CI image is Oracle Linux (or
+    // another dnf-based distro), it'll need patching — or the image needs
+    // curl/git/gcc preinstalled already — before this will work as-is.
+    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {}
+  },
+  "postCreateCommand": "chezmoi init https://github.com/GooseRooster/dotfiles.git && cd $(chezmoi source-path) && ./bootstrap-cli.sh --devcontainer"
+}

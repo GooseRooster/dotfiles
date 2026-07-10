@@ -1,0 +1,12 @@
+// Standalone dev container: a plain base image + Homebrew (installed via a
+// devcontainer Feature, not by bootstrap-cli.sh — see this repo's README).
+// Use this when you don't have an existing CI Dockerfile/compose file to
+// build on top of; for that case see the ci-compose template instead.
+{
+  "name": "standalone",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {}
+  },
+  "postCreateCommand": "chezmoi init https://github.com/GooseRooster/dotfiles.git && cd $(chezmoi source-path) && ./bootstrap-cli.sh --devcontainer"
+}

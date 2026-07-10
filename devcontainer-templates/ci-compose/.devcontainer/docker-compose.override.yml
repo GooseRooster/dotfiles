@@ -1,0 +1,12 @@
+# Dev-only overrides layered on top of your CI docker-compose.yml (see
+# dockerComposeFile in devcontainer.json). Keeps the CI compose file itself
+# untouched — this file only adds what's needed to develop interactively.
+services:
+  # TODO: match the service name from your CI docker-compose.yml (and
+  # devcontainer.json's "service" property).
+  app:
+    volumes:
+      - ..:/workspace:cached
+    # Overrides the CI command (which likely runs the app/tests and exits)
+    # so the container stays up for the dev container CLI/VS Code to attach.
+    command: sleep infinity
