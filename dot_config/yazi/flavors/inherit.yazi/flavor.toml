@@ -6,6 +6,12 @@
 # Color roles are spread across the full palette (à la btop's tty mode) instead
 # of concentrating on magenta, so each base16 slot (base08-base0F) actually reads
 # as a distinct accent rather than the whole UI taking on a single scheme hue.
+#
+# NAMING TRAP: ratatui's color parser (which yazi uses) names the plain ANSI
+# slots differently than you'd expect — "gray" is ANSI 7 (base05, the normal
+# muted foreground), while "white" is ANSI 15 (base07, true bright white).
+# Use "gray" for base05-intent text; "white" will look noticeably brighter
+# than the rest of the scheme.
 
 # : Manager [[[
 
@@ -13,7 +19,7 @@
 cwd = { fg = "cyan" }
 
 # Find
-find_keyword  = { fg = "light_red", bold = true, italic = true, underline = true }
+find_keyword  = { fg = "light_yellow", bold = true, italic = true, underline = true }
 find_position = { fg = "light_magenta", bold = true, italic = true }
 
 # Marker
@@ -23,12 +29,22 @@ marker_marked   = { fg = "light_cyan",   bg = "light_cyan" }
 marker_selected = { fg = "light_yellow", bg = "light_yellow" }
 
 # Count
-count_copied   = { fg = "white", bg = "green" }
-count_cut      = { fg = "white", bg = "red" }
+count_copied   = { fg = "black", bg = "green" }
+count_cut      = { fg = "black", bg = "red" }
 count_selected = { fg = "black", bg = "yellow" }
 
 # Border
-border_style = { fg = "dark_gray" }
+border_style = { fg = "light_blue" }
+
+# : ]]]
+
+
+# : Indicator [[[
+
+[indicator]
+parent  = { reversed = true }
+current = { reversed = true }
+preview = { underline = true }
 
 # : ]]]
 
@@ -42,15 +58,15 @@ sep_right = { open = "", close = "" }
 
 # Progress
 progress_label  = { bold = true }
-progress_normal = { fg = "green",  bg = "reset" }
-progress_error  = { fg = "yellow", bg = "red" }
+progress_normal = { fg = "gray",     bg = "reset" }
+progress_error  = { fg = "light_red", bg = "red" }
 
 # Permissions
-perm_type  = { fg = "green" }
+perm_type  = { fg = "light_blue" }
 perm_write = { fg = "red" }
-perm_exec  = { fg = "cyan" }
-perm_read  = { fg = "yellow" }
-perm_sep   = { fg = "dark_gray" }
+perm_exec  = { fg = "light_green" }
+perm_read  = { fg = "light_yellow" }
+perm_sep   = { fg = "cyan" }
 
 # : ]]]
 
@@ -62,11 +78,11 @@ perm_sep   = { fg = "dark_gray" }
 normal_main = { bg = "blue", fg = "black", bold = true }
 normal_alt  = { bg = "dark_gray", fg = "blue" }
 
-select_main = { bg = "red", fg = "black", bold = true }
-select_alt  = { bg = "dark_gray", fg = "red" }
+select_main = { bg = "light_magenta", fg = "black", bold = true }
+select_alt  = { bg = "dark_gray", fg = "light_magenta" }
 
-unset_main  = { bg = "yellow", fg = "black", bold = true }
-unset_alt   = { bg = "dark_gray", fg = "yellow" }
+unset_main  = { bg = "light_red", fg = "black", bold = true }
+unset_alt   = { bg = "dark_gray", fg = "red" }
 
 # : ]]]
 
@@ -76,7 +92,7 @@ unset_alt   = { bg = "dark_gray", fg = "yellow" }
 [input]
 border   = { fg = "blue" }
 title    = {}
-value    = { fg = "white" }
+value    = { fg = "gray" }
 selected = { reversed = true }
 
 # : ]]]
@@ -86,7 +102,7 @@ selected = { reversed = true }
 
 [tabs]
 active    = { fg = "black", bold = true, bg = "blue" }
-inactive  = { fg = "white", bg = "reset" }
+inactive  = { fg = "light_blue", bg = "reset" }
 sep_inner = { open = "", close = "" }
 
 # : ]]]
@@ -117,9 +133,19 @@ cols = 3
 mask            = { bg = "reset" }
 cand            = { fg = "cyan" }
 rest            = { fg = "dark_gray" }
-desc            = { fg = "white" }
+desc            = { fg = "gray" }
 separator       = " ▶ "
 separator_style = { fg = "dark_gray" }
+
+# : ]]]
+
+
+# : Pick [[[
+
+[pick]
+active   = { fg = "light_magenta" }
+border   = { fg = "light_blue" }
+inactive = { fg = "gray" }
 
 # : ]]]
 
@@ -129,8 +155,8 @@ separator_style = { fg = "dark_gray" }
 [spot]
 border   = { fg = "blue" }
 title    = { fg = "blue" }
-tbl_col  = { fg = "white" }
-tbl_cell = { fg = "white", bg = "reset" }
+tbl_col  = { fg = "gray" }
+tbl_cell = { fg = "gray", bg = "reset" }
 
 # : ]]]
 
@@ -141,7 +167,7 @@ tbl_cell = { fg = "white", bg = "reset" }
 on      = { fg = "cyan" }
 run     = { fg = "light_magenta" }
 hovered = { reversed = true, bold = true }
-footer  = { fg = "black", bg = "white" }
+footer  = { fg = "black", bg = "gray" }
 
 # : ]]]
 
@@ -149,7 +175,7 @@ footer  = { fg = "black", bg = "white" }
 # : Notify [[[
 
 [notify]
-title_info  = { fg = "green" }
+title_info  = { fg = "cyan" }
 title_warn  = { fg = "yellow" }
 title_error = { fg = "light_red" }
 
@@ -162,23 +188,23 @@ title_error = { fg = "light_red" }
 
 rules = [
     # Images
-    { mime = "image/*", fg = "yellow" },
+    { mime = "image/*", fg = "cyan" },
 
     # Media
-    { mime = "{audio,video}/*", fg = "magenta" },
+    { mime = "{audio,video}/*", fg = "light_yellow" },
 
     # Archives
-    { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "red" },
+    { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "light_magenta" },
 
     # Documents
-    { mime = "application/{pdf,doc,rtf}", fg = "cyan" },
+    { mime = "application/{pdf,doc,rtf}", fg = "light_green" },
 
     # Special files
     { mime = "*", is = "orphan", fg = "light_red", bg = "red" },
     { mime = "application/*exec*", fg = "green" },
 
     # Fallback
-    { url = "*",  fg = "white" },
+    { url = "*",  fg = "gray" },
     { url = "*/", fg = "blue" },
 ]
 
@@ -205,17 +231,17 @@ dirs  = [
 	{ name = "Videos",      text = "", fg = "blue" },
 ]
 files = [
-	{ name = ".babelrc",                   text = "", fg = "white" },
+	{ name = ".babelrc",                   text = "", fg = "gray" },
 	{ name = ".bash_profile",              text = "", fg = "light_cyan" },
 	{ name = ".bashrc",                    text = "", fg = "light_cyan" },
 	{ name = ".clang-format",              text = "", fg = "yellow" },
-	{ name = ".clang-tidy",                text = "", fg = "white" },
-	{ name = ".codespellrc",               text = "󰓆", fg = "white" },
-	{ name = ".condarc",                   text = "", fg = "white" },
+	{ name = ".clang-tidy",                text = "", fg = "gray" },
+	{ name = ".codespellrc",               text = "󰓆", fg = "gray" },
+	{ name = ".condarc",                   text = "", fg = "gray" },
 	{ name = ".dockerignore",              text = "󰡨", fg = "light_blue" },
-	{ name = ".ds_store",                  text = "", fg = "white" },
+	{ name = ".ds_store",                  text = "", fg = "gray" },
 	{ name = ".editorconfig",              text = "", fg = "yellow" },
-	{ name = ".env",                       text = "", fg = "white" },
+	{ name = ".env",                       text = "", fg = "gray" },
 	{ name = ".eslintignore",              text = "", fg = "yellow" },
 	{ name = ".eslintrc",                  text = "", fg = "yellow" },
 	{ name = ".git-blame-ignore-revs",     text = "", fg = "red" },
@@ -224,18 +250,18 @@ files = [
 	{ name = ".gitignore",                 text = "", fg = "red" },
 	{ name = ".gitlab-ci.yml",             text = "", fg = "red" },
 	{ name = ".gitmodules",                text = "", fg = "red" },
-	{ name = ".gtkrc-2.0",                 text = "", fg = "white" },
+	{ name = ".gtkrc-2.0",                 text = "", fg = "gray" },
 	{ name = ".gvimrc",                    text = "", fg = "light_cyan" },
 	{ name = ".justfile",                  text = "", fg = "light_yellow" },
-	{ name = ".luacheckrc",                text = "", fg = "white" },
-	{ name = ".luaurc",                    text = "", fg = "white" },
+	{ name = ".luacheckrc",                text = "", fg = "gray" },
+	{ name = ".luaurc",                    text = "", fg = "gray" },
 	{ name = ".mailmap",                   text = "󰊢", fg = "red" },
 	{ name = ".nanorc",                    text = "", fg = "light_cyan" },
-	{ name = ".npmignore",                 text = "", fg = "white" },
-	{ name = ".npmrc",                     text = "", fg = "white" },
-	{ name = ".nuxtrc",                    text = "󱄆", fg = "white" },
-	{ name = ".nvmrc",                     text = "", fg = "white" },
-	{ name = ".pnpmfile.cjs",              text = "", fg = "white" },
+	{ name = ".npmignore",                 text = "", fg = "gray" },
+	{ name = ".npmrc",                     text = "", fg = "gray" },
+	{ name = ".nuxtrc",                    text = "󱄆", fg = "gray" },
+	{ name = ".nvmrc",                     text = "", fg = "gray" },
+	{ name = ".pnpmfile.cjs",              text = "", fg = "gray" },
 	{ name = ".pre-commit-config.yaml",    text = "󰛢", fg = "yellow" },
 	{ name = ".prettierignore",            text = "", fg = "yellow" },
 	{ name = ".prettierrc",                text = "", fg = "yellow" },
@@ -248,8 +274,8 @@ files = [
 	{ name = ".prettierrc.yaml",           text = "", fg = "yellow" },
 	{ name = ".prettierrc.yml",            text = "", fg = "yellow" },
 	{ name = ".pylintrc",                  text = "", fg = "yellow" },
-	{ name = ".settings.json",             text = "", fg = "white" },
-	{ name = ".SRCINFO",                   text = "󰣇", fg = "white" },
+	{ name = ".settings.json",             text = "", fg = "gray" },
+	{ name = ".SRCINFO",                   text = "󰣇", fg = "gray" },
 	{ name = ".vimrc",                     text = "", fg = "light_cyan" },
 	{ name = ".Xauthority",                text = "", fg = "light_cyan" },
 	{ name = ".xinitrc",                   text = "", fg = "light_cyan" },
@@ -262,30 +288,30 @@ files = [
 	{ name = "_vimrc",                     text = "", fg = "light_cyan" },
 	{ name = "AUTHORS",                    text = "", fg = "light_green" },
 	{ name = "AUTHORS.txt",                text = "", fg = "light_green" },
-	{ name = "brewfile",                   text = "", fg = "white" },
-	{ name = "bspwmrc",                    text = "", fg = "white" },
-	{ name = "build",                      text = "", fg = "white" },
+	{ name = "brewfile",                   text = "", fg = "gray" },
+	{ name = "bspwmrc",                    text = "", fg = "gray" },
+	{ name = "build",                      text = "", fg = "gray" },
 	{ name = "build.gradle",               text = "", fg = "light_yellow" },
 	{ name = "build.zig.zon",              text = "", fg = "light_yellow" },
 	{ name = "bun.lock",                   text = "", fg = "dark_gray" },
 	{ name = "bun.lockb",                  text = "", fg = "dark_gray" },
-	{ name = "cantorrc",                   text = "", fg = "white" },
-	{ name = "checkhealth",                text = "󰓙", fg = "white" },
+	{ name = "cantorrc",                   text = "", fg = "gray" },
+	{ name = "checkhealth",                text = "󰓙", fg = "gray" },
 	{ name = "cmakelists.txt",             text = "", fg = "light_yellow" },
 	{ name = "code_of_conduct",            text = "", fg = "light_green" },
 	{ name = "code_of_conduct.md",         text = "", fg = "light_green" },
-	{ name = "commit_editmsg",             text = "", fg = "white" },
+	{ name = "commit_editmsg",             text = "", fg = "gray" },
 	{ name = "commitlint.config.js",       text = "󰜘", fg = "yellow" },
 	{ name = "commitlint.config.ts",       text = "󰜘", fg = "yellow" },
 	{ name = "compose.yaml",               text = "󰡨", fg = "light_blue" },
 	{ name = "compose.yml",                text = "󰡨", fg = "light_blue" },
-	{ name = "config",                     text = "", fg = "white" },
+	{ name = "config",                     text = "", fg = "gray" },
 	{ name = "containerfile",              text = "󰡨", fg = "light_blue" },
 	{ name = "copying",                    text = "", fg = "light_green" },
 	{ name = "copying.lesser",             text = "", fg = "light_green" },
 	{ name = "Directory.Build.props",      text = "", fg = "light_yellow" },
 	{ name = "Directory.Build.targets",    text = "", fg = "light_yellow" },
-	{ name = "Directory.Packages.props",   text = "", fg = "white" },
+	{ name = "Directory.Packages.props",   text = "", fg = "gray" },
 	{ name = "docker-compose.yaml",        text = "󰡨", fg = "light_blue" },
 	{ name = "docker-compose.yml",         text = "󰡨", fg = "light_blue" },
 	{ name = "dockerfile",                 text = "󰡨", fg = "light_blue" },
@@ -293,11 +319,11 @@ files = [
 	{ name = "eslint.config.js",           text = "", fg = "yellow" },
 	{ name = "eslint.config.mjs",          text = "", fg = "yellow" },
 	{ name = "eslint.config.ts",           text = "", fg = "yellow" },
-	{ name = "ext_typoscript_setup.txt",   text = "", fg = "white" },
-	{ name = "favicon.ico",                text = "", fg = "white" },
-	{ name = "fp-info-cache",              text = "", fg = "white" },
-	{ name = "fp-lib-table",               text = "", fg = "white" },
-	{ name = "FreeCAD.conf",               text = "", fg = "white" },
+	{ name = "ext_typoscript_setup.txt",   text = "", fg = "gray" },
+	{ name = "favicon.ico",                text = "", fg = "gray" },
+	{ name = "fp-info-cache",              text = "", fg = "gray" },
+	{ name = "fp-lib-table",               text = "", fg = "gray" },
+	{ name = "FreeCAD.conf",               text = "", fg = "gray" },
 	{ name = "Gemfile",                    text = "", fg = "light_yellow" },
 	{ name = "gnumakefile",                text = "", fg = "light_yellow" },
 	{ name = "go.mod",                     text = "", fg = "light_yellow" },
@@ -306,119 +332,119 @@ files = [
 	{ name = "gradle-wrapper.properties",  text = "", fg = "light_yellow" },
 	{ name = "gradle.properties",          text = "", fg = "light_yellow" },
 	{ name = "gradlew",                    text = "", fg = "light_yellow" },
-	{ name = "groovy",                     text = "", fg = "white" },
-	{ name = "gruntfile.babel.js",         text = "", fg = "white" },
-	{ name = "gruntfile.coffee",           text = "", fg = "white" },
-	{ name = "gruntfile.js",               text = "", fg = "white" },
-	{ name = "gruntfile.ts",               text = "", fg = "white" },
-	{ name = "gtkrc",                      text = "", fg = "white" },
-	{ name = "gulpfile.babel.js",          text = "", fg = "white" },
-	{ name = "gulpfile.coffee",            text = "", fg = "white" },
-	{ name = "gulpfile.js",                text = "", fg = "white" },
-	{ name = "gulpfile.ts",                text = "", fg = "white" },
-	{ name = "hypridle.conf",              text = "", fg = "white" },
-	{ name = "hyprland.conf",              text = "", fg = "white" },
-	{ name = "hyprlandd.conf",             text = "", fg = "white" },
+	{ name = "groovy",                     text = "", fg = "gray" },
+	{ name = "gruntfile.babel.js",         text = "", fg = "gray" },
+	{ name = "gruntfile.coffee",           text = "", fg = "gray" },
+	{ name = "gruntfile.js",               text = "", fg = "gray" },
+	{ name = "gruntfile.ts",               text = "", fg = "gray" },
+	{ name = "gtkrc",                      text = "", fg = "gray" },
+	{ name = "gulpfile.babel.js",          text = "", fg = "gray" },
+	{ name = "gulpfile.coffee",            text = "", fg = "gray" },
+	{ name = "gulpfile.js",                text = "", fg = "gray" },
+	{ name = "gulpfile.ts",                text = "", fg = "gray" },
+	{ name = "hypridle.conf",              text = "", fg = "gray" },
+	{ name = "hyprland.conf",              text = "", fg = "gray" },
+	{ name = "hyprlandd.conf",             text = "", fg = "gray" },
 	{ name = "hyprlock.conf",              text = "", fg = "dark_gray" },
-	{ name = "hyprpaper.conf",             text = "", fg = "white" },
-	{ name = "hyprsunset.conf",            text = "", fg = "white" },
-	{ name = "i18n.config.js",             text = "󰗊", fg = "white" },
-	{ name = "i18n.config.ts",             text = "󰗊", fg = "white" },
+	{ name = "hyprpaper.conf",             text = "", fg = "gray" },
+	{ name = "hyprsunset.conf",            text = "", fg = "gray" },
+	{ name = "i18n.config.js",             text = "󰗊", fg = "gray" },
+	{ name = "i18n.config.ts",             text = "󰗊", fg = "gray" },
 	{ name = "i3blocks.conf",              text = "", fg = "dark_gray" },
-	{ name = "i3status.conf",              text = "", fg = "white" },
-	{ name = "index.theme",                text = "", fg = "white" },
-	{ name = "ionic.config.json",          text = "", fg = "white" },
-	{ name = "Jenkinsfile",                text = "", fg = "white" },
+	{ name = "i3status.conf",              text = "", fg = "gray" },
+	{ name = "index.theme",                text = "", fg = "gray" },
+	{ name = "ionic.config.json",          text = "", fg = "gray" },
+	{ name = "Jenkinsfile",                text = "", fg = "gray" },
 	{ name = "justfile",                   text = "", fg = "light_yellow" },
-	{ name = "kalgebrarc",                 text = "", fg = "white" },
-	{ name = "kdeglobals",                 text = "", fg = "white" },
-	{ name = "kdenlive-layoutsrc",         text = "", fg = "white" },
-	{ name = "kdenliverc",                 text = "", fg = "white" },
-	{ name = "kritadisplayrc",             text = "", fg = "white" },
-	{ name = "kritarc",                    text = "", fg = "white" },
+	{ name = "kalgebrarc",                 text = "", fg = "gray" },
+	{ name = "kdeglobals",                 text = "", fg = "gray" },
+	{ name = "kdenlive-layoutsrc",         text = "", fg = "gray" },
+	{ name = "kdenliverc",                 text = "", fg = "gray" },
+	{ name = "kritadisplayrc",             text = "", fg = "gray" },
+	{ name = "kritarc",                    text = "", fg = "gray" },
 	{ name = "license",                    text = "", fg = "light_green" },
 	{ name = "license.md",                 text = "", fg = "light_green" },
-	{ name = "lxde-rc.xml",                text = "", fg = "white" },
-	{ name = "lxqt.conf",                  text = "", fg = "white" },
+	{ name = "lxde-rc.xml",                text = "", fg = "gray" },
+	{ name = "lxqt.conf",                  text = "", fg = "gray" },
 	{ name = "makefile",                   text = "", fg = "light_yellow" },
 	{ name = "mix.lock",                   text = "", fg = "dark_gray" },
-	{ name = "mpv.conf",                   text = "", fg = "white" },
-	{ name = "next.config.cjs",            text = "", fg = "white" },
-	{ name = "next.config.js",             text = "", fg = "white" },
-	{ name = "next.config.ts",             text = "", fg = "white" },
-	{ name = "node_modules",               text = "", fg = "white" },
-	{ name = "nuxt.config.cjs",            text = "󱄆", fg = "white" },
-	{ name = "nuxt.config.js",             text = "󱄆", fg = "white" },
-	{ name = "nuxt.config.mjs",            text = "󱄆", fg = "white" },
-	{ name = "nuxt.config.ts",             text = "󱄆", fg = "white" },
+	{ name = "mpv.conf",                   text = "", fg = "gray" },
+	{ name = "next.config.cjs",            text = "", fg = "gray" },
+	{ name = "next.config.js",             text = "", fg = "gray" },
+	{ name = "next.config.ts",             text = "", fg = "gray" },
+	{ name = "node_modules",               text = "", fg = "gray" },
+	{ name = "nuxt.config.cjs",            text = "󱄆", fg = "gray" },
+	{ name = "nuxt.config.js",             text = "󱄆", fg = "gray" },
+	{ name = "nuxt.config.mjs",            text = "󱄆", fg = "gray" },
+	{ name = "nuxt.config.ts",             text = "󱄆", fg = "gray" },
 	{ name = "package-lock.json",          text = "", fg = "dark_gray" },
 	{ name = "package.json",               text = "", fg = "light_yellow" },
-	{ name = "PKGBUILD",                   text = "", fg = "white" },
+	{ name = "PKGBUILD",                   text = "", fg = "gray" },
 	{ name = "platformio.ini",             text = "", fg = "light_yellow" },
-	{ name = "playwright.config.cjs",      text = "", fg = "white" },
-	{ name = "playwright.config.cts",      text = "", fg = "white" },
-	{ name = "playwright.config.js",       text = "", fg = "white" },
-	{ name = "playwright.config.mjs",      text = "", fg = "white" },
-	{ name = "playwright.config.mts",      text = "", fg = "white" },
-	{ name = "playwright.config.ts",       text = "", fg = "white" },
+	{ name = "playwright.config.cjs",      text = "", fg = "gray" },
+	{ name = "playwright.config.cts",      text = "", fg = "gray" },
+	{ name = "playwright.config.js",       text = "", fg = "gray" },
+	{ name = "playwright.config.mjs",      text = "", fg = "gray" },
+	{ name = "playwright.config.mts",      text = "", fg = "gray" },
+	{ name = "playwright.config.ts",       text = "", fg = "gray" },
 	{ name = "pnpm-lock.yaml",             text = "", fg = "dark_gray" },
-	{ name = "pnpm-workspace.yaml",        text = "", fg = "white" },
+	{ name = "pnpm-workspace.yaml",        text = "", fg = "gray" },
 	{ name = "pom.xml",                    text = "", fg = "light_yellow" },
 	{ name = "prettier.config.cjs",        text = "", fg = "yellow" },
 	{ name = "prettier.config.js",         text = "", fg = "yellow" },
 	{ name = "prettier.config.mjs",        text = "", fg = "yellow" },
 	{ name = "prettier.config.ts",         text = "", fg = "yellow" },
-	{ name = "prisma.config.mts",          text = "", fg = "white" },
-	{ name = "prisma.config.ts",           text = "", fg = "white" },
+	{ name = "prisma.config.mts",          text = "", fg = "gray" },
+	{ name = "prisma.config.ts",           text = "", fg = "gray" },
 	{ name = "procfile",                   text = "", fg = "light_yellow" },
-	{ name = "PrusaSlicer.ini",            text = "", fg = "white" },
-	{ name = "PrusaSlicerGcodeViewer.ini", text = "", fg = "white" },
-	{ name = "py.typed",                   text = "", fg = "white" },
-	{ name = "QtProject.conf",             text = "", fg = "white" },
+	{ name = "PrusaSlicer.ini",            text = "", fg = "gray" },
+	{ name = "PrusaSlicerGcodeViewer.ini", text = "", fg = "gray" },
+	{ name = "py.typed",                   text = "", fg = "gray" },
+	{ name = "QtProject.conf",             text = "", fg = "gray" },
 	{ name = "rakefile",                   text = "", fg = "light_yellow" },
 	{ name = "readme",                     text = "󰂺", fg = "light_green" },
 	{ name = "readme.md",                  text = "󰂺", fg = "light_green" },
-	{ name = "rmd",                        text = "", fg = "white" },
-	{ name = "robots.txt",                 text = "󰚩", fg = "white" },
+	{ name = "rmd",                        text = "", fg = "gray" },
+	{ name = "robots.txt",                 text = "󰚩", fg = "gray" },
 	{ name = "security",                   text = "󰒃", fg = "light_green" },
 	{ name = "security.md",                text = "󰒃", fg = "light_green" },
 	{ name = "settings.gradle",            text = "", fg = "light_yellow" },
-	{ name = "svelte.config.js",           text = "", fg = "white" },
-	{ name = "sxhkdrc",                    text = "", fg = "white" },
-	{ name = "sym-lib-table",              text = "", fg = "white" },
-	{ name = "tailwind.config.js",         text = "󱏿", fg = "white" },
-	{ name = "tailwind.config.mjs",        text = "󱏿", fg = "white" },
-	{ name = "tailwind.config.ts",         text = "󱏿", fg = "white" },
-	{ name = "tmux.conf",                  text = "", fg = "white" },
-	{ name = "tmux.conf.local",            text = "", fg = "white" },
+	{ name = "svelte.config.js",           text = "", fg = "gray" },
+	{ name = "sxhkdrc",                    text = "", fg = "gray" },
+	{ name = "sym-lib-table",              text = "", fg = "gray" },
+	{ name = "tailwind.config.js",         text = "󱏿", fg = "gray" },
+	{ name = "tailwind.config.mjs",        text = "󱏿", fg = "gray" },
+	{ name = "tailwind.config.ts",         text = "󱏿", fg = "gray" },
+	{ name = "tmux.conf",                  text = "", fg = "gray" },
+	{ name = "tmux.conf.local",            text = "", fg = "gray" },
 	{ name = "tsconfig.json",              text = "", fg = "light_yellow" },
 	{ name = "unlicense",                  text = "", fg = "light_green" },
 	{ name = "vagrantfile",                text = "", fg = "light_blue" },
-	{ name = "vercel.json",                text = "", fg = "white" },
-	{ name = "vite.config.cjs",            text = "", fg = "white" },
-	{ name = "vite.config.cts",            text = "", fg = "white" },
-	{ name = "vite.config.js",             text = "", fg = "white" },
-	{ name = "vite.config.mjs",            text = "", fg = "white" },
-	{ name = "vite.config.mts",            text = "", fg = "white" },
-	{ name = "vite.config.ts",             text = "", fg = "white" },
-	{ name = "vitest.config.cjs",          text = "", fg = "white" },
-	{ name = "vitest.config.cts",          text = "", fg = "white" },
-	{ name = "vitest.config.js",           text = "", fg = "white" },
-	{ name = "vitest.config.mjs",          text = "", fg = "white" },
-	{ name = "vitest.config.mts",          text = "", fg = "white" },
-	{ name = "vitest.config.ts",           text = "", fg = "white" },
-	{ name = "vlcrc",                      text = "󰕼", fg = "white" },
-	{ name = "webpack",                    text = "󰜫", fg = "white" },
-	{ name = "weston.ini",                 text = "", fg = "white" },
-	{ name = "workspace",                  text = "", fg = "white" },
-	{ name = "wrangler.jsonc",             text = "", fg = "white" },
-	{ name = "wrangler.toml",              text = "", fg = "white" },
-	{ name = "xdph.conf",                  text = "", fg = "white" },
-	{ name = "xmobarrc",                   text = "", fg = "white" },
-	{ name = "xmobarrc.hs",                text = "", fg = "white" },
-	{ name = "xmonad.hs",                  text = "", fg = "white" },
-	{ name = "xorg.conf",                  text = "", fg = "white" },
-	{ name = "xsettingsd.conf",            text = "", fg = "white" },
+	{ name = "vercel.json",                text = "", fg = "gray" },
+	{ name = "vite.config.cjs",            text = "", fg = "gray" },
+	{ name = "vite.config.cts",            text = "", fg = "gray" },
+	{ name = "vite.config.js",             text = "", fg = "gray" },
+	{ name = "vite.config.mjs",            text = "", fg = "gray" },
+	{ name = "vite.config.mts",            text = "", fg = "gray" },
+	{ name = "vite.config.ts",             text = "", fg = "gray" },
+	{ name = "vitest.config.cjs",          text = "", fg = "gray" },
+	{ name = "vitest.config.cts",          text = "", fg = "gray" },
+	{ name = "vitest.config.js",           text = "", fg = "gray" },
+	{ name = "vitest.config.mjs",          text = "", fg = "gray" },
+	{ name = "vitest.config.mts",          text = "", fg = "gray" },
+	{ name = "vitest.config.ts",           text = "", fg = "gray" },
+	{ name = "vlcrc",                      text = "󰕼", fg = "gray" },
+	{ name = "webpack",                    text = "󰜫", fg = "gray" },
+	{ name = "weston.ini",                 text = "", fg = "gray" },
+	{ name = "workspace",                  text = "", fg = "gray" },
+	{ name = "wrangler.jsonc",             text = "", fg = "gray" },
+	{ name = "wrangler.toml",              text = "", fg = "gray" },
+	{ name = "xdph.conf",                  text = "", fg = "gray" },
+	{ name = "xmobarrc",                   text = "", fg = "gray" },
+	{ name = "xmobarrc.hs",                text = "", fg = "gray" },
+	{ name = "xmonad.hs",                  text = "", fg = "gray" },
+	{ name = "xorg.conf",                  text = "", fg = "gray" },
+	{ name = "xsettingsd.conf",            text = "", fg = "gray" },
 ]
 exts = [
 	{ name = "3gp",          text = "", fg = "magenta" },
@@ -535,7 +561,7 @@ exts = [
 	{ name = "elm",          text = "", fg = "light_blue" },
 	{ name = "eln",          text = "", fg = "light_blue" },
 	{ name = "env",          text = "", fg = "light_yellow" },
-	{ name = "eot",          text = "", fg = "white" },
+	{ name = "eot",          text = "", fg = "gray" },
 	{ name = "epp",          text = "", fg = "light_blue" },
 	{ name = "epub",         text = "", fg = "cyan" },
 	{ name = "erb",          text = "", fg = "light_blue" },
@@ -720,7 +746,7 @@ exts = [
 	{ name = "ogx",          text = "", fg = "magenta" },
 	{ name = "opus",         text = "", fg = "magenta" },
 	{ name = "org",          text = "", fg = "cyan" },
-	{ name = "otf",          text = "", fg = "white" },
+	{ name = "otf",          text = "", fg = "gray" },
 	{ name = "out",          text = "", fg = "light_red" },
 	{ name = "part",         text = "", fg = "light_blue" },
 	{ name = "patch",        text = "", fg = "light_blue" },
@@ -854,7 +880,7 @@ exts = [
 	{ name = "tscn",         text = "", fg = "light_blue" },
 	{ name = "tsconfig",     text = "", fg = "light_blue" },
 	{ name = "tsx",          text = "", fg = "light_blue" },
-	{ name = "ttf",          text = "", fg = "white" },
+	{ name = "ttf",          text = "", fg = "gray" },
 	{ name = "twig",         text = "", fg = "light_blue" },
 	{ name = "txt",          text = "󰈙", fg = "cyan" },
 	{ name = "txz",          text = "", fg = "red" },
@@ -880,8 +906,8 @@ exts = [
 	{ name = "webpack",      text = "󰜫", fg = "light_blue" },
 	{ name = "wma",          text = "", fg = "magenta" },
 	{ name = "wmv",          text = "", fg = "magenta" },
-	{ name = "woff",         text = "", fg = "white" },
-	{ name = "woff2",        text = "", fg = "white" },
+	{ name = "woff",         text = "", fg = "gray" },
+	{ name = "woff2",        text = "", fg = "gray" },
 	{ name = "wrl",          text = "󰆧", fg = "light_cyan" },
 	{ name = "wrz",          text = "󰆧", fg = "light_cyan" },
 	{ name = "wv",           text = "", fg = "magenta" },
@@ -921,7 +947,7 @@ conds = [
 	# Fallback
 	{ if = "dir",  text = "", fg = "blue" },
 	{ if = "exec", text = "", fg = "green" },
-	{ if = "!dir", text = "", fg = "white" },
+	{ if = "!dir", text = "", fg = "gray" },
 ]
 
 # : }}}
