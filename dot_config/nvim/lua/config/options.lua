@@ -4,3 +4,8 @@
 
 vim.o.exrc = true
 vim.opt.shell = "/var/home/linuxbrew/.linuxbrew/bin/nu"
+
+-- Give every floating window (LSP hover/signature help, blink.cmp's
+-- completion/doc menus, noice's cmdline popup, :h, etc.) a default border,
+-- so they stand out against the background instead of blending into it.
+vim.opt.winborder = "single"

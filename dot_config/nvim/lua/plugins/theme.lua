@@ -59,5 +59,44 @@ return {
         theme = "tinted",
       },
     },
+    config = function(_, opts)
+      require("lualine").setup(opts)
+
+      -- trouble.nvim's lualine breadcrumb (the "current function" segment,
+      -- e.g. "f config") patches its text color to match lualine's
+      -- background, but caches that patched highlight group permanently and
+      -- only invalidates it via a ColorScheme autocmd registered by trouble's
+      -- OWN setup() -- which may never run if trouble is only used through
+      -- this lualine integration. Reset that cache ourselves on every
+      -- ColorScheme (including our async OSC-driven reload) so it doesn't
+      -- render a stale, mismatched block against the current colors.
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        group = vim.api.nvim_create_augroup("fix_trouble_lualine_highlight_cache", { clear = true }),
+        callback = function()
+          local ok, trouble_highlights = pcall(require, "trouble.config.highlights")
+          if ok then
+            trouble_highlights._fixed = {}
+          end
+          if package.loaded["lualine"] then
+            require("lualine").refresh()
+          end
+        end,
+      })
+    end,
+  },
+  {
+    -- noice.nvim renders LSP hover (K) and signature help itself, bypassing
+    -- Neovim's native floating-window path -- so `vim.o.winborder` (set in
+    -- config/options.lua) doesn't reach it. Its "hover" view (which
+    -- signature help also falls back to) defaults to `border.style = "none"`;
+    -- override to match everything else's border style.
+    "folke/noice.nvim",
+    opts = {
+      views = {
+        hover = {
+          border = { style = "single" },
+        },
+      },
+    },
   },
 }
