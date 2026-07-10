@@ -12,7 +12,7 @@ Dump all currently installed Homebrew formulae, casks, and taps:
 brew bundle dump --file=/tmp/brew-dump.Brewfile --force
 ```
 
-Filter the dump to brew/tap/cask lines only, then compare against `base.Brewfile`, `devtools.Brewfile`, and `theming.Brewfile`:
+Filter the dump to brew/tap/cask lines only, then compare against `base.Brewfile`, `base-extra.Brewfile`, `devtools.Brewfile`, and `theming.Brewfile`:
 
 - **Additions** — in the dump but not tracked in any Brewfile (candidates to add)
 - **Removals** — tracked in a Brewfile but not in the dump (candidates to remove or not yet installed)
@@ -61,7 +61,7 @@ Note: `extensions.txt` is a tracking list only — extensions are not auto-insta
 
 Present findings grouped as:
 
-- **Homebrew additions** — `brew install X` candidates to add to `base.Brewfile` or `theming.Brewfile`
+- **Homebrew additions** — `brew install X` candidates to add to `base.Brewfile`, `base-extra.Brewfile`, or `theming.Brewfile`
 - **Homebrew removals** — entries in Brewfiles not currently installed
 - **Flatpak additions** — installed apps not tracked in any `*.flatpak.Brewfile`
 - **Flatpak removals** — tracked app IDs not currently installed
@@ -83,7 +83,8 @@ After presenting the findings, ask the user which differences to reconcile. Offe
 
 | File | Purpose |
 |------|---------|
-| `base.Brewfile` | Core CLI tools + everything Neovim needs, installed on every machine (incl. dev containers via `bootstrap-cli.sh`) |
+| `base.Brewfile` | Core CLI tools + everything Neovim needs, installed on every machine incl. dev containers via `bootstrap-cli.sh` (kept devcontainer-safe — no visual/GUI extras) |
+| `base-extra.Brewfile` | Visual/misc CLI tools & GUI extras (fastfetch, chafa, cava, bbrew, nerd fonts, VS Code) — host bootstrap only via `bootstrap.sh`, not installed in dev containers |
 | `devtools.Brewfile` | Language toolchains & container tooling — host bootstrap only, not installed in dev containers |
 | `theming.Brewfile` | Theming tools (tinty, gnomad, gowall) — only when `theming_enabled` |
 | `gaming.Brewfile` | Gaming CLI tools — only when `gaming_enabled` |

@@ -1,13 +1,7 @@
-tap "ublue-os/tap", trusted: true
-tap "valkyrie00/bbrew", "https://github.com/Valkyrie00/homebrew-bbrew", trusted: true
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Multi-shell multi-command argument completer
 brew "carapace"
-# Console-based Audio Visualizer for ALSA
-brew "cava"
-# Versatile and fast Unicode/ASCII/ANSI graphics renderer
-brew "chafa"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
 # More intuitive version of du in rust
@@ -16,8 +10,6 @@ brew "dust"
 brew "dysk"
 # Modern, maintained replacement for ls
 brew "eza"
-# Like neofetch, but much faster because written mostly in C
-brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # GNU compiler collection (also needed by tree-sitter-cli to build parsers)
@@ -76,14 +68,5 @@ brew "yazi"
 brew "zip"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# Modern TUI for managing Homebrew packages and casks on macOS and Linux
-brew "valkyrie00/bbrew/bbrew", trusted: true
 # Terminal-based AI coding assistant
 cask "claude-code"
-cask "font-fira-code-nerd-font"
-cask "font-jetbrains-mono-nerd-font"
-cask "font-sauce-code-pro-nerd-font"
-cask "font-symbols-only-nerd-font"
-cask "font-ubuntu-nerd-font"
-# Open-source code editor
-cask "ublue-os/tap/visual-studio-code-linux", trusted: true

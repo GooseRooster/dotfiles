@@ -8,5 +8,8 @@
   "features": {
     "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {}
   },
+  "containerEnv": {
+    "DEVCONTAINER": "true"
+  },
   "postCreateCommand": "chezmoi init https://github.com/GooseRooster/dotfiles.git && cd $(chezmoi source-path) && ./bootstrap-cli.sh --devcontainer"
 }

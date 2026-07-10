@@ -1,5 +1,4 @@
 flatpak "com.dec05eba.gpu_screen_recorder"
-flatpak "com.usebottles.bottles"
 flatpak "com.valvesoftware.Steam"
 flatpak "com.vysp3r.ProtonPlus"
 flatpak "dev.vencord.Vesktop"

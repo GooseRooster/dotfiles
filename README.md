@@ -17,7 +17,7 @@ The theming tools and extension list are GNOME based, and the gaming performance
 - **Neovim** with tinted-theming live colour sync
 - **Theming** via [tinty](https://github.com/tinted-theming/tinty) (base16/base24 schemes, synced across terminal, editor, browser, and more)
 - **Fastfetch** greeting on shell open
-- **Brewfiles** split by category — base CLI, devtools, cargo, theming, gaming, multimedia
+- **Brewfiles** split by category — base CLI, base-extra, devtools, cargo, theming, gaming, multimedia
 - **GNOME extensions** tracked in `extensions.txt`
 
 ## Prerequisites
@@ -60,14 +60,15 @@ The script is safe to re-run — it skips anything already installed.
 ### What bootstrap does
 
 1. Delegates to `bootstrap-cli.sh` — base CLI tools, LazyVim starter, `chezmoi apply` (see below)
-2. Installs rustup via Homebrew and bootstraps the stable toolchain
-3. Installs cargo packages (`cargo-cross` for cross-compilation)
-4. Installs the dev tool chain from `devtools.Brewfile` (language toolchains, container tooling)
-5. Installs theming tools if enabled
-6. Installs Flatpaks (base always; gaming/multimedia conditionally)
-7. Writes `~/.config/chezmoi/chezmoi.toml` with your chosen feature flags
-8. Creates directories tinty needs for its hooks
-9. Runs `chezmoi apply` again (idempotent, picks up your feature flags)
+2. Installs base extras from `base-extra.Brewfile` (visual/GUI host tools — fastfetch, chafa, cava, bbrew, nerd fonts, VS Code)
+3. Installs rustup via Homebrew and bootstraps the stable toolchain
+4. Installs cargo packages (`cargo-cross` for cross-compilation)
+5. Installs the dev tool chain from `devtools.Brewfile` (language toolchains, container tooling)
+6. Installs theming tools if enabled
+7. Installs Flatpaks (base always; gaming/multimedia conditionally)
+8. Writes `~/.config/chezmoi/chezmoi.toml` with your chosen feature flags
+9. Creates directories tinty needs for its hooks
+10. Runs `chezmoi apply` again (idempotent, picks up your feature flags)
 
 GNOME Shell extensions are tracked in `extensions.txt` but not auto-installed — install them manually via the Extensions app or GNOME's web installer.
 
@@ -84,12 +85,14 @@ chmod +x bootstrap-cli.sh
 ./bootstrap-cli.sh --devcontainer
 ```
 
-It installs `base.Brewfile` (CLI bling, shell essentials, and everything
-Neovim needs to run — lazygit, tree-sitter-cli, etc.), clones the
+It installs `base.Brewfile` (shell essentials and everything Neovim needs to
+run — lazygit, tree-sitter-cli, etc.), clones the
 [LazyVim](https://www.lazyvim.org) starter into `~/.config/nvim` since this
 repo's Neovim config is built to sit on top of LazyVim, then runs
-`chezmoi apply`. It does not install language toolchains or container tooling
-(`devtools.Brewfile`) — a dev container is expected to supply its own.
+`chezmoi apply`. It does not install visual/GUI extras (`base-extra.Brewfile`
+— fastfetch, chafa, cava, bbrew, nerd fonts, VS Code) or language toolchains
+or container tooling (`devtools.Brewfile`) — those are host-bootstrap only,
+and a dev container is expected to supply its own toolchain.
 
 **Homebrew itself must already be on `PATH` before this script runs** — unlike
 the full host `bootstrap.sh`, it deliberately doesn't install Homebrew for
@@ -103,7 +106,7 @@ The `--devcontainer` flag doesn't install anything itself — it just records
 `chezmoi apply` skips desktop/GUI/optional-feature dotfiles that have no
 purpose in a container (ghostty, mpv, tinty theming, the GNOME-keyboard-shortcut
 `termapp` helper, etc. — see `.chezmoiignore.tmpl`). Everything `bootstrap-cli.sh`
-actually installs (nushell, starship, fastfetch, Neovim, yazi) is unaffected.
+actually installs (nushell, starship, Neovim, yazi) is unaffected.
 
 ### Dev container templates
 
@@ -152,6 +155,7 @@ The Brewfile layout:
 | File | Installed when |
 |------|---------------|
 | `base.Brewfile` | Always (`bootstrap-cli.sh` or `bootstrap.sh`) |
+| `base-extra.Brewfile` | Always, host bootstrap only — visual/misc CLI tools (fastfetch, chafa, cava, bbrew) & GUI extras (nerd fonts, VS Code); skipped for devcontainer installs |
 | `devtools.Brewfile` | Always, host bootstrap only — language toolchains & container tooling, not installed by `bootstrap-cli.sh` |
 | `cargo.Brewfile` | Always, host bootstrap only (after rustup) |
 | `theming.Brewfile` | `theming_enabled = true` |

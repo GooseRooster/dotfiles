@@ -9,9 +9,10 @@ $env.config.edit_mode = 'vi'
 
 # ── Functions: misc ───────────────────────────────────────────────────────────
 def fastfetch [...args: string] {
-  # Only want the greeting to fire if we are not within a container, 
-  # and not cd'ing into dotfiles via chezmoi. 
-  if not ("CONTAINER_ID" in $env) and not ("CHEZMOI" in $env) {
+  # Only want the greeting to fire if we are not within a container
+  # (distrobox sets CONTAINER_ID; dev containers set DEVCONTAINER via
+  # containerEnv in devcontainer.json), and not cd'ing into dotfiles via chezmoi.
+  if not ("CONTAINER_ID" in $env) and not ("DEVCONTAINER" in $env) and not ("CHEZMOI" in $env) {
       #^fastfetch --config ~/.config/fastfetch/config.jsonc ...$args
       ^ublue-fastfetch  ...$args
   }
