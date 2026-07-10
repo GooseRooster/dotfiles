@@ -78,6 +78,7 @@ After presenting the findings, ask the user which differences to reconcile. Offe
 ## Known exclusions
 
 - **`rustup`** — appears in `brew bundle dump` output but must NOT be added to any Brewfile. It is installed by a dedicated step in the bootstrap script because `brew bundle` does not handle rustup's install flow correctly.
+- **GNOME classic-mode built-in extensions** — `apps-menu@gnome-shell-extensions.gcampax.github.com`, `launch-new-instance@gnome-shell-extensions.gcampax.github.com`, `places-menu@gnome-shell-extensions.gcampax.github.com`, and `window-list@gnome-shell-extensions.gcampax.github.com` show up in `gnome-extensions list` but must NOT be added to `extensions.txt`. They ship with `gnome-shell-extensions` itself rather than being separately installed, so they aren't meaningful to track.
 
 ## Brewfile Ownership
 

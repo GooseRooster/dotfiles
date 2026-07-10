@@ -1,11 +1,9 @@
-hotedge@jonathan.jdoda.ca
 user-theme@gnome-shell-extensions.gcampax.github.com
 paperwm@paperwm.github.com
 Vitals@CoreCoding.com
 clipboard-indicator@tudmotu.com
 weatherpanel@attentivecoder
 quake-terminal@diegodario88.github.io
-grand-theft-focus@zalckos.github.com
 medialine@funinkina.co.in
 bazaar-integration@kolunmi.github.io
 blur-my-shell@aunetx
@@ -17,7 +15,10 @@ logomenu@aryan_k
 lock-guard@fthx
 advanced-alt-tab@G-dH.github.com
 azwallpaper@azwallpaper.gitlab.com
-impatience@gfxmonk.net
 appindicatorsupport@rgcjonas.gmail.com
 mouse-follows-focus@crisidev.org
 search-light@icedman.github.com
+extensions-search-provider@G-dH.github.com
+vertical-workspaces@G-dH.github.com
+windows-search-provider@G-dH.github.com
+window-thumbnails@G-dH.github.com
