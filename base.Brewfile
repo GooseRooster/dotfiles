@@ -30,6 +30,8 @@ brew "fish"
 brew "fzf"
 # GitHub command-line tool
 brew "gh"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
 # Tools and libraries to manipulate images in many formats
 brew "imagemagick-full", link: true
 # Lightweight and flexible command-line JSON processor
