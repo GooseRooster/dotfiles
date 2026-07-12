@@ -45,13 +45,13 @@ if ! command -v brew &>/dev/null; then
 fi
 
 # ── Step 1: Base CLI tools ────────────────────────────────────────────────────
-echo "==> [1/4] Installing base CLI tools..."
+echo "==> [1/5] Installing base CLI tools..."
 grep -E "^(tap|brew|cask)" "$SCRIPT_DIR/base.Brewfile" |
   brew bundle install --file=- --no-upgrade
 
 # ── Step 2: LazyVim starter ──────────────────────────────────────────────────
 # Follows the official LazyVim installation steps: https://www.lazyvim.org/installation
-echo "==> [2/4] Setting up LazyVim starter..."
+echo "==> [2/5] Setting up LazyVim starter..."
 NVIM_CONFIG_DIR="$HOME/.config/nvim"
 if [[ -e "$NVIM_CONFIG_DIR" ]]; then
   echo "  $NVIM_CONFIG_DIR already exists, skipping LazyVim starter clone."
@@ -62,7 +62,7 @@ else
 fi
 
 # ── Step 3: Mark this as a dev container, if requested ───────────────────────
-echo "==> [3/4] Recording devcontainer_enabled in chezmoi.toml..."
+echo "==> [3/5] Recording devcontainer_enabled in chezmoi.toml..."
 if [[ "$DEVCONTAINER" == true ]]; then
   CHEZMOI_DIR="$HOME/.config/chezmoi"
   CHEZMOI_CONFIG="$CHEZMOI_DIR/chezmoi.toml"
@@ -97,8 +97,14 @@ else
 fi
 
 # ── Step 4: Apply dotfiles ────────────────────────────────────────────────────
-echo "==> [4/4] Running 'chezmoi apply'..."
+echo "==> [4/5] Running 'chezmoi apply'..."
 chezmoi apply
+
+# ── Step 5: Yazi plugins ──────────────────────────────────────────────────────
+# package.toml lists yazi's plugin/flavor deps; `ya pkg install` clones them.
+# Must run after 'chezmoi apply' so ~/.config/yazi/package.toml exists.
+echo "==> [5/5] Installing yazi plugins..."
+ya pkg install
 
 echo ""
 echo "bootstrap-cli complete."
