@@ -7,18 +7,17 @@ require("bunny"):setup({
 		{ key = "/", path = "/" },
 		{ key = "t", path = "/tmp" },
 		{ key = "h", path = "~", desc = "Home" },
+{{ if (index . "gaming_enabled" | default false) -}}
 		{ key = "m", path = "~/Modding/", desc = "Modding" },
+		{ key = "e", path = "~/Emulation", desc = "Emulation" },
+		{ key = "s", path = "~/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common", desc = "Steam Library" },
+{{ end -}}
 		{ key = "d", path = "~/Downloads", desc = "Downloads" },
-		{ key = "D", path = "~/Development", desc = "Development" },
+		{ key = "r", path = "~/Development", desc = "Development" },
 		{ key = "v", path = "~/Videos", desc = "Videos" },
 		{ key = "M", path = "~/Music", desc = "Music" },
-		{ key = "e", path = "~/Emulation", desc = "Emulation" },
 		{ key = "p", path = "~/Pictures", desc = "Pictures" },
 		{ key = "c", path = "~/.config", desc = "Config files" },
-		-- key and path attributes are required, desc is optional
-{{ if (index . "gaming_enabled" | default false) -}}
-		{ key = "S", path = "~/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common", desc = "Steam Library" },
-{{ end -}}
 	},
 	desc_strategy = "path", -- If desc isn't present, use "path" or "filename", default is "path"
 	ephemeral = true, -- Enable ephemeral hops, default is true
