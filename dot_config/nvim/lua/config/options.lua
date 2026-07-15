@@ -3,7 +3,7 @@
 -- Add any additional options here
 
 vim.o.exrc = true
-vim.opt.shell = "/var/home/linuxbrew/.linuxbrew/bin/nu"
+vim.opt.shell = vim.fn.exepath("nu")
 
 -- Give every floating window (LSP hover/signature help, blink.cmp's
 -- completion/doc menus, noice's cmdline popup, :h, etc.) a default border,
