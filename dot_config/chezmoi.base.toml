@@ -3,4 +3,4 @@ autoPush = true
 autoCommit = true
 
 [cd]
-command = "/var/home/linuxbrew/.linuxbrew/bin/nu"
+command = "nu"

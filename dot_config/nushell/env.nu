@@ -15,7 +15,14 @@ $env.PATH = ($env.PATH | prepend [
 
 # dotnet - SSL dev cert location, dotnet root for tools.
 # Roslyn LSP expects this populated, but brew doesn't do that for you.
-$env.SSL_CERT_DIR = $"($env.HOME)/.aspnet/dev-certs/trust:/etc/pki/tls/certs"
+def get-system-cert-dir [] {
+    let candidates = [
+        "/etc/ssl/certs"        # Debian/Ubuntu
+        "/etc/pki/tls/certs"    # Fedora/RHEL/Bluefin
+    ]
+    $candidates | where {|p| ($p | path exists)} | first
+}
+$env.SSL_CERT_DIR = $"($env.HOME)/.aspnet/dev-certs/trust:(get-system-cert-dir)"
 $env.DOTNET_ROOT  = $"(^brew --prefix dotnet | str trim)/libexec"
 
 $env.PATH = ($env.PATH | prepend [
