@@ -70,3 +70,5 @@ brew "yazi"
 brew "zip"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# Simple extraction library
+brew "unzip"
