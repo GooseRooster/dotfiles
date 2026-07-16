@@ -6,6 +6,7 @@ $env.config.edit_mode = 'vi'
 # ── Aliases ──────────────────────────────────────────────────────────────────
 # export alias grep = rg
 alias chrome = ungoogled-chromium
+alias python = python3
 
 # ── Functions: misc ───────────────────────────────────────────────────────────
 def fastfetch [...args: string] {
