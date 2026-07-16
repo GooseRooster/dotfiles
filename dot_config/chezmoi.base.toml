@@ -2,5 +2,8 @@
 autoPush = true
 autoCommit = true
 
+# @NU_BIN@ is substituted with the absolute path to nu by the bootstrap scripts
+# at write time (chezmoi.toml is the config itself, so it can't be templated by
+# chezmoi). See the _brew_prefix helper in bootstrap.sh / bootstrap-cli.sh.
 [cd]
-command = "nu"
+command = "@NU_BIN@"

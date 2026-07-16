@@ -62,6 +62,19 @@ if ! command -v brew &>/dev/null; then
   exit 1
 fi
 
+# Resolve Homebrew's prefix. Mirrors .chezmoitemplates/brew-prefix: /var/home on
+# immutable/ostree hosts (Bluefin, Silverblue, Bazzite), /home on WSL and
+# traditional distros, else ask brew directly. Keep the three in sync.
+_brew_prefix() {
+  if [[ -x /var/home/linuxbrew/.linuxbrew/bin/brew ]]; then
+    echo /var/home/linuxbrew/.linuxbrew
+  elif [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+    echo /home/linuxbrew/.linuxbrew
+  else
+    brew --prefix
+  fi
+}
+
 # ── Step 1: Base CLI tools ────────────────────────────────────────────────────
 echo "==> [1/5] Installing base CLI tools..."
 grep -E "^(tap|brew|cask)" "$SCRIPT_DIR/base.Brewfile" |
@@ -116,6 +129,7 @@ _set_chezmoi_flag() {
       echo "  Backed up existing config to $BACKUP"
     else
       cp "$CHEZMOI_BASE_SRC" "$CHEZMOI_CONFIG"
+      sed -i "s|@NU_BIN@|$(_brew_prefix)/bin/nu|" "$CHEZMOI_CONFIG"
     fi
     printf '\n[data]\n%s = true\n' "$key" >>"$CHEZMOI_CONFIG"
     echo "  Set $key = true in $CHEZMOI_CONFIG"

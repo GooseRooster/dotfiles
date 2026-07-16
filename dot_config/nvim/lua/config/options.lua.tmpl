@@ -3,7 +3,10 @@
 -- Add any additional options here
 
 vim.o.exrc = true
-vim.opt.shell = vim.fn.exepath("nu")
+-- Absolute path resolved once at `chezmoi apply` (see .chezmoitemplates/brew-prefix):
+-- /var/home on immutable/ostree hosts, /home on WSL and traditional distros.
+-- Hardcoded rather than exepath("nu") to avoid PATH ordering / shadowing.
+vim.opt.shell = "{{ includeTemplate "brew-prefix" }}/bin/nu"
 
 -- Give every floating window (LSP hover/signature help, blink.cmp's
 -- completion/doc menus, noice's cmdline popup, :h, etc.) a default border,

@@ -96,6 +96,19 @@ if ! command -v brew &>/dev/null; then
   exit 1
 fi
 
+# Resolve Homebrew's prefix. Mirrors .chezmoitemplates/brew-prefix: /var/home on
+# immutable/ostree hosts (Bluefin, Silverblue, Bazzite), /home on WSL and
+# traditional distros, else ask brew directly. Keep the three in sync.
+_brew_prefix() {
+  if [[ -x /var/home/linuxbrew/.linuxbrew/bin/brew ]]; then
+    echo /var/home/linuxbrew/.linuxbrew
+  elif [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+    echo /home/linuxbrew/.linuxbrew
+  else
+    brew --prefix
+  fi
+}
+
 # ── Step 1: Base CLI tools + editor setup (delegated) ────────────────────────
 echo "==> [1/14] Running bootstrap-cli.sh (base CLI tools + LazyVim + apply)..."
 "$SCRIPT_DIR/bootstrap-cli.sh"
@@ -261,6 +274,7 @@ else
   fi
 
   cp "$CHEZMOI_BASE_SRC" "$CHEZMOI_CONFIG"
+  sed -i "s|@NU_BIN@|$(_brew_prefix)/bin/nu|" "$CHEZMOI_CONFIG"
   printf '\n[data]\ngaming_enabled = %s\nmultimedia_enabled = %s\ntheming_enabled = %s\npodman_alias_enabled = %s\ndevcontainer_enabled = false\nwsl_enabled = false\n' \
     "$GAMING" "$MULTIMEDIA" "$THEMING" "$PODMAN_ALIAS" >>"$CHEZMOI_CONFIG"
 

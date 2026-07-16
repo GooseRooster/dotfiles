@@ -1,6 +1,6 @@
 [opener]
 edit = [
-	{ run = "/var/home/linuxbrew/.linuxbrew/bin/nvim %s", block = true, for = "unix" },
+	{ run = "{{ includeTemplate "brew-prefix" }}/bin/nvim %s", block = true, for = "unix" },
 	{ run = "%EDITOR% %s", block = true, for = "windows" },
 ]
 
