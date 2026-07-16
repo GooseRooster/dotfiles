@@ -97,12 +97,23 @@ echo "==> [3/14] Installing rustup..."
 if brew list rustup &>/dev/null; then
   echo "  rustup: already installed, skipping."
 else
-  brew install rustup
+  # 'brew install rustup' can exit non-zero when only the formula's post_install
+  # step fails — the same failure mode seen with rustup in brew bundle. The
+  # rustup manager binary is still poured and linked in that case, and the stable
+  # toolchain is set up explicitly below, so a post_install-only failure is
+  # non-fatal. A genuinely missing rustup binary is caught right after.
+  brew install rustup ||
+    echo "  WARN: 'brew install rustup' reported a failure (likely post_install); verifying rustup binary..." >&2
 fi
 
 # Ensure rustup binaries are on PATH for the rest of this script.
 # brew install rustup does not modify PATH, so we add the keg bin explicitly.
 export PATH="$(brew --prefix rustup)/bin:$PATH"
+
+if ! command -v rustup &>/dev/null; then
+  echo "ERROR: rustup is not available after install." >&2
+  exit 1
+fi
 
 # The Homebrew rustup formula provides the rustup manager binary but does not
 # run rustup-init automatically. We need to install the stable toolchain.
@@ -224,7 +235,8 @@ if [[ -f "$CHEZMOI_CONFIG" ]] &&
   grep -q "gaming_enabled" "$CHEZMOI_CONFIG" &&
   grep -q "multimedia_enabled" "$CHEZMOI_CONFIG" &&
   grep -q "theming_enabled" "$CHEZMOI_CONFIG" &&
-  grep -q "devcontainer_enabled" "$CHEZMOI_CONFIG"; then
+  grep -q "devcontainer_enabled" "$CHEZMOI_CONFIG" &&
+  grep -q "wsl_enabled" "$CHEZMOI_CONFIG"; then
   echo "  chezmoi.toml already has all [data] keys. Skipping."
   echo "  To update feature flags, edit $CHEZMOI_CONFIG and run 'chezmoi apply'."
 else
@@ -235,7 +247,7 @@ else
   fi
 
   cp "$CHEZMOI_BASE_SRC" "$CHEZMOI_CONFIG"
-  printf '\n[data]\ngaming_enabled = %s\nmultimedia_enabled = %s\ntheming_enabled = %s\ndevcontainer_enabled = false\n' \
+  printf '\n[data]\ngaming_enabled = %s\nmultimedia_enabled = %s\ntheming_enabled = %s\ndevcontainer_enabled = false\nwsl_enabled = false\n' \
     "$GAMING" "$MULTIMEDIA" "$THEMING" >>"$CHEZMOI_CONFIG"
 
   echo "  Created $CHEZMOI_CONFIG"

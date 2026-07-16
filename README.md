@@ -127,6 +127,47 @@ devcontainer-init ci-compose /path/to/some-repo
 
 Then review the `// TODO` comments in the copied `.devcontainer/devcontainer.json` (and `docker-compose.override.yml` for `ci-compose`) to point it at your actual compose file and service name.
 
+### WSL (Ubuntu) setup
+
+For an Ubuntu instance under WSL2 that you use to drive dev containers, run
+`bootstrap-cli.sh` with `--wsl`:
+
+```bash
+chezmoi init https://github.com/<your-username>/<your-fork>.git
+cd "$(chezmoi source-path)"
+chmod +x bootstrap-cli.sh
+./bootstrap-cli.sh --wsl
+```
+
+Like the plain CLI setup it skips language toolchains (those belong inside your
+dev containers), but it additionally:
+
+- Installs `wsl.Brewfile` on top of `base.Brewfile` — the dev container CLI,
+  Claude Code, and fastfetch.
+- Records `wsl_enabled = true` in `~/.config/chezmoi/chezmoi.toml`, so
+  `chezmoi apply` skips GUI-only dotfiles (ghostty, mpv, tinty theming, the
+  `termapp` helper) while **keeping** `devcontainer-init` — in WSL you want to
+  scaffold dev containers into your repos.
+- Appends a login block to `~/.bashrc` that loads Homebrew's environment, shows
+  the fastfetch greeting, and drops you into nushell on each interactive shell.
+- Runs `setup-docker-wsl.sh` to install Docker Engine (no Docker Desktop) from
+  Docker's official apt repo, add you to the `docker` group, and enable systemd
+  in `/etc/wsl.conf`. **This step needs `sudo`.**
+
+> **Homebrew must already be on `PATH`** before running this (same as the
+> dev-container setup) — install it first via <https://brew.sh>.
+
+After it finishes, **restart WSL** so systemd and your new `docker` group
+membership take effect:
+
+```powershell
+# From Windows PowerShell:
+wsl --shutdown
+```
+
+Reopen the distro, then verify Docker with `docker run hello-world`. The Docker
+setup can also be re-run on its own at any time with `./setup-docker-wsl.sh`.
+
 ### Re-running with different flags
 
 The bootstrap writes feature flags to `~/.config/chezmoi/chezmoi.toml` on first run and skips that step on subsequent runs. To change flags later, edit the file directly and apply:
@@ -157,6 +198,7 @@ The Brewfile layout:
 | `base.Brewfile` | Always (`bootstrap-cli.sh` or `bootstrap.sh`) |
 | `base-extra.Brewfile` | Always, host bootstrap only — visual/misc CLI tools (fastfetch, chafa, cava, bbrew) & GUI extras (nerd fonts, VS Code); skipped for devcontainer installs |
 | `devtools.Brewfile` | Always, host bootstrap only — language toolchains & container tooling, not installed by `bootstrap-cli.sh` |
+| `wsl.Brewfile` | `bootstrap-cli.sh --wsl` only — dev container CLI, Claude Code, fastfetch (on top of `base.Brewfile`) |
 | `cargo.Brewfile` | Always, host bootstrap only (after rustup) |
 | `theming.Brewfile` | `theming_enabled = true` |
 | `gaming.Brewfile` | `gaming_enabled = true` |

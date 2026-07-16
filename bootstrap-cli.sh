@@ -7,7 +7,7 @@
 # Idempotent: safe to re-run. Does NOT upgrade existing packages.
 #
 # Usage:
-#   ./bootstrap-cli.sh [--devcontainer]
+#   ./bootstrap-cli.sh [--devcontainer | --wsl]
 #
 # --devcontainer marks this run as a dev container in chezmoi.toml, so
 # 'chezmoi apply' skips desktop/GUI/optional-feature dotfiles that have no
@@ -16,7 +16,15 @@
 # itself (e.g. via a devcontainer Feature), same as it supplies its own
 # language toolchains. See devcontainer-templates/ for examples.
 #
-# This is also called by bootstrap.sh (without --devcontainer) as its first
+# --wsl targets an Ubuntu WSL host that drives dev containers. Like the base
+# run it skips language toolchains, but additionally installs wsl.Brewfile
+# (dev container CLI, Claude Code, fastfetch), records wsl_enabled in
+# chezmoi.toml (skips GUI dotfiles but keeps devcontainer-init), sets up a
+# bash login shell that greets with fastfetch and drops into nushell, and
+# installs Docker Engine via setup-docker-wsl.sh. --wsl and --devcontainer are
+# mutually exclusive.
+#
+# This is also called by bootstrap.sh (without flags) as its first
 # step for full host setups.
 
 set -euo pipefail
@@ -24,10 +32,14 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 DEVCONTAINER=false
+WSL=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
   --devcontainer)
     DEVCONTAINER=true
+    ;;
+  --wsl)
+    WSL=true
     ;;
   *)
     echo "ERROR: Unknown argument: $1" >&2
@@ -36,6 +48,11 @@ while [[ $# -gt 0 ]]; do
   esac
   shift
 done
+
+if [[ "$DEVCONTAINER" == true && "$WSL" == true ]]; then
+  echo "ERROR: --devcontainer and --wsl are mutually exclusive." >&2
+  exit 1
+fi
 
 # ── Preflight: brew must be available ────────────────────────────────────────
 if ! command -v brew &>/dev/null; then
@@ -49,6 +66,13 @@ echo "==> [1/5] Installing base CLI tools..."
 grep -E "^(tap|brew|cask)" "$SCRIPT_DIR/base.Brewfile" |
   brew bundle install --file=- --no-upgrade
 
+# ── WSL extras (dev container CLI, Claude Code, fastfetch) ────────────────────
+if [[ "$WSL" == true ]]; then
+  echo "==> [WSL] Installing WSL extras from wsl.Brewfile..."
+  grep -E "^(tap|brew|cask)" "$SCRIPT_DIR/wsl.Brewfile" |
+    brew bundle install --file=- --no-upgrade
+fi
+
 # ── Step 2: LazyVim starter ──────────────────────────────────────────────────
 # Follows the official LazyVim installation steps: https://www.lazyvim.org/installation
 echo "==> [2/5] Setting up LazyVim starter..."
@@ -61,17 +85,20 @@ else
   echo "  Cloned LazyVim starter into $NVIM_CONFIG_DIR."
 fi
 
-# ── Step 3: Mark this as a dev container, if requested ───────────────────────
-echo "==> [3/5] Recording devcontainer_enabled in chezmoi.toml..."
-if [[ "$DEVCONTAINER" == true ]]; then
-  CHEZMOI_DIR="$HOME/.config/chezmoi"
-  CHEZMOI_CONFIG="$CHEZMOI_DIR/chezmoi.toml"
-  CHEZMOI_BASE_SRC="$SCRIPT_DIR/dot_config/chezmoi.base.toml"
+# ── Step 3: Record the environment flag in chezmoi.toml, if requested ────────
+# Sets "<key> = true" in the [data] table of ~/.config/chezmoi/chezmoi.toml,
+# creating the config from the base template if it doesn't exist yet.
+_set_chezmoi_flag() {
+  local key="$1"
+  local CHEZMOI_DIR="$HOME/.config/chezmoi"
+  local CHEZMOI_CONFIG="$CHEZMOI_DIR/chezmoi.toml"
+  local CHEZMOI_BASE_SRC="$SCRIPT_DIR/dot_config/chezmoi.base.toml"
+  local BACKUP
 
   mkdir -p "$CHEZMOI_DIR"
 
-  if [[ -f "$CHEZMOI_CONFIG" ]] && grep -q "devcontainer_enabled" "$CHEZMOI_CONFIG"; then
-    echo "  chezmoi.toml already has devcontainer_enabled. Skipping."
+  if [[ -f "$CHEZMOI_CONFIG" ]] && grep -q "$key" "$CHEZMOI_CONFIG"; then
+    echo "  chezmoi.toml already has $key. Skipping."
   elif [[ -f "$CHEZMOI_CONFIG" ]] && grep -q '^\[data\]' "$CHEZMOI_CONFIG"; then
     # An existing [data] table is present (e.g. from a prior bootstrap.sh run)
     # but lacks this key. TOML doesn't allow redefining a table, so insert
@@ -79,8 +106,8 @@ if [[ "$DEVCONTAINER" == true ]]; then
     BACKUP="${CHEZMOI_CONFIG}.bak.$(date +%Y%m%d%H%M%S)"
     cp "$CHEZMOI_CONFIG" "$BACKUP"
     echo "  Backed up existing config to $BACKUP"
-    sed -i '/^\[data\]/a devcontainer_enabled = true' "$CHEZMOI_CONFIG"
-    echo "  Set devcontainer_enabled = true in $CHEZMOI_CONFIG"
+    sed -i "/^\[data\]/a $key = true" "$CHEZMOI_CONFIG"
+    echo "  Set $key = true in $CHEZMOI_CONFIG"
   else
     if [[ -f "$CHEZMOI_CONFIG" ]]; then
       BACKUP="${CHEZMOI_CONFIG}.bak.$(date +%Y%m%d%H%M%S)"
@@ -89,22 +116,66 @@ if [[ "$DEVCONTAINER" == true ]]; then
     else
       cp "$CHEZMOI_BASE_SRC" "$CHEZMOI_CONFIG"
     fi
-    printf '\n[data]\ndevcontainer_enabled = true\n' >>"$CHEZMOI_CONFIG"
-    echo "  Set devcontainer_enabled = true in $CHEZMOI_CONFIG"
+    printf '\n[data]\n%s = true\n' "$key" >>"$CHEZMOI_CONFIG"
+    echo "  Set $key = true in $CHEZMOI_CONFIG"
   fi
+}
+
+echo "==> [3/5] Recording environment flag in chezmoi.toml..."
+if [[ "$DEVCONTAINER" == true ]]; then
+  _set_chezmoi_flag devcontainer_enabled
+elif [[ "$WSL" == true ]]; then
+  _set_chezmoi_flag wsl_enabled
 else
-  echo "  --devcontainer not passed, skipping."
+  echo "  No environment flag requested, skipping."
 fi
 
 # ── Step 4: Apply dotfiles ────────────────────────────────────────────────────
 echo "==> [4/5] Running 'chezmoi apply'..."
 chezmoi apply
 
-# ── Step 5: Yazi plugins ──────────────────────────────────────────────────────
+# ── Step 5: Yazi plugins + tool data refresh ──────────────────────────────────
 # package.toml lists yazi's plugin/flavor deps; `ya pkg install` clones them.
 # Must run after 'chezmoi apply' so ~/.config/yazi/package.toml exists.
-echo "==> [5/5] Installing yazi plugins..."
+echo "==> [5/5] Installing yazi plugins and refreshing tool data..."
 ya pkg install
+
+# tealdeer: download/refresh the tldr page cache.
+if command -v tldr &>/dev/null; then
+  tldr --update || echo "  WARN: 'tldr --update' failed (network?), skipping." >&2
+fi
+
+# television: fetch the latest community channel prototypes.
+if command -v tv &>/dev/null; then
+  tv update-channels || echo "  WARN: 'tv update-channels' failed, skipping." >&2
+fi
+
+# ── WSL login shell + Docker Engine ──────────────────────────────────────────
+if [[ "$WSL" == true ]]; then
+  # Configure bash to load Homebrew's environment, greet with fastfetch, and
+  # drop into nushell on interactive login. config.nu suppresses its own
+  # fastfetch greeting under WSL, so we run it here instead. Idempotent via the
+  # marker comment; the interactive guard keeps non-interactive bash usable.
+  echo "==> [WSL] Configuring bash login shell (~/.bashrc)..."
+  BASHRC="$HOME/.bashrc"
+  if [[ -f "$BASHRC" ]] && grep -q "# chezmoi-wsl:" "$BASHRC"; then
+    echo "  ~/.bashrc already configured, skipping."
+  else
+    cat >>"$BASHRC" <<'EOF'
+
+# chezmoi-wsl: brew env + greeting + nushell
+if [[ $- == *i* ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  fastfetch
+  nu
+fi
+EOF
+    echo "  Appended brew env + fastfetch + nushell block to ~/.bashrc."
+  fi
+
+  echo "==> [WSL] Setting up Docker Engine..."
+  "$SCRIPT_DIR/setup-docker-wsl.sh"
+fi
 
 echo ""
 echo "bootstrap-cli complete."

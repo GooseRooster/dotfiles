@@ -11,3 +11,17 @@
 .local/bin/termapp
 .local/bin/devcontainer-init
 {{- end }}
+
+{{ if index . "wsl_enabled" | default false -}}
+.config/ghostty
+.config/mpv
+.config/environment.d
+.config/owl.jpg
+.config/tinted-theming
+.local/bin/termapp
+{{- end }}
+
+{{ if not (index . "wsl_enabled" | default false) -}}
+.config/systemd/user/ssh-agent.service
+.config/systemd/user/default.target.wants/ssh-agent.service
+{{- end }}
