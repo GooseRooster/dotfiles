@@ -3,7 +3,8 @@
 # Idempotent: safe to re-run. Does NOT upgrade existing packages.
 #
 # Usage:
-#   ./bootstrap.sh [--gaming|--no-gaming] [--multimedia|--no-multimedia] [--theming|--no-theming]
+#   ./bootstrap.sh [--gaming|--no-gaming] [--multimedia|--no-multimedia] \
+#                  [--theming|--no-theming] [--podman-alias|--no-podman-alias]
 #
 # Without flags: prompts interactively when run in a TTY. Defaults to false for all.
 
@@ -15,9 +16,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GAMING=false
 MULTIMEDIA=false
 THEMING=false
+PODMAN_ALIAS=false
 GAMING_SET=false
 MULTIMEDIA_SET=false
 THEMING_SET=false
+PODMAN_ALIAS_SET=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -45,6 +48,14 @@ while [[ $# -gt 0 ]]; do
     THEMING=false
     THEMING_SET=true
     ;;
+  --podman-alias)
+    PODMAN_ALIAS=true
+    PODMAN_ALIAS_SET=true
+    ;;
+  --no-podman-alias)
+    PODMAN_ALIAS=false
+    PODMAN_ALIAS_SET=true
+    ;;
   *)
     echo "ERROR: Unknown argument: $1" >&2
     exit 1
@@ -67,13 +78,15 @@ if [[ -t 0 ]]; then
   [[ "$GAMING_SET" == false ]] && _prompt_yn GAMING "Enable gaming features (Steam, emulators, Vesktop)?"
   [[ "$MULTIMEDIA_SET" == false ]] && _prompt_yn MULTIMEDIA "Enable multimedia features (Stremio, mpv)?"
   [[ "$THEMING_SET" == false ]] && _prompt_yn THEMING "Enable theming features (tinty, gnomad, gowall)?"
+  [[ "$PODMAN_ALIAS_SET" == false ]] && _prompt_yn PODMAN_ALIAS "Enable podman docker alias (DOCKER_HOST + docker->podman)?"
 fi
 
 echo ""
 echo "Bootstrap config:"
-echo "  gaming_enabled     = $GAMING"
-echo "  multimedia_enabled = $MULTIMEDIA"
-echo "  theming_enabled    = $THEMING"
+echo "  gaming_enabled       = $GAMING"
+echo "  multimedia_enabled   = $MULTIMEDIA"
+echo "  theming_enabled      = $THEMING"
+echo "  podman_alias_enabled = $PODMAN_ALIAS"
 echo ""
 
 # ── Preflight: brew must be available ────────────────────────────────────────
@@ -236,7 +249,8 @@ if [[ -f "$CHEZMOI_CONFIG" ]] &&
   grep -q "multimedia_enabled" "$CHEZMOI_CONFIG" &&
   grep -q "theming_enabled" "$CHEZMOI_CONFIG" &&
   grep -q "devcontainer_enabled" "$CHEZMOI_CONFIG" &&
-  grep -q "wsl_enabled" "$CHEZMOI_CONFIG"; then
+  grep -q "wsl_enabled" "$CHEZMOI_CONFIG" &&
+  grep -q "podman_alias_enabled" "$CHEZMOI_CONFIG"; then
   echo "  chezmoi.toml already has all [data] keys. Skipping."
   echo "  To update feature flags, edit $CHEZMOI_CONFIG and run 'chezmoi apply'."
 else
@@ -247,8 +261,8 @@ else
   fi
 
   cp "$CHEZMOI_BASE_SRC" "$CHEZMOI_CONFIG"
-  printf '\n[data]\ngaming_enabled = %s\nmultimedia_enabled = %s\ntheming_enabled = %s\ndevcontainer_enabled = false\nwsl_enabled = false\n' \
-    "$GAMING" "$MULTIMEDIA" "$THEMING" >>"$CHEZMOI_CONFIG"
+  printf '\n[data]\ngaming_enabled = %s\nmultimedia_enabled = %s\ntheming_enabled = %s\npodman_alias_enabled = %s\ndevcontainer_enabled = false\nwsl_enabled = false\n' \
+    "$GAMING" "$MULTIMEDIA" "$THEMING" "$PODMAN_ALIAS" >>"$CHEZMOI_CONFIG"
 
   echo "  Created $CHEZMOI_CONFIG"
 fi

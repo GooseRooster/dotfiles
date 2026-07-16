@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-# setup-docker-wsl.sh — Install Docker Engine on Ubuntu under WSL2 (no Docker
-# Desktop), so dev containers can run natively. Adds Docker's official apt repo,
-# installs the engine + compose/buildx plugins, adds you to the docker group, and
-# enables systemd in /etc/wsl.conf.
+# setup-docker-wsl.sh — Install container engines on Ubuntu under WSL2 (no Docker
+# Desktop), so dev containers can run natively. Installs both Docker Engine (from
+# Docker's official apt repo) and Podman (from Ubuntu's repo) — we keep both
+# around. Adds you to the docker group and enables systemd in /etc/wsl.conf.
+#
+# Podman's docker-compatible user socket (podman.socket) is enabled declaratively
+# via a chezmoi-managed systemd user unit symlink and starts on the next WSL boot;
+# nushell points DOCKER_HOST at it and aliases `docker` -> podman (see podman-alias.nu).
 #
 # Idempotent: safe to re-run. Auto-invoked by 'bootstrap-cli.sh --wsl', but can
 # also be run standalone.
@@ -41,9 +45,9 @@ fi
 
 # ── Step 1: Docker Engine ─────────────────────────────────────────────────────
 if command -v docker &>/dev/null; then
-  echo "==> [1/4] Docker already installed ($(docker --version 2>/dev/null)), skipping apt install."
+  echo "==> [1/6] Docker already installed ($(docker --version 2>/dev/null)), skipping apt install."
 else
-  echo "==> [1/4] Installing Docker Engine from Docker's apt repo..."
+  echo "==> [1/6] Installing Docker Engine from Docker's apt repo..."
   sudo apt-get update
   sudo apt-get install -y ca-certificates curl
   sudo install -m 0755 -d /etc/apt/keyrings
@@ -56,8 +60,16 @@ else
   sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 fi
 
-# ── Step 2: docker group ──────────────────────────────────────────────────────
-echo "==> [2/4] Ensuring '$USER' is in the docker group..."
+# ── Step 2: Podman ────────────────────────────────────────────────────────────
+if command -v podman &>/dev/null; then
+  echo "==> [2/6] Podman already installed ($(podman --version 2>/dev/null)), skipping apt install."
+else
+  echo "==> [2/6] Installing Podman from Ubuntu's apt repo..."
+  sudo apt-get install -y podman
+fi
+
+# ── Step 3: docker group ──────────────────────────────────────────────────────
+echo "==> [3/6] Ensuring '$USER' is in the docker group..."
 if id -nG "$USER" | tr ' ' '\n' | grep -qx docker; then
   echo "  Already a member of the docker group."
 else
@@ -65,8 +77,8 @@ else
   echo "  Added $USER to the docker group (takes effect after WSL restart)."
 fi
 
-# ── Step 3: systemd in /etc/wsl.conf ──────────────────────────────────────────
-echo "==> [3/4] Ensuring systemd is enabled in /etc/wsl.conf..."
+# ── Step 4: systemd in /etc/wsl.conf ──────────────────────────────────────────
+echo "==> [4/6] Ensuring systemd is enabled in /etc/wsl.conf..."
 WSL_CONF=/etc/wsl.conf
 if [[ -f "$WSL_CONF" ]] && grep -Eq '^\s*systemd\s*=\s*true' "$WSL_CONF"; then
   echo "  systemd already enabled in $WSL_CONF."
@@ -81,8 +93,8 @@ else
   echo "  Wrote [boot] systemd=true to $WSL_CONF."
 fi
 
-# ── Step 4: enable docker service ─────────────────────────────────────────────
-echo "==> [4/4] Enabling the docker service..."
+# ── Step 5: enable the docker service ─────────────────────────────────────────
+echo "==> [5/6] Enabling the docker service..."
 if systemctl is-system-running &>/dev/null || [[ "$(systemctl is-system-running 2>/dev/null)" == "degraded" ]]; then
   sudo systemctl enable --now docker || echo "  WARN: could not enable/start docker now; it will start after restart." >&2
 else
@@ -90,10 +102,23 @@ else
   sudo systemctl enable docker &>/dev/null || true
 fi
 
+# ── Step 6: enable podman's docker-compatible socket ──────────────────────────
+# chezmoi already lays down the enabling symlink (sockets.target.wants/podman.socket),
+# so it starts on the next boot regardless. If the user systemd bus is already up
+# (e.g. re-running after a restart), activate it now too.
+echo "==> [6/6] Enabling podman.socket (user)..."
+if systemctl --user show-environment &>/dev/null; then
+  systemctl --user enable --now podman.socket || echo "  WARN: could not enable/start podman.socket now; it will start after restart." >&2
+else
+  echo "  user systemd bus not available yet — podman.socket will start after the WSL restart below."
+fi
+
 echo ""
-echo "Docker setup complete."
+echo "Container setup complete (docker + podman)."
 echo ""
-echo "IMPORTANT: restart WSL for systemd and docker group membership to apply:"
+echo "IMPORTANT: restart WSL for systemd, docker group membership, and"
+echo "podman.socket to apply:"
 echo "  1. From Windows PowerShell:  wsl --shutdown"
 echo "  2. Reopen your Ubuntu distro"
-echo "  3. Verify with:              docker run hello-world"
+echo "  3. Verify with:              docker run hello-world   # runs via podman"
+echo "                               lazydocker                # TUI over the socket"

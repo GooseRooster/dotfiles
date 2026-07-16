@@ -19,10 +19,11 @@
 # --wsl targets an Ubuntu WSL host that drives dev containers. Like the base
 # run it skips language toolchains, but additionally installs wsl.Brewfile
 # (dev container CLI, Claude Code, fastfetch), records wsl_enabled in
-# chezmoi.toml (skips GUI dotfiles but keeps devcontainer-init), sets up a
-# bash login shell that greets with fastfetch and drops into nushell, and
-# installs Docker Engine via setup-docker-wsl.sh. --wsl and --devcontainer are
-# mutually exclusive.
+# chezmoi.toml (skips GUI dotfiles but keeps devcontainer-init) and forces
+# podman_alias_enabled on (DOCKER_HOST + docker->podman, see podman-alias.nu),
+# sets up a bash login shell that greets with fastfetch and drops into nushell,
+# and installs Docker + Podman via setup-docker-wsl.sh. --wsl and --devcontainer
+# are mutually exclusive.
 #
 # This is also called by bootstrap.sh (without flags) as its first
 # step for full host setups.
@@ -126,6 +127,8 @@ if [[ "$DEVCONTAINER" == true ]]; then
   _set_chezmoi_flag devcontainer_enabled
 elif [[ "$WSL" == true ]]; then
   _set_chezmoi_flag wsl_enabled
+  # WSL always uses podman as the docker engine — enforce the alias flag on.
+  _set_chezmoi_flag podman_alias_enabled
 else
   echo "  No environment flag requested, skipping."
 fi

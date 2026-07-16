@@ -25,3 +25,16 @@
 .config/systemd/user/ssh-agent.service
 .config/systemd/user/default.target.wants/ssh-agent.service
 {{- end }}
+
+{{ if not (index . "podman_alias_enabled" | default false) -}}
+.config/systemd/user/sockets.target.wants/podman.socket
+{{- end }}
+
+# Repo-management files that live at the source root — never apply these to $HOME.
+README.md
+LICENSE
+extensions.txt
+bootstrap.sh
+bootstrap-cli.sh
+setup-docker-wsl.sh
+*.Brewfile

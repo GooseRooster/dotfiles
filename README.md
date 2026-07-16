@@ -41,13 +41,14 @@ chmod +x bootstrap.sh
 
 `chezmoi init` clones the repository into `~/.local/share/chezmoi` without applying anything yet. The bootstrap script handles `chezmoi apply` at the end, after writing your feature flags into `~/.config/chezmoi/chezmoi.toml` — so your dotfiles are applied with the right settings from the start.
 
-The bootstrap script is interactive — it will prompt for three optional feature sets:
+The bootstrap script is interactive — it will prompt for these optional features:
 
-| Flag | What it installs |
+| Flag | What it enables |
 |------|-----------------|
 | `--gaming` | Steam, emulators (PCSX2, Dolphin), Vesktop, Bottles, LACT, GPU Screen Recorder |
 | `--multimedia` | Stremio, mpv (Flatpak) |
 | `--theming` | tinty, gnomad, gowall; syncs schemes to terminal, editor, browser, Discord |
+| `--podman-alias` | Sets `DOCKER_HOST` to podman's user socket and aliases `docker` → `podman` in nushell (both engines stay installed). Toggle later via `podman_alias_enabled` in `chezmoi.toml`. |
 
 These can also be passed as flags to skip the prompts (useful for scripted installs):
 
@@ -150,9 +151,17 @@ dev containers), but it additionally:
   scaffold dev containers into your repos.
 - Appends a login block to `~/.bashrc` that loads Homebrew's environment, shows
   the fastfetch greeting, and drops you into nushell on each interactive shell.
-- Runs `setup-docker-wsl.sh` to install Docker Engine (no Docker Desktop) from
-  Docker's official apt repo, add you to the `docker` group, and enable systemd
-  in `/etc/wsl.conf`. **This step needs `sudo`.**
+- Runs `setup-docker-wsl.sh` to install **both** Docker Engine (no Docker
+  Desktop, from Docker's official apt repo) and **Podman**, add you to the
+  `docker` group, and enable systemd in `/etc/wsl.conf`. **This step needs
+  `sudo`.** We keep both engines installed, but default to Podman: its
+  docker-compatible user socket (`podman.socket`) is enabled via a
+  chezmoi-managed systemd user unit, nushell points `DOCKER_HOST` at it and
+  aliases `docker` → `podman` (see `dot_config/nushell/podman-alias.nu.tmpl`), so
+  tools like `lazydocker` and the dev container CLI work against Podman out of the
+  box. Use `command docker` or the full binary path if you need the real Docker.
+  `--wsl` forces `podman_alias_enabled = true`; on other machines it's an opt-in
+  prompt (see below).
 
 > **Homebrew must already be on `PATH`** before running this (same as the
 > dev-container setup) — install it first via <https://brew.sh>.

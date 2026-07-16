@@ -28,6 +28,8 @@ brew "git-delta"
 brew "imagemagick-full", link: true
 # Lightweight and flexible command-line JSON processor
 brew "jq"
+# The lazier way to manage everything docker/podman
+brew "lazydocker"
 # Simple terminal UI for git commands
 brew "lazygit"
 # Provides unified data access to the GNOME project

@@ -110,6 +110,10 @@ source ~/.zoxide.nu
 # Shell integration for tv - fuzzy finder for lots of cool things.
 tv init nu | save -f ($autoload_dir | path join "tv.nu")
 
+# Podman/docker integration (DOCKER_HOST + `docker`→podman alias).
+# Templated by chezmoi on podman_alias_enabled; a no-op comment file when off.
+source ~/.config/nushell/podman-alias.nu
+
 
 # ── Greeting ───────────────────────────────────────────────────────────────────
 fastfetch
