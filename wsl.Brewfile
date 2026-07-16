@@ -7,3 +7,5 @@ brew "devcontainer"
 cask "claude-code"
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
+# Centralized update utility
+brew "topgrade"
