@@ -110,16 +110,16 @@ _brew_prefix() {
 }
 
 # ── Step 1: Base CLI tools + editor setup (delegated) ────────────────────────
-echo "==> [1/14] Running bootstrap-cli.sh (base CLI tools + LazyVim + apply)..."
+echo "==> [1/15] Running bootstrap-cli.sh (base CLI tools + LazyVim + apply)..."
 "$SCRIPT_DIR/bootstrap-cli.sh"
 
 # ── Step 2: Base extras (visual/GUI host tools, skipped in dev containers) ───
-echo "==> [2/14] Installing base extras..."
+echo "==> [2/15] Installing base extras..."
 grep -E "^(tap|brew|cask)" "$SCRIPT_DIR/base-extra.Brewfile" |
   brew bundle install --file=- --no-upgrade
 
 # ── Step 3: Rustup ───────────────────────────────────────────────────────────
-echo "==> [3/14] Installing rustup..."
+echo "==> [3/15] Installing rustup..."
 if brew list rustup &>/dev/null; then
   echo "  rustup: already installed, skipping."
 else
@@ -161,7 +161,7 @@ echo "  Rust:  $(rustup --version 2>&1 | head -1)"
 echo "  Cargo: $(cargo --version)"
 
 # ── Step 4: Cargo packages ───────────────────────────────────────────────────
-echo "==> [4/14] Installing cargo packages..."
+echo "==> [4/15] Installing cargo packages..."
 while IFS= read -r line; do
   if [[ "$line" =~ ^cargo[[:space:]]+\"([^\"]+)\" ]]; then
     pkg="${BASH_REMATCH[1]}"
@@ -175,19 +175,36 @@ while IFS= read -r line; do
 done <"$SCRIPT_DIR/cargo.Brewfile"
 
 # ── Step 5: Dev tool chain (language toolchains, container tooling) ─────────
-echo "==> [5/14] Installing dev tool chain..."
+echo "==> [5/15] Installing dev tool chain..."
 grep -E "^(tap|brew|cask)" "$SCRIPT_DIR/devtools.Brewfile" |
   brew bundle install --file=- --no-upgrade
 
-# ── Step 6: Theming tools ────────────────────────────────────────────────────
-echo "==> [6/14] Theming tools..."
+# ── Step 6: Podman socket ─────────────────────────────────────────────────────
+echo "==> [6/15] Ensuring podman socket is active..."
+if [[ "$PODMAN_ALIAS" == true ]]; then
+  if ! command -v podman &>/dev/null; then
+    echo "  WARN: podman_alias_enabled=true but podman binary not found; skipping." >&2
+  elif ! command -v systemctl &>/dev/null; then
+    echo "  WARN: systemctl not available (container/minimal env?); skipping socket setup." >&2
+  elif systemctl --user is-active --quiet podman.socket; then
+    echo "  podman.socket already active, skipping."
+  else
+    systemctl --user enable --now podman.socket
+    echo "  podman.socket enabled and started."
+  fi
+else
+  echo "  podman_alias_enabled=false, skipping."
+fi
+
+# ── Step 7: Theming tools ────────────────────────────────────────────────────
+echo "==> [7/15] Theming tools..."
 if [[ "$THEMING" == true ]]; then
   brew bundle install --file="$SCRIPT_DIR/theming.Brewfile" --no-upgrade
 else
   echo "  theming_enabled=false, skipping."
 fi
 
-# ── Step 7: Base flatpaks ────────────────────────────────────────────────────
+# ── Step 8: Base flatpaks ────────────────────────────────────────────────────
 _install_flatpaks() {
   local brewfile="$1"
   [[ -f "$brewfile" ]] || {
@@ -208,27 +225,27 @@ _install_flatpaks() {
   done <"$brewfile"
 }
 
-echo "==> [7/14] Installing base flatpaks..."
+echo "==> [8/15] Installing base flatpaks..."
 _install_flatpaks "$SCRIPT_DIR/base.flatpak.Brewfile"
 
-# ── Step 8: Gaming flatpaks ──────────────────────────────────────────────────
-echo "==> [8/14] Gaming flatpaks..."
+# ── Step 9: Gaming flatpaks ──────────────────────────────────────────────────
+echo "==> [9/15] Gaming flatpaks..."
 if [[ "$GAMING" == true ]]; then
   _install_flatpaks "$SCRIPT_DIR/gaming.flatpak.Brewfile"
 else
   echo "  gaming_enabled=false, skipping."
 fi
 
-# ── Step 9: Multimedia flatpaks ──────────────────────────────────────────────
-echo "==> [9/14] Multimedia flatpaks..."
+# ── Step 10: Multimedia flatpaks ──────────────────────────────────────────────
+echo "==> [10/15] Multimedia flatpaks..."
 if [[ "$MULTIMEDIA" == true ]]; then
   _install_flatpaks "$SCRIPT_DIR/multimedia.flatpak.Brewfile"
 else
   echo "  multimedia_enabled=false, skipping."
 fi
 
-# ── Step 10: Gaming CLI tools ─────────────────────────────────────────────────
-echo "==> [10/14] Gaming CLI tools..."
+# ── Step 11: Gaming CLI tools ─────────────────────────────────────────────────
+echo "==> [11/15] Gaming CLI tools..."
 if [[ "$GAMING" == true ]]; then
   if grep -qE "^(tap|brew|cask)" "$SCRIPT_DIR/gaming.Brewfile" 2>/dev/null; then
     grep -E "^(tap|brew|cask)" "$SCRIPT_DIR/gaming.Brewfile" |
@@ -240,8 +257,8 @@ else
   echo "  gaming_enabled=false, skipping."
 fi
 
-# ── Step 11: Ghostty terminal ────────────────────────────────────────────────
-echo "==> [11/14] Ghostty terminal..."
+# ── Step 12: Ghostty terminal ────────────────────────────────────────────────
+echo "==> [12/15] Ghostty terminal..."
 if command -v ghostty &>/dev/null; then
   echo "  ghostty already installed natively, skipping AppImage."
 else
@@ -249,8 +266,8 @@ else
     brew bundle install --file=- --no-upgrade
 fi
 
-# ── Step 12: Bootstrap chezmoi.toml ──────────────────────────────────────────
-echo "==> [12/14] Bootstrapping ~/.config/chezmoi/chezmoi.toml..."
+# ── Step 13: Bootstrap chezmoi.toml ──────────────────────────────────────────
+echo "==> [13/15] Bootstrapping ~/.config/chezmoi/chezmoi.toml..."
 CHEZMOI_DIR="$HOME/.config/chezmoi"
 CHEZMOI_CONFIG="$CHEZMOI_DIR/chezmoi.toml"
 CHEZMOI_BASE_SRC="$SCRIPT_DIR/dot_config/chezmoi.base.toml"
@@ -281,8 +298,8 @@ else
   echo "  Created $CHEZMOI_CONFIG"
 fi
 
-# ── Step 13: Tinty hook target directories ────────────────────────────────────
-echo "==> [13/14] Creating tinty directories..."
+# ── Step 14: Tinty hook target directories ────────────────────────────────────
+echo "==> [14/15] Creating tinty directories..."
 if [[ "$THEMING" == true ]]; then
   mkdir -p "$HOME/.config/yazi/flavors/tinted-scheme.yazi/"
   mkdir -p "$HOME/.claude/themes/"
@@ -295,8 +312,8 @@ else
   echo "  theming_enabled=false, skipping."
 fi
 
-# ── Step 14: Apply dotfiles ───────────────────────────────────────────────────
-echo "==> [14/14] Running 'chezmoi apply'..."
+# ── Step 15: Apply dotfiles ───────────────────────────────────────────────────
+echo "==> [15/15] Running 'chezmoi apply'..."
 chezmoi apply
 
 echo ""
