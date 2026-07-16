@@ -13,3 +13,5 @@ brew "meson"
 brew "podman-tui"
 # Extremely fast Python package installer and resolver
 brew "uv"
+# Open source java development kit
+brew "openjdk"
