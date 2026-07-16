@@ -9,6 +9,14 @@ $env.PATH = ($env.PATH | prepend [
     $"($brew_prefix)/sbin"
 ])
 
+#SSH
+let existing_sock = ($env.SSH_AUTH_SOCK? | default "")
+if ($existing_sock == "") or (not ($existing_sock | path exists)) {
+    let uid = (id -u | str trim)
+    $env.XDG_RUNTIME_DIR = ($env.XDG_RUNTIME_DIR? | default $"/run/user/($uid)")
+    $env.SSH_AUTH_SOCK = $"($env.XDG_RUNTIME_DIR)/ssh-agent.socket"
+}
+
 
 # ── Toolchain env (depends on brew being on PATH above) ────────────────────────
 # Add any environment variables here for dev tooling, if needed
