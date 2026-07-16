@@ -72,5 +72,3 @@ brew "zip"
 brew "zoxide"
 # Simple extraction library
 brew "unzip"
-# docker container support
-brew "docker"
