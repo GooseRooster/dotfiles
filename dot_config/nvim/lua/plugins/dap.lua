@@ -31,7 +31,31 @@ return {
       local dap, dapui = require("dap"), require("dapui")
 
 
-      dapui.setup()
+      ---@diagnostic disable-next-line: missing-fields
+      dapui.setup({
+        layouts = {
+          -- Left: inspector
+          {
+            elements = {
+              { id = "scopes",      size = 0.45 },
+              { id = "stacks",      size = 0.30 },
+              { id = "watches",     size = 0.15 },
+              { id = "breakpoints", size = 0.10 },
+            },
+            size = 40,
+            position = "left",
+          },
+          -- Right: repl above the integrated terminal (debuggee console)
+          {
+            elements = {
+              { id = "repl",    size = 0.35 },
+              { id = "console", size = 0.65 },
+            },
+            size = 70,
+            position = "right",
+          },
+        },
+      })
       dap.listeners.before.attach.dapui_config = function()
         dapui.open({ reset = true })
       end
