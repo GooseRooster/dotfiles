@@ -15,3 +15,5 @@ brew "podman-tui"
 brew "uv"
 # Open source java development kit
 brew "openjdk"
+# Java project management
+brew "maven"
