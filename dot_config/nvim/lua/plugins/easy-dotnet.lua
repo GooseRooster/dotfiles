@@ -20,9 +20,11 @@ return {
 						hide_panel = { lhs = "q", desc = "Hide terminal panel" },
 					},
 				},
+				-- Only used when debugger.console = "externalTerminal".
+				-- wezterm is Windows-only here (/mnt/c); alacritty is the Linux binary on PATH.
 				external_terminal = {
-					command = "wezterm",
-					args = { "start" },
+					command = "alacritty",
+					args = { "-e" },
 				},
 				projx_lsp = {
 					enabled = true,
@@ -41,7 +43,7 @@ return {
 					-- Path to custom coreclr DAP adapter
 					-- easy-dotnet-server falls back to its own netcoredbg binary if bin_path is nil
 					bin_path = nil,
-					console = "externalTerminal", -- Controls where the target app runs: "integratedTerminal" (Neovim buffer) or "externalTerminal" (OS window)
+					console = "integratedTerminal", -- Controls where the target app runs: "integratedTerminal" (Neovim buffer) or "externalTerminal" (OS window)
 					apply_value_converters = true,
 					auto_register_dap = true,
 					mappings = {
