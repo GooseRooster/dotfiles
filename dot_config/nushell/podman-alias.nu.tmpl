@@ -6,4 +6,5 @@
 # can stay installed — use `command docker` or the full path for the real docker.
 $env.DOCKER_HOST = $"unix:///run/user/(^id -u | str trim)/podman/podman.sock"
 alias docker = podman
+alias lazypodman = lazydocker
 {{- end }}
