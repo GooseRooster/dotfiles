@@ -52,10 +52,6 @@ def --env home [] {
     fastfetch
 }
 
-# Distrobox: enter container, bootstrap nu
-def dbx [name: string] {
-  ^distrobox enter $name -- nu
-}
 
 
 # ── Functions: file ops ───────────────────────────────────────────────────────
@@ -80,6 +76,12 @@ def copy [...args: string] {
 def cze [...args: string] {
     chezmoi edit ...$args
     chezmoi apply
+}
+
+# ── Functions: Containers and VMs ───────────────────────────────────────────────────────
+# Distrobox: enter container, bootstrap nu
+def dbx [name: string] {
+  ^distrobox enter $name -- nu
 }
 
 
