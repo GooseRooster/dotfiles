@@ -300,3 +300,141 @@ distrobox-export --bin /usr/bin/my-tool --export-path ~/.local/bin
 ```
 
 The exported binary is a shim that transparently enters the container when invoked from the host — no manual `distrobox enter` needed.
+
+## Windows VM (Podman Quadlet)
+
+Running Windows 11 as a systemd-managed Podman Quadlet
+([dockur/windows](https://github.com/dockur/windows)), for one-off MSVC/native
+builds that don't play well under Wine. Runs **rootful** (not rootless) — see
+rationale below. This step is manual — not every host wants a Windows VM — so
+it isn't wired into `bootstrap.sh`.
+
+### Why rootful, not rootless
+
+dockur/windows needs three things: `/dev/kvm`, `/dev/net/tun`, and
+`CAP_NET_ADMIN`. On Bluefin, `/dev/kvm` is world-writable (`666`) via a
+Universal Blue udev rule, so device access alone isn't the blocker.
+
+The actual blocker is `/dev/net/tun`: QEMU needs to call `ioctl(TUNSETIFF)` on
+it to create a tap interface, which requires **real** `CAP_NET_ADMIN` on the
+host's network namespace. Rootless Podman's `--cap-add NET_ADMIN` only grants
+that capability inside the container's own unprivileged user namespace — it
+cannot hand out real host-level `CAP_NET_ADMIN`:
+
+```nu
+podman run --rm -it --device /dev/kvm --device /dev/net/tun --cap-add NET_ADMIN alpine sh -c "ls -la /dev/kvm /dev/net/tun"
+# /dev/kvm: fine
+# /dev/net/tun: Permission denied
+```
+
+So: **rootful Quadlet**, unit lives in `/etc/containers/systemd/`, managed via
+`systemctl` (not `--user`).
+
+### Deploying the Quadlet
+
+`container_templates/windows.container` is the Quadlet template. Notes on the
+fields:
+
+- `Volume=...:Z` — the `:Z` SELinux relabel suffix is required on Fedora
+  Atomic/Bluefin (SELinux enforcing). Podman doesn't auto-relabel bind mounts
+  the way Docker's compatibility shim does.
+- `AutoUpdate=registry` — lets `podman-auto-update.timer` pull new
+  `dockurr/windows` wrapper-image versions. This does **not** touch the
+  Windows install itself (persisted in `/storage`); it only updates the
+  QEMU/wrapper tooling.
+- Deliberately **no `Restart=` directive** — a clean in-guest shutdown should
+  release the RAM, not trigger an immediate restart. Start/stop like any other
+  on-demand dev environment:
+  ```nu
+  sudo systemctl start windows.service
+  sudo systemctl stop windows.service
+  ```
+
+
+```nu
+open ~/container_templates/windows.container
+| str replace --all "<YOUR_USER>" (whoami)
+| save -f /tmp/windows.container
+
+sudo mkdir -p /etc/containers/systemd
+sudo cp /tmp/windows.container /etc/containers/systemd/windows.container
+
+# make sure the bind-mount targets exist — Podman won't create them
+sudo mkdir -p $"/var/home/(whoami)/vms/windows/storage"
+sudo mkdir -p $"/var/home/(whoami)/vms/windows/shared"
+
+# Disable COW on the storage volume before it has any files (see below) - ONLY NEEDED FOR BTRFS
+sudo chattr +C $"/var/home/(whoami)/vms/windows/storage"
+
+sudo systemctl daemon-reload
+sudo systemctl start windows.service
+sudo systemctl status windows.service
+```
+
+### Disabling COW on the storage volume (BTRFS hosts)
+
+Bluefin's root filesystem is BTRFS. QEMU's qcow2 disk images do their own
+copy-on-write bookkeeping internally — layering that under BTRFS's own COW
+causes write amplification and fragmentation over time (same reason
+libvirt/virt-manager docs recommend disabling COW for VM image directories on
+BTRFS hosts). dockur/windows prints a warning about this at boot if it
+detects BTRFS under `/storage`.
+
+**Must be done before any files exist in the directory** — `chattr +C` only
+applies to newly created files, not retroactively. Run it immediately after
+`mkdir`, before starting the service for the first time (see the snippet
+above).
+
+What you give up, for this specific directory: checksumming (bit-rot
+detection — acceptable for a disposable build VM), transparent compression
+(the virtual disk takes its full logical size on disk), and slightly fuzzy
+snapshot behavior at the edges (first write after a BTRFS snapshot forces one
+COW break, briefly reintroducing fragmentation before settling back to nocow).
+What you get: no COW-on-COW write amplification, meaningfully better
+sustained I/O for NTFS-inside-qcow2's constant small random writes. Right
+trade for an occasional-use dev VM.
+
+### Connecting — RustConn (Flatpak)
+
+RustConn (`io.github.totoshko88.RustConn`, in `base.flatpak.Brewfile`) is an
+RDP client. Connection profile:
+
+| Field | Value | Notes |
+|---|---|---|
+| Name | `Dockur Windows` (or any label) | Cosmetic only |
+| Host | `127.0.0.1` | Rootful container publishes RDP to host loopback |
+| Port | `3389` | Matches `PublishPort=3389:3389/tcp` in the Quadlet |
+| Username | `Docker` | dockur/windows default account (fixed unless overridden via `USERNAME:`/`PASSWORD:` env vars in the Quadlet, which we didn't) |
+| Domain | *(blank)* | Local account, not domain-joined |
+| Jump Host | `(None)` | Direct loopback connection, no SSH tunnel |
+| Password | `admin` | dockur/windows default |
+
+### Troubleshooting: `xterm-ghostty: unknown terminal type` under `sudo`
+
+Running `sudo systemctl status windows.service` (or any `sudo` command) from
+a Ghostty terminal can print:
+
+```
+'xterm-ghostty': unknown terminal type.
+```
+
+The Ghostty AppImage cask installs the `xterm-ghostty` terminfo entry to
+`~/.local/share/terminfo/x/xterm-ghostty` (the user-scoped ncurses search
+path) — correct for a normal shell. But Fedora/Bluefin's `sudoers` sets
+`Defaults always_set_home`, unconditionally resetting `$HOME` to root's home
+for any `sudo`'d command, so ncurses under `sudo` looks in
+`/root/.local/share/terminfo`, finds nothing, and falls back to the
+compiled-in terminal database, which doesn't include `xterm-ghostty`.
+
+`bootstrap.sh`'s Ghostty step now installs the compiled terminfo entry into
+`/etc/terminfo`, which is in ncurses' default search path regardless of
+`$HOME` and writable even on immutable Fedora Atomic — so this shouldn't come
+up on a host set up via this repo's bootstrap. If you hit it anyway (e.g. the
+cask was installed outside this repo's bootstrap), fix it manually:
+
+```nu
+sudo mkdir -p /etc/terminfo/x
+sudo cp ~/.local/share/terminfo/x/xterm-ghostty /etc/terminfo/x/xterm-ghostty
+```
+
+Or work around it per-invocation: `sudo env TERM=xterm-256color <command>`.

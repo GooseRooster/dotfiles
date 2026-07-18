@@ -264,6 +264,18 @@ if command -v ghostty &>/dev/null; then
 else
   grep -E "^(tap|brew|cask)" "$SCRIPT_DIR/ghostty.Brewfile" |
     brew bundle install --file=- --no-upgrade
+
+  # xterm-ghostty terminfo installs to the user-scoped ncurses path, which
+  # `sudo` can't see: Fedora/Bluefin's sudoers sets `Defaults
+  # always_set_home`, unconditionally resetting $HOME to root's home for any
+  # sudo'd command. Mirror it into /etc/terminfo so sudo'd commands (e.g.
+  # `sudo systemctl status` on a terminal running ghostty) still work.
+  TERMINFO_SRC="$HOME/.local/share/terminfo/x/xterm-ghostty"
+  if [[ -f "$TERMINFO_SRC" ]]; then
+    sudo mkdir -p /etc/terminfo/x
+    sudo cp "$TERMINFO_SRC" /etc/terminfo/x/xterm-ghostty
+    echo "  Installed xterm-ghostty terminfo to /etc/terminfo for sudo'd commands."
+  fi
 fi
 
 # ── Step 13: Bootstrap chezmoi.toml ──────────────────────────────────────────
