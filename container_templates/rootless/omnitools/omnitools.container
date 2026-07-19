@@ -1,0 +1,14 @@
+
+[Unit]
+Description=omni-tools
+
+[Container]
+Image=docker.io/iib0011/omni-tools:latest
+ContainerName=omni-tools
+PublishPort=8090:80
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
