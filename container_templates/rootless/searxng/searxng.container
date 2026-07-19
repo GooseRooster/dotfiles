@@ -1,0 +1,16 @@
+[Unit]
+Description=SearXNG
+After=searxng-redis.service
+
+[Container]
+Image=docker.io/searxng/searxng:latest
+ContainerName=searxng
+Pod=searxng.pod
+Volume=%h/.config/searxng:/etc/searxng:rw,Z,U
+Environment=BASE_URL=http://localhost:8080/
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

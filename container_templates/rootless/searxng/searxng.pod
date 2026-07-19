@@ -1,0 +1,3 @@
+[Pod]
+PodName=searxng
+PublishPort=8080:8080

@@ -1,0 +1,11 @@
+[Unit]
+Description=SearXNG Redis cache
+
+[Container]
+Image=docker.io/valkey/valkey:8-alpine
+ContainerName=searxng-redis
+Pod=searxng.pod
+Volume=searxng-redis.volume:/data
+
+[Service]
+Restart=always
