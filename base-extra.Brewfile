@@ -8,6 +8,8 @@ brew "chafa"
 brew "fastfetch"
 # Modern TUI for managing Homebrew packages and casks on macOS and Linux
 brew "valkyrie00/bbrew/bbrew", trusted: true
+# A plain text note-taking assistant
+brew "zk"
 cask "font-fira-code-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-sauce-code-pro-nerd-font"

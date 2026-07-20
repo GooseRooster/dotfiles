@@ -9,3 +9,5 @@ cask "claude-code"
 brew "fastfetch"
 # Centralized update utility
 brew "topgrade"
+# A plain text note-taking assistant
+brew "zk"
