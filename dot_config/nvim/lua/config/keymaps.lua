@@ -8,5 +8,5 @@ vim.keymap.set("n", "<A-k>", "<C-w>k", { desc = "Go to upper window" })
 vim.keymap.set("n", "<A-l>", "<C-w>l", { desc = "Go to right window" })
 
 -- Half-page scroll
-vim.keymap.set("n", "<C-j>", "<C-d>zz", { desc = "Scroll down half page (centered)" })
-vim.keymap.set("n", "<C-k>", "<C-u>zz", { desc = "Scroll up half page (centered)" })
+vim.keymap.set("n", "<C-j>", "<C-d>zz", { desc = "Scroll down half page (centered)", noremap = true, silent = true })
+vim.keymap.set("n", "<C-k>", "<C-u>zz", { desc = "Scroll up half page (centered)", noremap = true, silent = true })
