@@ -149,34 +149,39 @@ return {
 				dotnet.secrets()
 			end, {})
 
-			vim.keymap.set("n", "<leader>rd", function()
-				vim.cmd("Dotnet debug profile")
-			end, { desc = "Debug: launch profile" })
-			vim.keymap.set("n", "<leader>rr", function()
-				vim.cmd("Dotnet run profile")
-			end, { desc = "Dotnet run (profile)" })
-			vim.keymap.set("n", "<leader>rt", function()
-				dotnet.testrunner()
-			end, { desc = "Test runner" })
-			vim.keymap.set("n", "<leader>rb", function()
-				vim.cmd("Dotnet build")
-			end, { desc = "Dotnet build" })
-			vim.keymap.set("n", "<leader>rs", function()
-				dotnet.secrets()
-			end, { desc = "User secrets" })
-			vim.keymap.set("n", "<leader>rT", function()
-				vim.cmd("Dotnet terminal toggle")
-			end, { desc = "Dotnet terminal panel" })
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = { "cs", "razor", "fsharp", "csproj", "sln", "slnx" },
+				callback = function(args)
+					local bufnr = args.buf
+					local map = function(lhs, rhs, desc)
+						vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc })
+					end
+
+					map("<leader>rd", function()
+						vim.cmd("Dotnet debug profile")
+					end, "Debug: launch profile")
+					map("<leader>rr", function()
+						vim.cmd("Dotnet run profile")
+					end, "Dotnet run (profile)")
+					map("<leader>rt", function()
+						dotnet.testrunner()
+					end, "Test runner")
+					map("<leader>rb", function()
+						vim.cmd("Dotnet build")
+					end, "Dotnet build")
+					map("<leader>rs", function()
+						dotnet.secrets()
+					end, "User secrets")
+					map("<leader>rT", function()
+						vim.cmd("Dotnet terminal toggle")
+					end, "Dotnet terminal panel")
+
+					local ok, wk = pcall(require, "which-key")
+					if ok then
+						wk.add({ { "<leader>r", group = "dotnet", icon = "", buffer = bufnr } })
+					end
+				end,
+			})
 		end,
-	},
-	{
-		"folke/which-key.nvim",
-		opts = {
-			spec = {
-				{
-					{ "<leader>r", group = "dotnet", icon = "" },
-				},
-			},
-		},
 	},
 }
