@@ -52,7 +52,12 @@ def --env home [] {
     fastfetch
 }
 
-
+# Notebook, for use with zk
+def --env notebook [] {
+  cd ~
+  mkdir notes
+  cd notes
+}
 
 # ── Functions: file ops ───────────────────────────────────────────────────────
 # Backup a file
