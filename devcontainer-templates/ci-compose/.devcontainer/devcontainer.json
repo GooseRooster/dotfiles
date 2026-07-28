@@ -1,40 +1,31 @@
-// Dev container that inherits an existing CI docker-compose.yml (e.g. the
-// stack your CI pipeline already builds/deploys) and layers dev-only tweaks
-// + Homebrew on top via docker-compose.override.yml and a Feature.
+// Dev container that inherits an existing CI docker-compose.yml and layers dev-only
+// tweaks + the rootless-podman plumbing on top via docker-compose.override.yml.
+// Same conventions as the base/dotnet templates (local/ hook, brew-on-PATH, SSH
+// agent forwarding) adapted for the compose flavor — see README.md.
 //
-// dockerComposeFile is an array: the devcontainer CLI merges all listed
-// files, so your real CI compose stays untouched and dev-only bits (workspace
-// mount, "sleep infinity" so the container doesn't exit, etc.) live here.
+// NOTE: for compose-based dev containers, `runArgs` and `mounts` are NOT applied —
+// container-level settings (userns, network, volumes, env) live in the override
+// compose file. devcontainer.json keeps service / user / remoteEnv / lifecycle.
 {
   "name": "ci-compose",
-  // TODO: point this at your repo's actual CI docker-compose.yml. This
-  // assumes it lives at the repo root, one level up from .devcontainer/.
+  // TODO: point at your repo's actual CI docker-compose.yml (assumed at the repo
+  // root, one level up from .devcontainer/).
   "dockerComposeFile": ["../docker-compose.yml", "docker-compose.override.yml"],
-  // TODO: set this to the service you want to attach to (must match a
-  // service name in the CI compose file, and in docker-compose.override.yml).
+  // TODO: the service to attach to (must match the CI compose + the override).
   "service": "app",
   // Must match the mount target in docker-compose.override.yml.
   "workspaceFolder": "/workspace",
-  "features": {
-    // NOTE: this feature's prereq-installer only branches on
-    // debian/ubuntu/alpine base images. If your CI image is Oracle Linux (or
-    // another dnf-based distro), it'll need patching — or the image needs
-    // curl/git/gcc preinstalled already — before this will work as-is.
-    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {}
+  // TODO: a non-root, uid-1000 user that exists in your CI image. keep-id maps your
+  // host uid (1000) to this user so the workspace is writable. If the CI image only
+  // has root, add a uid-1000 user to it — running as root under keep-id leaves the
+  // bind-mounted workspace unwritable.
+  "remoteUser": "app",
+  "remoteEnv": {
+    // Homebrew bin on PATH so brew-installed tools (nushell, ...) resolve in every
+    // `exec`/terminal (brew is installed by the personal hook, not a Feature).
+    "PATH": "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${containerEnv:PATH}"
   },
-  "containerEnv": {
-    "DEVCONTAINER": "true",
-    // Neovim loads a minimal profile in dev containers (markdown + git/json/yaml/
-    // docker baseline). List the extra languages this container needs, comma-
-    // separated, to fully enable them (extras + LSP/DAP/treesitter via Mason).
-    // Valid tokens: python rust typescript java clang cmake docker sql json
-    // yaml nushell git dotnet. Omit/empty -> baseline only. Set NVIM_PROFILE=full to
-    // enable everything instead. See ~/.config/nvim/lua/config/profile.lua.
-    "NVIM_LANGS": ""
-  },
-  // brew install chezmoi: the Homebrew feature only installs Homebrew
-  // itself, not any formulae -- chezmoi has to come from somewhere before it
-  // can clone the repo containing bootstrap-cli.sh. base.Brewfile also lists
-  // chezmoi; the re-run inside bootstrap-cli.sh is a harmless no-op.
-  "postCreateCommand": "brew install chezmoi && chezmoi init https://github.com/GooseRooster/dotfiles.git && cd $(chezmoi source-path) && ./bootstrap-cli.sh --devcontainer"
+  // ⟨app⟩ add "forwardPorts": [ ... ] for your app's ports (or uncomment
+  // network_mode: host in the override).
+  "postCreateCommand": "bash .devcontainer/scripts/setup-repo.sh && bash .devcontainer/scripts/setup-local.sh"
 }

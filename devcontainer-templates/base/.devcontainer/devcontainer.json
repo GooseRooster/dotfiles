@@ -1,0 +1,50 @@
+// Base dev container skeleton — the reusable, language-agnostic starting point.
+// Copy this for a new stack, then fill in the ⟨toolchain⟩ bits in Dockerfile and
+// scripts/setup-repo.sh. It bakes in the container plumbing learned the hard way:
+// rootless-podman keep-id, the /tmp fix, Homebrew-on-PATH, SSH agent forwarding,
+// and the gitignored local/ personalization hook. See README.md.
+{
+  "name": "devcontainer",
+  "build": { "dockerfile": "Dockerfile" },
+  "features": {
+    // Non-root user + passwordless sudo. base:ubuntu ships 'vscode' (uid 1000).
+    // If you swap the base image, set username to ITS uid-1000 user and update
+    // remoteUser + every /home/<user> path below to match (this is the #1 gotcha
+    // when changing base images — e.g. mcr dotnet/sdk uses 'ubuntu', not 'vscode').
+    "ghcr.io/devcontainers/features/common-utils:2": { "username": "vscode", "installZsh": false }
+  },
+  "remoteUser": "vscode",
+  // Rootless podman:
+  //  --userns=keep-id : map host uid 1000 -> the container's uid-1000 user, so the
+  //                     bind-mounted workspace is writable (else host maps to root).
+  //  --network=host   : OPTIONAL (uncomment) — share the host net namespace so the app
+  //                     is reachable on localhost under the plain devcontainer CLI
+  //                     (forwardPorts is a VS Code-only tunnel) and outbound calls use
+  //                     the host's routes (e.g. VPN-only services). Less isolation.
+  //  --name           : stable container name instead of the CLI's vsc-<hash>.
+  //  To enable host networking, add "--network=host" to the array below.
+  "runArgs": ["--userns=keep-id", "--name", "devcontainer"],
+  // keep-id already aligns UIDs; skip the CLI's UID-sync layer.
+  "updateRemoteUserUID": false,
+  "remoteEnv": {
+    // Homebrew bin on PATH so brew-installed tools (nushell, ...) resolve in every
+    // `devcontainer exec`/terminal. Brew is installed by the personal hook (not a
+    // Feature), so nothing else adds it; inert if the personal setup isn't used.
+    "PATH": "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${containerEnv:PATH}"
+  },
+  "containerEnv": {
+    // Point ssh at the forwarded host agent socket (mounted below).
+    "SSH_AUTH_SOCK": "/ssh-agent",
+    // Inert unless someone runs the personal nvim config (profile.lua reads these).
+    "DEVCONTAINER": "true",
+    "NVIM_LANGS": ""
+  },
+  // SSH agent forwarding: signing stays in the host agent; PRIVATE KEYS NEVER ENTER
+  // THE CONTAINER. Requires SSH_AUTH_SOCK set in the shell running the up command.
+  // (Common git host keys are pre-seeded in the image — see Dockerfile.)
+  "mounts": [
+    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent,type=bind"
+  ],
+  // ⟨app⟩ add "forwardPorts": [ ... ] for your app's ports (or rely on --network=host).
+  "postCreateCommand": "bash .devcontainer/scripts/setup-repo.sh && bash .devcontainer/scripts/setup-local.sh"
+}

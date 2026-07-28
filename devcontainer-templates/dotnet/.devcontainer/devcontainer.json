@@ -1,0 +1,49 @@
+// .NET dev container — the base skeleton + .NET SDK + NuGet private-feed auth +
+// a trust-once dev HTTPS cert. Blazor-WASM extras (wasm-tools, sass, headless
+// Chrome) are opt-in — see the ⟨blazor⟩ TODO blocks in Dockerfile/setup-repo.sh.
+// NOTE: the mcr dotnet/sdk image's uid-1000 user is 'ubuntu' (not 'vscode').
+{
+  "name": "dotnet",
+  "build": { "dockerfile": "Dockerfile" },
+  "features": {
+    // Configure the image's built-in non-root 'ubuntu' user (uid 1000) + sudo.
+    "ghcr.io/devcontainers/features/common-utils:2": { "username": "ubuntu", "installZsh": false }
+    // ⟨blazor⟩ node for the sass build:
+    // "ghcr.io/devcontainers/features/node:1": { "version": "lts" }
+  },
+  "remoteUser": "ubuntu",
+  // See the base template for what these do. --network=host is ON here: handy for
+  // reaching VPN-only backends and exposing localhost:5000/5001 under the plain CLI.
+  "runArgs": ["--userns=keep-id", "--network=host", "--name", "dotnet-dev"],
+  "updateRemoteUserUID": false,
+  "remoteEnv": {
+    // Homebrew bin (brew tools via exec) + dotnet global tools (~/.dotnet/tools).
+    "PATH": "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${containerEnv:PATH}:/home/ubuntu/.dotnet/tools"
+  },
+  "containerEnv": {
+    "SSH_AUTH_SOCK": "/ssh-agent",
+    "DEVCONTAINER": "true",
+    "NVIM_LANGS": "dotnet",
+    // Serve the stable dev cert exported by setup-repo.sh (gitignored, host-visible)
+    // so the cert on :5001 is exactly the one the host trusts. See README.md.
+    "ASPNETCORE_Kestrel__Certificates__Default__Path": "${containerWorkspaceFolder}/.devcontainer/.certs/localhost.pem",
+    "ASPNETCORE_Kestrel__Certificates__Default__KeyPath": "${containerWorkspaceFolder}/.devcontainer/.certs/localhost.key"
+  },
+  // SSH agent forwarding (no private keys in the container) + your global NuGet
+  // config for private-feed restore. TODO: create ~/.nuget/NuGet/NuGet.Config with
+  // your feed + PAT on the host first, or this read-only mount has no source.
+  "mounts": [
+    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent,type=bind",
+    "source=${localEnv:HOME}/.nuget/NuGet/NuGet.Config,target=/home/ubuntu/.nuget/NuGet/NuGet.Config,type=bind,readonly"
+  ],
+  // 5000/5001 = default Kestrel dev http/https; 9222 = Chrome CDP for Blazor WASM
+  // debugging (only relevant with the ⟨blazor⟩ extras). Under --network=host these
+  // are already on the host; kept for VS Code users.
+  "forwardPorts": [5000, 5001, 9222],
+  "portsAttributes": {
+    "5000": { "label": "App (HTTP)" },
+    "5001": { "label": "App (HTTPS)" },
+    "9222": { "label": "Chrome CDP (WASM debug)" }
+  },
+  "postCreateCommand": "bash .devcontainer/scripts/setup-repo.sh && bash .devcontainer/scripts/setup-local.sh"
+}

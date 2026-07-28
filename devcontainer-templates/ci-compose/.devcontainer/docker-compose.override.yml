@@ -1,12 +1,35 @@
 # Dev-only overrides layered on top of your CI docker-compose.yml (see
 # dockerComposeFile in devcontainer.json). Keeps the CI compose file itself
-# untouched — this file only adds what's needed to develop interactively.
+# untouched — this only adds what's needed to develop interactively, plus the
+# rootless-podman plumbing that (for image/Dockerfile dev containers) would live in
+# devcontainer.json runArgs/mounts — but those are NOT applied for compose-based
+# dev containers, so they belong here instead.
 services:
   # TODO: match the service name from your CI docker-compose.yml (and
   # devcontainer.json's "service" property).
   app:
+    # Rootless podman: map host uid -> the same uid inside so the bind-mounted
+    # workspace is writable (else the host user maps to container root). Needs a
+    # matching uid-1000 non-root user in the CI image — see devcontainer.json
+    # remoteUser. (podman-specific value.)
+    userns_mode: "keep-id"
+    # OPTIONAL: share the host network namespace (reach VPN-only backends; expose
+    # the app on localhost under the plain CLI). Uncomment if needed — note you
+    # then can't also publish ports.
+    # network_mode: "host"
     volumes:
       - ..:/workspace:cached
-    # Overrides the CI command (which likely runs the app/tests and exits)
-    # so the container stays up for the dev container CLI/VS Code to attach.
+      # SSH agent forwarding: signing stays in the host agent; PRIVATE KEYS NEVER
+      # ENTER THE CONTAINER. Requires SSH_AUTH_SOCK set in the shell running the up
+      # command (compose interpolates ${SSH_AUTH_SOCK} at parse time).
+      - ${SSH_AUTH_SOCK}:/ssh-agent
+    environment:
+      # Container env goes here for compose (devcontainer.json containerEnv is less
+      # reliable for compose than the override's own environment: block).
+      - SSH_AUTH_SOCK=/ssh-agent
+      # Inert unless someone runs the personal nvim config (profile.lua reads these).
+      - DEVCONTAINER=true
+      - NVIM_LANGS=
+    # Overrides the CI command (which likely runs the app/tests and exits) so the
+    # container stays up for the dev container CLI / VS Code to attach.
     command: sleep infinity
