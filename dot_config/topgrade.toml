@@ -1,0 +1,21 @@
+# Topgrade — minimal config for containers & WSL.
+#
+# Restricts updates to a small, headless-friendly set of steps. Any step whose
+# tool isn't installed (e.g. brew in a bare container) is skipped automatically.
+# Step names are topgrade's snake_case identifiers; run `topgrade --dry-run` to
+# preview what will execute.
+
+[misc]
+# Run only these steps; everything else is skipped.
+only = [
+    "system",       # distro package manager (apt / dnf / …)
+    "brew_formula", # Homebrew formulae
+    "brew_cask",    # Homebrew casks
+    "tldr",         # tldr pages cache
+    "chezmoi",      # chezmoi update
+    "yazi",         # yazi packages (ya pkg upgrade)
+]
+
+assume_yes = true  # non-interactive: nobody's watching in a container/WSL run
+skip_notify = true # no desktop notification daemon in these environments
+cleanup = true     # clean up caches/old packages after updating

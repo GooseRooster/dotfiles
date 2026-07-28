@@ -1,0 +1,3 @@
+theme = "tinted-theming"
+command = /var/home/linuxbrew/.linuxbrew/bin/nu
+confirm-close-surface = false

@@ -1,0 +1,13 @@
+{{- /* Single source of truth for Homebrew's prefix.
+
+   On immutable/ostree systems (Bluefin, Silverblue, Bazzite) the real mount is
+   /var/home; on WSL and traditional distros it is /home. /home is often only a
+   symlink to /var/home, so we probe the canonical path first and fall back to
+   asking brew directly. Consumers do: {{ includeTemplate "brew-prefix" }}/bin/nvim */ -}}
+{{- if stat "/var/home/linuxbrew/.linuxbrew/bin/brew" -}}
+/var/home/linuxbrew/.linuxbrew
+{{- else if stat "/home/linuxbrew/.linuxbrew/bin/brew" -}}
+/home/linuxbrew/.linuxbrew
+{{- else -}}
+{{ output "brew" "--prefix" | trim }}
+{{- end -}}
