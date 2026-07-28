@@ -87,7 +87,7 @@ export def "im-denoise" [
     --radius: int = 2  # pixels
 ] {
     let piped = $in
-    im-input $file $piped | ^magick - -median $radius png:-
+    im-input $file $piped | ^magick - -statistic Median $radius png:-
 }
 
 # Plain grayscale conversion, useful if you want to inspect what chafa's
@@ -143,7 +143,7 @@ export def "chafa-detail" [
     mut magick_args = []
 
     if $denoise {
-        $magick_args = ($magick_args | append ["-median" ($denoise_radius | into string)])
+        $magick_args = ($magick_args | append ["-statistic Median" ($denoise_radius | into string)])
     }
     if $clahe {
         $magick_args = ($magick_args | append ["-clahe" $clahe_geometry])
