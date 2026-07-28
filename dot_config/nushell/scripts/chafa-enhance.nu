@@ -84,10 +84,11 @@ export def "im-sigmoidal" [
 # later stages from turning speckle into speckle-shaped braille dots.
 export def "im-denoise" [
     file?: path
-    --radius: int = 2  # pixels
+    --radius: int = 2  # pixels; box will be (2*radius+1)x(2*radius+1)
 ] {
     let piped = $in
-    im-input $file $piped | ^magick - -statistic Median $radius png:-
+    let geom = $"(2 * $radius + 1)x(2 * $radius + 1)"
+    im-input $file $piped | ^magick - -statistic Median $geom png:-
 }
 
 # Plain grayscale conversion, useful if you want to inspect what chafa's
@@ -143,7 +144,7 @@ export def "chafa-detail" [
     mut magick_args = []
 
     if $denoise {
-        $magick_args = ($magick_args | append ["-statistic Median" ($denoise_radius | into string)])
+        $magick_args = ($magick_args | append ["-statistic" "Median" ($denoise_radius | into string)])
     }
     if $clahe {
         $magick_args = ($magick_args | append ["-clahe" $clahe_geometry])
