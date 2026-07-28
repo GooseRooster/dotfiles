@@ -224,4 +224,12 @@ source ~/.config/nushell/podman-alias.nu
 
 
 # ── Greeting ───────────────────────────────────────────────────────────────────
-fastfetch
+# Gated on is-interactive: `nu --lsp` (spawned by editors as a language
+# server) and `nu -c ...` also load this file, and both read/write raw
+# protocol data or script output on stdout. Unguarded output here — like
+# this banner — gets mixed into that stream and corrupts it (e.g. neovim's
+# LSP client fails to find "Content-Length" because fastfetch's art is
+# sitting in front of it).
+if $nu.is-interactive {
+    fastfetch
+}
