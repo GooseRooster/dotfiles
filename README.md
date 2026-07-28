@@ -96,11 +96,10 @@ or container tooling (`devtools.Brewfile`) — those are host-bootstrap only,
 and a dev container is expected to supply its own toolchain.
 
 **Homebrew itself must already be on `PATH` before this script runs** — unlike
-the full host `bootstrap.sh`, it deliberately doesn't install Homebrew for
-you. In a dev container, install it declaratively as part of the container
-spec (e.g. a devcontainer Feature) rather than at script runtime — see
-[Dev container templates](#dev-container-templates) below for working
-examples.
+the full host `bootstrap.sh`, it deliberately doesn't install Homebrew for you.
+The dev container templates handle this by installing Homebrew in their personal
+setup hook (`local/setup.sh`) just before invoking `bootstrap-cli.sh` — see
+[Dev container templates](#dev-container-templates) below.
 
 The `--devcontainer` flag doesn't install anything itself — it just records
 `devcontainer_enabled = true` in `~/.config/chezmoi/chezmoi.toml`, so
@@ -111,22 +110,44 @@ actually installs (nushell, starship, Neovim, yazi) is unaffected.
 
 ### Dev container templates
 
-`devcontainer-templates/` has two example `.devcontainer` setups:
+`devcontainer-templates/` has ready-to-copy `.devcontainer` setups that all share
+one **semantic skeleton** — identical container plumbing, so only the toolchain
+differs per language. See
+[`devcontainer-templates/README.md`](devcontainer-templates/README.md) for the full
+convention and how to add a new language.
 
 | Template | Use when |
 |----------|----------|
-| `standalone` | You don't have existing container infra — just a base image + Homebrew (via a Feature) + this repo's `bootstrap-cli.sh`. |
-| `ci-compose` | Your CI already builds/deploys via a `Dockerfile`/`docker-compose.yml` you want the dev container to inherit, with dev-only tweaks (workspace mount, `sleep infinity`, Homebrew) layered on top via `docker-compose.override.yml` and a Feature — without touching the CI compose file itself. |
+| `base` | The language-agnostic skeleton. Copy it to start a new stack — a plain Ubuntu base image + the shared plumbing, ready to drop a toolchain into. |
+| `dotnet` | Plug-and-play .NET: the skeleton + .NET SDK + NuGet private-feed auth + a trust-once dev HTTPS cert, with Blazor-WASM extras as opt-in TODOs. |
+| `ci-compose` | Your CI already builds/deploys via a `docker-compose.yml` you want to develop inside. Inherits it and layers dev-only bits via `docker-compose.override.yml` — the closest to dev/prod parity. |
 
-Both use the [`ghcr.io/meaningful-ooo/devcontainer-features/homebrew`](https://github.com/meaningful-ooo/devcontainer-features) Feature to install Homebrew declaratively before `postCreateCommand` runs `bootstrap-cli.sh --devcontainer`. That Feature's prerequisite installer only branches on `debian`/`ubuntu`/`alpine` base images — an Oracle Linux (or other dnf-based) CI image will need that patched, or its prerequisites (curl, git, a C compiler) baked in ahead of time.
+**What the skeleton bakes in** (learned running these under rootless Podman on WSL):
 
-Deploy either template into a repo you're working on with `devcontainer-init` (installed to `~/.local/bin` on full host setups only — see `dot_local/bin/executable_devcontainer-init`):
+- **`--userns=keep-id`** + running as the base image's uid-1000 user, so the
+  bind-mounted workspace is writable (else the host user maps to container root).
+- **`/tmp` restored to `1777`** in `setup-repo.sh` — devcontainer Features can leave
+  it `0755 root`, which breaks any non-root tool that creates temp dirs there.
+- **Homebrew installed by the personal hook, not a Feature** (leaner, avoids the
+  deprecated Feature), with linuxbrew on `remoteEnv.PATH` so `nu` & friends resolve
+  in every `exec`.
+- **SSH agent forwarding** — push over SSH with no private keys in the container.
+- **A gitignored `local/` personalization hook** — the team base stays reproducible;
+  your dotfiles/editor step is per-developer and never committed. This is where
+  `bootstrap-cli.sh --devcontainer` now runs (see a template's `local.example/setup.sh`):
+  it installs Homebrew, bootstraps these dotfiles, and sets your git identity.
+
+Deploy a template into a repo with `devcontainer-init` (installed to `~/.local/bin`
+on host/WSL setups — see `dot_local/bin/executable_devcontainer-init`):
 
 ```bash
-devcontainer-init ci-compose /path/to/some-repo
+devcontainer-init dotnet /path/to/some-repo
 ```
 
-Then review the `// TODO` comments in the copied `.devcontainer/devcontainer.json` (and `docker-compose.override.yml` for `ci-compose`) to point it at your actual compose file and service name.
+Then work through the `// TODO` / `⟨…⟩` markers in the copied files, and optionally
+`cp -r .devcontainer/local.example .devcontainer/local` to turn on your personal
+dotfiles. Host prerequisites (an SSH agent; a NuGet PAT for the `dotnet` template)
+are listed in the copied `.devcontainer/README.md`.
 
 ### WSL (Ubuntu) setup
 
