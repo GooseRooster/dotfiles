@@ -11,7 +11,7 @@ brew "valkyrie00/bbrew/bbrew", trusted: true
 # A plain text note-taking assistant
 brew "zk"
 # Terminal multiplexer
-brew "tmux"
+brew "herdr"
 # The lazier way to manage everything docker/podman
 brew "lazydocker"
 

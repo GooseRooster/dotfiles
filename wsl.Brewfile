@@ -13,3 +13,6 @@ brew "zk"
 # The lazier way to manage everything docker/podman
 brew "lazydocker"
 
+# Terminal multiplexer
+brew "herdr"
+
