@@ -12,10 +12,10 @@ vim.keymap.set("n", "<C-j>", "<C-d>zz", { desc = "Scroll down half page (centere
 vim.keymap.set("n", "<C-k>", "<C-u>zz", { desc = "Scroll up half page (centered)", noremap = true, silent = true })
 
 -- file path helpers
-vim.keymap.set("n", "<leader>yp", function()
+vim.keymap.set("n", "<leader>k", function()
 	vim.fn.setreg("+", vim.fn.expand("%"))
 end, { desc = "Yank relative path" })
 
-vim.keymap.set("n", "<leader>yP", function()
+vim.keymap.set("n", "<leader>K", function()
 	vim.fn.setreg("+", vim.fn.expand("%:p"))
 end, { desc = "Yank absolute path" })
