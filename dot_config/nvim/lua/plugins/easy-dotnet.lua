@@ -146,7 +146,6 @@ return {
 				},
 			})
 
-			-- Example command
 			vim.api.nvim_create_user_command("Secrets", function()
 				dotnet.secrets()
 			end, {})
@@ -183,6 +182,25 @@ return {
 						wk.add({ { "<leader>r", group = "dotnet", icon = "", buffer = bufnr } })
 					end
 				end,
+			})
+
+			require("conform").setup({
+				formatters_by_ft = {
+					razor = { "cleanupcode" },
+					cshtml = { "cleanupcode" },
+					cs = { "cleanupcode" },
+				},
+				formatters = {
+					cleanupcode = {
+						command = "jb",
+						args = { "cleanupcode", "--profile=Built-in: Reformat Code", "$FILENAME" },
+						stdin = false,
+					},
+				},
+				format_on_save = {
+					timeout_ms = 5000,
+					lsp_fallback = false,
+				},
 			})
 		end,
 	},
