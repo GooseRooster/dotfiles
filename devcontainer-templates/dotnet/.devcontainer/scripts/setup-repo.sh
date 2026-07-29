@@ -17,6 +17,10 @@ fi
 # Restore. TODO: point at your solution/project.
 # dotnet restore YourSolution.slnx
 
+# JetBrains ReSharper command-line tools — provides `jb cleanupcode` for reformatting
+# stubborn files the LSP can't fix (see scripts/dev.nu's `format` command, if present).
+dotnet tool install --global JetBrains.ReSharper.GlobalTools
+
 # ASP.NET Core dev HTTPS cert: export a STABLE PEM cert+key into a gitignored,
 # host-visible dir (persists across rebuilds -> trust once). Kestrel is pointed at
 # these via ASPNETCORE_Kestrel__Certificates__Default__* (devcontainer.json), so the
