@@ -5,13 +5,18 @@
 // and the gitignored local/ personalization hook. See README.md.
 {
   "name": "devcontainer",
-  "build": { "dockerfile": "Dockerfile" },
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   "features": {
     // Non-root user + passwordless sudo. base:ubuntu ships 'vscode' (uid 1000).
     // If you swap the base image, set username to ITS uid-1000 user and update
     // remoteUser + every /home/<user> path below to match (this is the #1 gotcha
     // when changing base images — e.g. mcr dotnet/sdk uses 'ubuntu', not 'vscode').
-    "ghcr.io/devcontainers/features/common-utils:2": { "username": "vscode", "installZsh": false }
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "username": "vscode",
+      "installZsh": false
+    }
   },
   "remoteUser": "vscode",
   // Rootless podman:
@@ -23,7 +28,11 @@
   //                     the host's routes (e.g. VPN-only services). Less isolation.
   //  --name           : stable container name instead of the CLI's vsc-<hash>.
   //  To enable host networking, add "--network=host" to the array below.
-  "runArgs": ["--userns=keep-id", "--name", "devcontainer"],
+  "runArgs": [
+    "--userns=keep-id",
+    "--name",
+    "devcontainer"
+  ],
   // keep-id already aligns UIDs; skip the CLI's UID-sync layer.
   "updateRemoteUserUID": false,
   "remoteEnv": {
@@ -47,4 +56,8 @@
   ],
   // ⟨app⟩ add "forwardPorts": [ ... ] for your app's ports (or rely on --network=host).
   "postCreateCommand": "bash .devcontainer/scripts/setup-repo.sh && bash .devcontainer/scripts/setup-local.sh"
+  // if your stack can write to a log file, this script can reroute it to container logs 
+  // Stream the app's  console output (/tmp/console-dev.log) into PID 1's stdout so
+  // `podman logs` / lazydocker show colored app logs. Idempotent; re-runs on each start.
+  // "postStartCommand": "bash .devcontainer/scripts/console-log-bridge.sh"
 }

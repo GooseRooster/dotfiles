@@ -108,11 +108,23 @@ def "devc rebuild" [name?: string] {
     ^devcontainer up --docker-path podman --workspace-folder . --config $cfg.path --remove-existing-container --build-no-cache
 }
 
+# Start the in-container log bridge if this project ships one, so app logs show up
+# in `podman logs`/lazydocker. Idempotent; a no-op for projects without the script.
+# Needed because `devcontainer up` reusing an existing (stopped) container does NOT
+# re-run postStartCommand -- only a fresh create does, so we start it here too.
+def devc-start-log-bridge [cfg_path: string] {
+    let bridge = ".devcontainer/scripts/console-log-bridge.sh"
+    if ($bridge | path exists) {
+        ^devcontainer exec --docker-path podman --workspace-folder . --config $cfg_path -- bash $bridge
+    }
+}
+
 # Bring the devcontainer up (build/create/start as needed). Idempotent.
 def "devc up" [name?: string] {
     devc-require-cli
     let cfg = (devc-resolve-config $name)
     ^devcontainer up --docker-path podman --workspace-folder . --config $cfg.path
+    devc-start-log-bridge $cfg.path
 }
 
 # Ensure the container is up, then exec a command in it (default: nu).
@@ -127,6 +139,7 @@ def --wrapped "devc enter" [name?: string, ...cmd: string] {
     # looks exactly like a hang. The one-line trade-off is the final JSON
     # summary from `up` printing before the interactive session starts.
     ^devcontainer up --docker-path podman --workspace-folder . --config $cfg.path
+    devc-start-log-bridge $cfg.path
     let shell = if ($cmd | is-empty) { ["nu"] } else { $cmd }
     ^devcontainer exec --docker-path podman --workspace-folder . --config $cfg.path -- ...$shell
 }

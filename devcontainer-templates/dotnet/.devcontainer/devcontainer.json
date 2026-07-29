@@ -45,5 +45,10 @@
     "5001": { "label": "App (HTTPS)" },
     "9222": { "label": "Chrome CDP (WASM debug)" }
   },
-  "postCreateCommand": "bash .devcontainer/scripts/setup-repo.sh && bash .devcontainer/scripts/setup-local.sh"
+  "postCreateCommand": "bash .devcontainer/scripts/setup-repo.sh && bash .devcontainer/scripts/setup-local.sh",
+
+  // Surface app logs in `docker`/`podman logs` / lazydocker. Point any logging
+  // provider at /tmp/console-dev.log (NLog/Serilog file target, `tee`, ...) and this
+  // tails it into PID 1's stdout. Idempotent; re-runs on each start. See the script.
+  "postStartCommand": "bash .devcontainer/scripts/console-log-bridge.sh"
 }
