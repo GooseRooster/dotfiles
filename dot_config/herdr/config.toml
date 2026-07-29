@@ -76,10 +76,10 @@ default_shell = "nu"
 # remove_worktree = ""  # optional, unset by default; opens confirmation
 # rename_workspace = "prefix+shift+w"
 # close_workspace = "prefix+shift+d"
-# previous_workspace = "" # optional, unset by default
-# next_workspace = ""     # optional, unset by default
-# previous_agent = ""     # optional, unset by default
-# next_agent = ""         # optional, unset by default
+previous_workspace = "prefix+shift+k" # optional, unset by default
+next_workspace = "prefix+shift+j"     # optional, unset by default
+previous_agent = "prefix+alt+k"     # optional, unset by default
+next_agent = "prefix+alt+j"         # optional, unset by default
 # focus_agent = ""        # optional indexed binding, e.g. "prefix+alt+1..9"
 # remote_image_paste = "ctrl+v" # only active in herdr --remote; empty disables raw-key image paste
 # new_tab = "prefix+c"
@@ -87,7 +87,7 @@ default_shell = "nu"
 # previous_tab = "prefix+p"
 # next_tab = "prefix+n"
 # switch_tab = "prefix+1..9"
-# switch_workspace = ""   # optional indexed binding, e.g. "prefix+shift+1..9"
+switch_workspace = "prefix+shift+1..9"   # optional indexed binding, e.g. "prefix+shift+1..9"
 # close_tab = "prefix+shift+x"
 # rename_pane = "prefix+shift+p"
 # edit_scrollback = "prefix+e"
@@ -107,12 +107,12 @@ default_shell = "nu"
 
 # Navigate-mode movement. These local shortcuts win while navigate mode is open.
 # They are independent from focus_pane_*. Do not include prefix+, esc, enter, tab, or 1..9 here.
-# navigate_workspace_up = "up"
-# navigate_workspace_down = "down"
-# navigate_pane_left = "h"      # left arrow always focuses the pane to the left
-# navigate_pane_down = "j"
-# navigate_pane_up = "k"
-# navigate_pane_right = "l"     # right arrow always focuses the pane to the right
+navigate_workspace_up = "k"
+navigate_workspace_down = "j"
+navigate_pane_left = ""      # left arrow always focuses the pane to the left
+navigate_pane_down = ""
+navigate_pane_up = ""
+navigate_pane_right = ""     # right arrow always focuses the pane to the right
 
 # Custom commands use the same binding syntax.
 # type = "shell" runs detached in the background.
