@@ -72,7 +72,5 @@ brew "zoxide"
 brew "unzip"
 # Open-source, cross-platform JavaScript runtime environment
 brew "node"
-# Centralized update utility
-brew "topgrade"
 # File utils
 brew "file"

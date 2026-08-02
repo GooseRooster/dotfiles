@@ -1,3 +1,8 @@
+---
+name: brewfile-audit
+description: Audit packages and extensions installed on this system against what is tracked in Brewfiles and extensions.txt
+---
+
 # Brewfile Audit
 
 Audit packages and extensions installed on this system against what is tracked in the chezmoi Brewfiles and `extensions.txt`. Use this periodically to keep the tracked lists up to date.

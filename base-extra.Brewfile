@@ -1,4 +1,6 @@
+tap "anomalyco/tap", trusted: true
 tap "ublue-os/tap", trusted: true
+tap "ublue-os/experimental-tap", trusted: true
 tap "valkyrie00/bbrew", "https://github.com/Valkyrie00/homebrew-bbrew", trusted: true
 # Console-based Audio Visualizer for ALSA
 brew "cava"
@@ -14,6 +16,14 @@ brew "zk"
 brew "herdr"
 # The lazier way to manage everything docker/podman
 brew "lazydocker"
+# Goal of RamaLama is to make working with AI boring
+brew "ramalama"
+# MCP server for Linux system administration and diagnostics
+brew "ublue-os/tap/linux-mcp-server"
+# Terminal-based AI coding assistant
+brew "ublue-os/tap/goose-linux", trusted: true
+# Open source, extensible AI agent that goes beyond code suggestions
+brew "anomalyco/tap/opencode", trusted: true
 
 cask "font-fira-code-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
