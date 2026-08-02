@@ -14,6 +14,8 @@ brew "zk"
 brew "herdr"
 # The lazier way to manage everything docker/podman
 brew "lazydocker"
+# Advanced open source AI harness with memory
+brew "hermes-agent"
 
 cask "font-fira-code-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
