@@ -1,0 +1,4 @@
+model:
+  provider: "mistral"
+  base_url: "https://api.mistral.ai/v1"
+  default: "mistral-medium-latest"
