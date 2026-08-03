@@ -8,12 +8,6 @@ $env.config.edit_mode = 'vi'
 alias chrome = ungoogled-chromium
 alias python = python3
 
-# nvix — self-rolled, distro-free nvim config, isolated via NVIM_APPNAME so it
-# runs in parallel with the live LazyVim config at ~/.config/nvim. A `def` (not an
-# `alias`) because Nushell has no `FOO=bar cmd` prefix syntax — needs with-env.
-def --wrapped nvix [...args] {
-  with-env { NVIM_APPNAME: "nvix" } { ^nvim ...$args }
-}
 
 # ── Functions: misc ───────────────────────────────────────────────────────────
 def get-os-release-field [field: string] {
