@@ -7,6 +7,15 @@ set -euo pipefail
 # call (they create temp dirs under Path.GetTempPath() == /tmp). 'ubuntu' has sudo.
 sudo chmod 1777 /tmp
 
+# devcontainers/features/common-utils:2 has a regression where it creates
+# (or recreates) ~/.local and ~/.config as root-owned after install, which
+# breaks anything that subsequently tries to mkdir under them -- notably
+# chezmoi (`chezmoi init` fails with "permission denied" on ~/.local/share/chezmoi),
+# cargo, and any tool that lazy-creates XDG dirs. The fix has to run here in
+# post-create: the Feature runs between the Dockerfile and us, so a Dockerfile
+# chown would just be clobbered. Idempotent; ignores paths that don't exist yet.
+sudo chown -R "$(id -u):$(id -g)" "$HOME/.local" "$HOME/.config" 2>/dev/null || true
+
 # The read-only NuGet.Config bind-mount makes podman auto-create ~/.nuget as root,
 # which would make the package cache (~/.nuget/packages) unwritable. Re-own the
 # dirs (leaving the read-only Config file itself untouched). No-op if unmounted.
