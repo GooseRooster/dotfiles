@@ -74,3 +74,5 @@ brew "unzip"
 brew "node"
 # File utils
 brew "file"
+# Shell script validation for bash
+brew "shellcheck"
