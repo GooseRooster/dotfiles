@@ -57,17 +57,23 @@ M.feature_order = {
 M.features = {
 	python = {
 		extras = { "lazyvim.plugins.extras.lang.python" },
-		mason = { "pyright", "ruff" },
+		-- pyright + ruff LSPs are installed by the python extra (mason-lspconfig).
+		mason = {},
 	},
 	rust = {
 		extras = { "lazyvim.plugins.extras.lang.rust" },
+		-- rust-analyzer stays: the rust extra sets `rust_analyzer = { enabled = false }`
+		-- (rustaceanvim drives it and expects it on PATH), so nothing installs it for us.
 		mason = { "rust-analyzer", "codelldb" },
 	},
 	typescript = {
 		extras = { "lazyvim.plugins.extras.lang.typescript" },
+		-- vtsls (the extra's default LSP) is installed by the extra. css/html/sass
+		-- servers are NOT registered by any extra, so they must live here.
+		-- typescript-language-server is kept only for on-demand use (tsserver is
+		-- enabled=false since vtsls is chosen); drop it if you never want it.
 		mason = {
 			"typescript-language-server",
-			"vtsls",
 			"js-debug-adapter",
 			"css-lsp",
 			"html-lsp",
@@ -76,20 +82,25 @@ M.features = {
 	},
 	java = {
 		extras = { "lazyvim.plugins.extras.lang.java" },
-		mason = { "jdtls", "java-debug-adapter", "java-test", "gradle-language-server" },
+		-- jdtls LSP is installed by the java extra. gradle-language-server is not,
+		-- so it stays here.
+		mason = { "java-debug-adapter", "java-test", "gradle-language-server" },
 	},
 	-- C/C++ (clangd LSP + clangd_extensions + c/cpp treesitter + codelldb debugging).
 	clang = {
 		extras = { "lazyvim.plugins.extras.lang.clangd" },
-		mason = { "clangd", "codelldb" },
+		-- clangd LSP is installed by the clangd extra; only codelldb (DAP) stays.
+		mason = { "codelldb" },
 	},
 	cmake = {
 		extras = { "lazyvim.plugins.extras.lang.cmake" },
-		mason = { "neocmakelsp", "cmakelang", "cmakelint" },
+		-- neocmakelsp is installed by the cmake extra; keep the lint/format tools.
+		mason = { "cmakelang", "cmakelint" },
 	},
 	docker = {
 		extras = { "lazyvim.plugins.extras.lang.docker" },
-		mason = { "dockerfile-language-server", "docker-compose-language-service", "hadolint" },
+		-- dockerls + docker-compose LSPs are installed by the docker extra.
+		mason = { "hadolint" },
 	},
 	sql = {
 		extras = { "lazyvim.plugins.extras.lang.sql" },
@@ -97,11 +108,13 @@ M.features = {
 	},
 	json = {
 		extras = { "lazyvim.plugins.extras.lang.json" },
-		mason = { "json-lsp" },
+		-- jsonls is installed by the json extra.
+		mason = {},
 	},
 	yaml = {
 		extras = { "lazyvim.plugins.extras.lang.yaml" },
-		mason = { "yaml-language-server" },
+		-- yamlls is installed by the yaml extra.
+		mason = {},
 	},
 	nushell = {
 		extras = { "lazyvim.plugins.extras.lang.nushell" },
@@ -150,9 +163,12 @@ M.core_extras = {
 }
 
 -- Language-agnostic Mason tools kept in every profile.
+-- LSP servers are intentionally NOT listed here: lua_ls is registered by LazyVim
+-- core and bashls by the always-on util.dot extra, so mason-lspconfig already
+-- installs both. Listing them here too made mason.nvim and mason-lspconfig race
+-- to install the same package ("Package is already installing"). Only non-server
+-- tools (formatters/linters) belong here.
 M.baseline_mason = {
-	"bash-language-server",
-	"lua-language-server",
 	"stylua",
 	"shellcheck",
 	"shfmt",
