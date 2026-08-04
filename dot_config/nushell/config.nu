@@ -173,6 +173,12 @@ def cze [...args: string] {
     chezmoi apply
 }
 
+def --env refresh-env [] {
+  source ~/.config/nushell/env.nu
+  source ~/.config/nushell/config.nu
+} 
+
+
 # ── Functions: Containers and VMs ───────────────────────────────────────────────────────
 # Distrobox: enter container, bootstrap nu
 # `distrobox enter -- <cmd>` execs the command directly with no profile/shellenv
