@@ -17,3 +17,7 @@ brew "uv"
 brew "openjdk"
 # Java project management
 brew "maven"
+# Lua package manager
+brew "luarocks", link: false
+# Cross-compile Windows resources from Linux
+brew "xwin"

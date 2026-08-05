@@ -73,6 +73,8 @@ brew "unzip"
 # Open-source, cross-platform JavaScript runtime environment
 brew "node"
 # File utils
-brew "file"
+brew "file-formula"
 # Shell script validation for bash
 brew "shellcheck"
+# Opinionated Lua code formatter
+brew "stylua"
