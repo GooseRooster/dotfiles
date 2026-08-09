@@ -82,13 +82,13 @@ return {
 		},
 		keys = {
 			{
-				"<leader>e",
+				"<leader>E",
 				"<cmd>Yazi cwd<cr>",
 				mode = { "n", "v" },
 				desc = "Explorer Yazi (nvim cwd)",
 			},
 			{
-				"<leader>E",
+				"<leader>e",
 				"<cmd>Yazi<cr>",
 				mode = { "n", "v" },
 				desc = "Explorer Yazi (current file)",
