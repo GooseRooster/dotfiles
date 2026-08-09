@@ -1,6 +1,7 @@
 return {
 	"nickjvandyke/opencode.nvim",
 	version = "*", -- Latest stable release
+	enabled = false, -- disabled for now.
 	config = function()
 		---@type opencode.Opts
 		vim.g.opencode_opts = {
