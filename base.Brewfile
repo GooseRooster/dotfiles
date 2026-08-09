@@ -78,3 +78,6 @@ brew "file-formula"
 brew "shellcheck"
 # Opinionated Lua code formatter
 brew "stylua"
+# Terminal REST client
+brew "resterm"
+
