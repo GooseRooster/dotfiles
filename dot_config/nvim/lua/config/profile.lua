@@ -152,7 +152,6 @@ M.core_extras = {
 	"lazyvim.plugins.extras.editor.dial",
 	"lazyvim.plugins.extras.editor.illuminate",
 	"lazyvim.plugins.extras.editor.inc-rename",
-	"lazyvim.plugins.extras.editor.leap",
 	"lazyvim.plugins.extras.editor.navic",
 	"lazyvim.plugins.extras.editor.outline",
 	"lazyvim.plugins.extras.ui.mini-animate",
