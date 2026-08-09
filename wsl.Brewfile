@@ -6,8 +6,9 @@ brew "devcontainer"
 # Terminal-based AI coding assistant
 cask "claude-code"
 
-# Terminal-based AI coding assistant
-cask "copilot-cli"
+# Open source, extensible AI agent that goes beyond code suggestions
+brew "anomalyco/tap/opencode", trusted: true
+
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
 # A plain text note-taking assistant
