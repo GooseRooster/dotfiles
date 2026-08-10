@@ -33,7 +33,10 @@ specs[#specs + 1] = {
       context_ratio = 0.75,
       throttle = 800, -- min interval between requests (ms)
       debounce = 300, -- wait for typing to settle (ms)
-      request_timeout = 3, -- seconds; streaming keeps partials useful
+      -- 7B local models can spend >3s on time-to-first-token when the KV
+      -- cache is cold; a too-tight timeout returns an empty streamed result
+      -- and shows nothing in blink. 6s is a safe local default.
+      request_timeout = 6,
       notify = "warn",
       provider_options = {
         openai_fim_compatible = {
@@ -46,7 +49,11 @@ specs[#specs + 1] = {
           optional = {
             max_tokens = 128,
             top_p = 0.9,
-            stop = { "\n\n" },
+            -- NOTE: do NOT set stop = { "\n\n" } here. qwen2.5-coder's FIM
+            -- output frequently begins with a newline, so a "\n\n" stop token
+            -- can match the first streamed tokens and truncate the entire
+            -- completion to an empty string — visible in ramalama logs as a
+            -- successful request with no candidates surfacing in blink.
           },
           -- llama.cpp backend: no server-side FIM assembly. We inject
           -- qwen2.5-coder's FIM tokens by hand and disable the suffix field.
@@ -79,7 +86,7 @@ if enabled then
             module = "minuet.blink",
             async = true,
             -- Should be >= minuet.request_timeout * 1000.
-            timeout_ms = 3000,
+            timeout_ms = 6000,
             -- Bumps minuet above other sources when it does respond.
             score_offset = 50,
           },
