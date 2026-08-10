@@ -5,12 +5,13 @@
 # again. Edit freely — your changes are safe. To reset to the scaffold,
 # delete this file and re-run `chezmoi apply`.
 #
-# This file is sourced unconditionally at the end of env.nu. Both
-# MINUET_API_KEY and MINUET_MODEL must be non-empty for minuet.nvim to
-# activate. The endpoint is fixed to http://localhost:5000 (opencode-oai);
-# for a local-only bridge any non-empty api key works.
+# This file is sourced unconditionally at the end of env.nu. Set
+# RAMALAMA_FIM_URL to the base URL of a running ramalama (llama.cpp-backed)
+# OpenAI-FIM-compatible server to activate minuet.nvim inside Neovim. When
+# empty, the plugin is not loaded. RAMALAMA_FIM_MODEL overrides the served
+# model name.
 #
 # You can also drop any other per-host secrets or overrides here.
 
-$env.MINUET_API_KEY = ""   # e.g. "local" for a keyless bridge, or a real token
-$env.MINUET_MODEL   = ""   # e.g. "github-copilot/gpt-4o-mini"
+$env.RAMALAMA_FIM_URL   = ""                  # e.g. "http://localhost:8000"
+$env.RAMALAMA_FIM_MODEL = "qwen2.5-coder:7b"  # served model identifier
