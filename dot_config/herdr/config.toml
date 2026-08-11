@@ -266,6 +266,7 @@ navigate_pane_right = ""     # right arrow always focuses the pane to the right
 # [ui.sound.agents]
 # droid = "off"
 
+enabled = false
 [session]
 # Resume supported AI-agent panes into their native conversation sessions after
 # a Herdr server restart. Requires official integrations that report session refs.
