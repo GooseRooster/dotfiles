@@ -172,6 +172,25 @@ def "devc rm" [name?: string] {
     }
 }
 
+# Copy the host's env.local.nu into the container's ~/.config/nushell/, so
+# host-specific shell env vars follow you into the devcontainer. Overwrites any
+# existing copy. `devcontainer exec` forwards stdin when not on a TTY, so the
+# host file is piped in via `cat` (nu has no `<` redirect for externals).
+def "devc copy-env" [name?: string] {
+    devc-require-cli
+    let cfg = (devc-resolve-config $name)
+    let host_src = ($nu.default-config-dir | path join "env.local.nu")
+    if not ($host_src | path exists) {
+        error make {msg: $"Host env.local.nu not found at ($host_src)"}
+    }
+    let row = (devc-container-row $name)
+    if $row == null or $row.State != "running" {
+        devc up $name
+    }
+    open --raw $host_src
+        | ^devcontainer exec --docker-path podman --workspace-folder . --config $cfg.path -- bash -c 'mkdir -p ~/.config/nushell && cat > ~/.config/nushell/env.local.nu'
+}
+
 # List every devcontainer (any config) tied to the current workspace.
 def "devc ps" [] {
     devc-require-cli
