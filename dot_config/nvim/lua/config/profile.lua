@@ -159,6 +159,7 @@ M.core_extras = {
 	"lazyvim.plugins.extras.util.dot",
 	"lazyvim.plugins.extras.util.mini-hipatterns",
 	"lazyvim.plugins.extras.util.startuptime",
+	"lazyvim.plugins.extras.util.rest",
 }
 
 -- Language-agnostic Mason tools kept in every profile.
