@@ -51,6 +51,13 @@ Hard-won lessons from running these under **rootless podman on WSL**:
   dotfiles/editor step is per-developer and never committed.
 - **Nested `.gitignore` + `.gitattributes`** — keep templates self-contained and force
   LF (CRLF silently breaks bash-sourced `config.sh`).
+- **Shared clipboard with the host** — `initializeCommand` publishes the host
+  compositor's Wayland socket at a fixed path (`scripts/host-clipboard-shim.sh`), the
+  container bind-mounts it as `/run/host-clipboard/wayland-0` + `WAYLAND_DISPLAY`, and
+  `wl-clipboard` is in the image. So `wl-copy`/`wl-paste` — and hence nvim's clipboard
+  provider and nushell's `clip` — drive the host clipboard (on WSL, the Windows one).
+  Hosts with no Wayland session get a placeholder file and fall back to OSC 52; see
+  `.config/nvim/lua/config/clipboard.lua` and `.config/nushell/clipboard.nu`.
 
 ## Adding a new language template
 1. `cp -r base <language>` (e.g. `node`, `python`, `go`).

@@ -4,8 +4,11 @@
 FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
 # openssh-client: ssh + ssh-keyscan for agent-forwarded git.
+# wl-clipboard: wl-copy/wl-paste against the host Wayland socket forwarded by
+#   devcontainer.json — the clipboard provider for terminal editors here
+#   (see README.md, "Clipboard").
 RUN apt-get update \
- && apt-get install -y --no-install-recommends openssh-client \
+ && apt-get install -y --no-install-recommends openssh-client wl-clipboard \
  && rm -rf /var/lib/apt/lists/*
 
 # Baseline SSH host keys so agent-forwarded git verifies common hosts with no

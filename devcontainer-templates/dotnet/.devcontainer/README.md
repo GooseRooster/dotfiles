@@ -12,6 +12,7 @@ forwarding, gitignored `local/` hook) plus .NET SDK, NuGet private-feed auth, an
 - Stable dev HTTPS cert served on `:5001`, trustable by the host once
 - Optional Blazor-WASM extras (wasm-tools, sass, headless Chrome) — see the
   `⟨blazor⟩` TODO blocks in `Dockerfile` and `scripts/setup-repo.sh`
+- Shared clipboard with the host (`wl-copy`/`wl-paste`) — see [Clipboard](#clipboard)
 
 ## Host prerequisites
 - **SSH agent** with your git key loaded, and `SSH_AUTH_SOCK` set in the shell you
@@ -45,6 +46,32 @@ Chromium/Chrome/Edge use their own NSS store (needs `libnss3-tools`):
 
 (Firefox has a separate store — import via Settings → Certificates if you use it.)
 
+## Clipboard
+The container shares the host's clipboard, so yanking in a terminal editor inside
+it lands in your normal paste buffer (on WSL that is the Windows clipboard).
+
+How it works: `initializeCommand` runs `scripts/host-clipboard-shim.sh` on your
+**host**, which publishes your compositor's Wayland socket at the fixed path
+`~/.cache/devcontainer/clipboard/wayland-0`. `devcontainer.json` bind-mounts that
+to `/run/host-clipboard/wayland-0` and sets `WAYLAND_DISPLAY` to it, so
+`wl-copy`/`wl-paste` (installed in the image) talk to your host compositor:
+
+    echo hello | wl-copy       # now pasteable on the host
+    wl-paste                   # prints whatever you copied on the host
+
+Any Wayland compositor works (Mutter, KWin, Hyprland, Sway, niri, and WSLg's
+Weston) — it's the core clipboard protocol, nothing compositor-specific.
+
+**No Wayland session on your host?** Nothing breaks: the shim writes a placeholder
+file, the mount stays valid, and `wl-copy` simply fails to connect. Terminal
+editors configured for it then fall back to OSC 52 escape sequences, which copy via
+the terminal itself. VS Code users are unaffected either way — the editor runs on
+the host and uses the host clipboard directly.
+
+**After a host reboot / WSL restart**, a *reused* container has a stale socket (a
+bind mount pins the inode). Recreate it — `devc rebuild`, or
+`devcontainer up --remove-existing-container`.
+
 ## Personalization (optional)
 Opt-in and never committed — see [`local.example/README.md`](local.example/README.md).
 The personal setup also installs the `lazydotnet` / `dotnet-outdated` CLIs.
@@ -53,6 +80,8 @@ The personal setup also installs the `lazydotnet` / `dotnet-outdated` CLIs.
 - `devcontainer.json` — environment definition (user/keep-id/network, mounts, Kestrel cert env, ports)
 - `Dockerfile` — .NET SDK image (+ optional Blazor extras)
 - `scripts/setup-repo.sh` — baseline setup (`/tmp` + nuget fixups, restore, dev-cert export)
+- `scripts/host-clipboard-shim.sh` — runs on the **host** (`initializeCommand`);
+  publishes the host Wayland socket at a fixed path for the clipboard mount
 - `scripts/setup-local.sh` — runs your gitignored `local/setup.sh` if present
 - `local.example/` — template for personal setup
 - `.gitignore` / `.gitattributes` — nested, keep the template self-contained + LF-safe

@@ -191,6 +191,64 @@ def "devc copy-env" [name?: string] {
         | ^devcontainer exec --docker-path podman --workspace-folder . --config $cfg.path -- bash -c 'mkdir -p ~/.config/nushell && cat > ~/.config/nushell/env.local.nu'
 }
 
+# ── Container-side ────────────────────────────────────────────────────────────
+# The rest of this file runs on the host; `dexit` runs INSIDE the container (the
+# dotfiles are applied there too by the personal setup hook).
+
+# Leave the dev container session entirely, from any nesting depth -- a nested nu,
+# an `nvim :terminal`, a subshell. Plain `exit` pops exactly one shell and gives no
+# hint how deep you are, so this walks out in one step instead.
+#
+# How: processes started by `podman/docker exec` show ppid 0 inside the container's
+# PID namespace (their real parent, conmon, lives outside it), so walking up until a
+# process has no in-namespace parent finds the shell `devcontainer exec` started --
+# killing that ends the session and the terminal drops back to the host shell. The
+# walk stops BEFORE pid 1: that's the container entrypoint, and signalling it would
+# take the whole container (and the app running in it) down.
+#
+# SIGHUP is what a real terminal hangup delivers, so nvim flushes its swap file and
+# exits cleanly; anything still attached to the pty is hung up when the session
+# closes. Use --kill for SIGKILL if something refuses to go.
+def dexit [
+    --kill  # SIGKILL instead of SIGHUP (no clean shutdown; last resort)
+] {
+    if not (($env.DEVCONTAINER? == "true") or ("CONTAINER_ID" in $env)) {
+        error make {msg: "dexit: not inside a container -- nothing to leave"}
+    }
+
+    # Only our own processes are candidates, so the walk can never wander into
+    # something we don't own (and fail with EPERM at the end).
+    let me = (^id -u | str trim | into int)
+    let procs = (ps -l | where user_id == $me | select pid ppid)
+
+    mut leader = $nu.pid
+    mut depth = 0
+    loop {
+        let row = ($procs | where pid == $leader | get -o 0)
+        # No in-namespace parent (ppid 0) => this is the exec'd shell. ppid 1 => our
+        # parent is the entrypoint, so we're already the outermost process.
+        if $row == null or $row.ppid <= 1 {
+            break
+        }
+        # Parent outside our set: stop at the boundary rather than signal it.
+        if ($procs | where pid == $row.ppid | is-empty) {
+            break
+        }
+        $leader = $row.ppid
+        $depth += 1
+    }
+
+    if $leader <= 1 {
+        error make {msg: $"dexit: refusing to signal pid ($leader) -- that is the container entrypoint"}
+    }
+    if $leader == $nu.pid {
+        exit
+    }
+
+    print $"dexit: closing the container session \(leader pid ($leader), ($depth) levels up\)"
+    kill --signal (if $kill { 9 } else { 1 }) $leader
+}
+
 # List every devcontainer (any config) tied to the current workspace.
 def "devc ps" [] {
     devc-require-cli

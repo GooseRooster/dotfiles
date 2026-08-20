@@ -155,6 +155,11 @@ def backup [filename: path] {
     cp $filename $"($filename).bak"
 }
 
+# Clipboard: `clip` / `clip get`, backed by wl-clipboard or OSC 52 — see
+# clipboard.nu. Works the same on a host and inside a dev container (which
+# forwards the host's Wayland socket).
+source ~/.config/nushell/clipboard.nu
+
 # Smart copy — auto-recurse if source is a directory
 def copy [...args: string] {
     if ($args | length) == 2 and ($args.0 | path type) == "dir" {
@@ -187,9 +192,10 @@ def dbx [name: string] {
   ^distrobox enter $name -- /home/linuxbrew/.linuxbrew/bin/nu
 }
 
-# Devcontainer CLI wrappers (devc up/enter/nvim/stop/rm/ps) — see devcontainer.nu.
-# Safe to source unconditionally; each function checks for the devcontainer
-# CLI/podman itself and errors clearly if either is missing.
+# Devcontainer CLI wrappers (devc up/enter/nvim/stop/rm/ps), plus `dexit` for
+# walking out of a container session in one step — see devcontainer.nu. Safe to
+# source unconditionally; each function checks for the devcontainer CLI/podman (or
+# for actually being inside a container) itself and errors clearly if not.
 source ~/.config/nushell/devcontainer.nu
 
 

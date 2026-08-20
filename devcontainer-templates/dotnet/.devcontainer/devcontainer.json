@@ -27,14 +27,29 @@
     // Serve the stable dev cert exported by setup-repo.sh (gitignored, host-visible)
     // so the cert on :5001 is exactly the one the host trusts. See README.md.
     "ASPNETCORE_Kestrel__Certificates__Default__Path": "${containerWorkspaceFolder}/.devcontainer/.certs/localhost.pem",
-    "ASPNETCORE_Kestrel__Certificates__Default__KeyPath": "${containerWorkspaceFolder}/.devcontainer/.certs/localhost.key"
+    "ASPNETCORE_Kestrel__Certificates__Default__KeyPath": "${containerWorkspaceFolder}/.devcontainer/.certs/localhost.key",
+    // Host clipboard: the forwarded Wayland socket (mounted below). libwayland
+    // accepts an absolute path here, so XDG_RUNTIME_DIR stays untouched. Inert on
+    // hosts with no Wayland session — wl-copy just fails to connect and the
+    // personal nvim/nushell config falls back to OSC 52.
+    "WAYLAND_DISPLAY": "/run/host-clipboard/wayland-0"
   },
+  // Runs on the HOST before the container is created: publishes the host's Wayland
+  // socket at a fixed path so the clipboard mount below is always valid, with or
+  // without a Wayland session. See scripts/host-clipboard-shim.sh.
+  "initializeCommand": "bash .devcontainer/scripts/host-clipboard-shim.sh",
   // SSH agent forwarding (no private keys in the container) + your global NuGet
   // config for private-feed restore. TODO: create ~/.nuget/NuGet/NuGet.Config with
   // your feed + PAT on the host first, or this read-only mount has no source.
   "mounts": [
     "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent,type=bind",
-    "source=${localEnv:HOME}/.nuget/NuGet/NuGet.Config,target=/home/ubuntu/.nuget/NuGet/NuGet.Config,type=bind,readonly"
+    "source=${localEnv:HOME}/.nuget/NuGet/NuGet.Config,target=/home/ubuntu/.nuget/NuGet/NuGet.Config,type=bind,readonly",
+    // Host clipboard: the compositor's Wayland socket, so wl-copy/wl-paste inside
+    // the container share the host's selection (on WSLg that IS the Windows
+    // clipboard). The source is the fixed path written by initializeCommand above —
+    // a placeholder file when the host has no Wayland session, so this mount is
+    // always valid and never blocks a rebuild.
+    "source=${localEnv:HOME}/.cache/devcontainer/clipboard/wayland-0,target=/run/host-clipboard/wayland-0,type=bind"
   ],
   // 5000/5001 = default Kestrel dev http/https; 9222 = Chrome CDP for Blazor WASM
   // debugging (only relevant with the ⟨blazor⟩ extras). Under --network=host these

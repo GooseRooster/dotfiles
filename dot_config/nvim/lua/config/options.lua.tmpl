@@ -8,6 +8,10 @@ vim.o.exrc = true
 -- Hardcoded rather than exepath("nu") to avoid PATH ordering / shadowing.
 vim.opt.shell = "{{ includeTemplate "brew-prefix" }}/bin/nu"
 
+-- Pick a clipboard provider explicitly (wl-clipboard, else OSC 52 in a container).
+-- Must happen before anything yanks, hence here rather than in a plugin spec.
+require("config.clipboard")
+
 -- Give every floating window (LSP hover/signature help, blink.cmp's
 -- completion/doc menus, noice's cmdline popup, :h, etc.) a default border,
 -- so they stand out against the background instead of blending into it.

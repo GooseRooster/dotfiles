@@ -46,13 +46,28 @@
     "SSH_AUTH_SOCK": "/ssh-agent",
     // Inert unless someone runs the personal nvim config (profile.lua reads these).
     "DEVCONTAINER": "true",
-    "NVIM_LANGS": ""
+    "NVIM_LANGS": "",
+    // Host clipboard: the forwarded Wayland socket (mounted below). libwayland
+    // accepts an absolute path here, so XDG_RUNTIME_DIR stays untouched. Inert on
+    // hosts with no Wayland session — wl-copy just fails to connect and the
+    // personal nvim/nushell config falls back to OSC 52.
+    "WAYLAND_DISPLAY": "/run/host-clipboard/wayland-0"
   },
+  // Runs on the HOST before the container is created: publishes the host's Wayland
+  // socket at a fixed path so the clipboard mount below is always valid, with or
+  // without a Wayland session. See scripts/host-clipboard-shim.sh.
+  "initializeCommand": "bash .devcontainer/scripts/host-clipboard-shim.sh",
   // SSH agent forwarding: signing stays in the host agent; PRIVATE KEYS NEVER ENTER
   // THE CONTAINER. Requires SSH_AUTH_SOCK set in the shell running the up command.
   // (Common git host keys are pre-seeded in the image — see Dockerfile.)
   "mounts": [
-    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent,type=bind"
+    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent,type=bind",
+    // Host clipboard: the compositor's Wayland socket, so wl-copy/wl-paste inside
+    // the container share the host's selection (on WSLg that IS the Windows
+    // clipboard). The source is the fixed path written by initializeCommand above —
+    // a placeholder file when the host has no Wayland session, so this mount is
+    // always valid and never blocks a rebuild.
+    "source=${localEnv:HOME}/.cache/devcontainer/clipboard/wayland-0,target=/run/host-clipboard/wayland-0,type=bind"
   ],
   // ⟨app⟩ add "forwardPorts": [ ... ] for your app's ports (or rely on --network=host).
   "postCreateCommand": "bash .devcontainer/scripts/setup-repo.sh && bash .devcontainer/scripts/setup-local.sh"

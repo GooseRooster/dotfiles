@@ -23,6 +23,12 @@ services:
       # ENTER THE CONTAINER. Requires SSH_AUTH_SOCK set in the shell running the up
       # command (compose interpolates ${SSH_AUTH_SOCK} at parse time).
       - ${SSH_AUTH_SOCK}:/ssh-agent
+      # Host clipboard: the compositor's Wayland socket, so wl-copy/wl-paste inside
+      # the container share the host's selection (on WSLg that IS the Windows
+      # clipboard). The source is the fixed path written by initializeCommand in
+      # devcontainer.json — a placeholder file when the host has no Wayland session,
+      # so this volume is always valid.
+      - ${HOME}/.cache/devcontainer/clipboard/wayland-0:/run/host-clipboard/wayland-0
     environment:
       # Container env goes here for compose (devcontainer.json containerEnv is less
       # reliable for compose than the override's own environment: block).
@@ -30,6 +36,10 @@ services:
       # Inert unless someone runs the personal nvim config (profile.lua reads these).
       - DEVCONTAINER=true
       - NVIM_LANGS=
+      # Points wl-copy/wl-paste at the socket mounted above (libwayland accepts an
+      # absolute path). Inert on hosts with no Wayland session — the personal
+      # nvim/nushell config then falls back to OSC 52.
+      - WAYLAND_DISPLAY=/run/host-clipboard/wayland-0
     # Overrides the CI command (which likely runs the app/tests and exits) so the
     # container stays up for the dev container CLI / VS Code to attach.
     command: sleep infinity

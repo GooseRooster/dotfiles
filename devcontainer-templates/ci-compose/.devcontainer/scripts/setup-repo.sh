@@ -20,5 +20,14 @@ sudo chmod 1777 /tmp || echo "WARN: could not chmod /tmp (no sudo?) — skipping
 sudo chown -R "$(id -u):$(id -g)" "$HOME/.local" "$HOME/.config" 2>/dev/null \
   || echo "WARN: could not chown ~/.local / ~/.config (no sudo?) — skipping" >&2
 
+# wl-clipboard provides wl-copy/wl-paste, the clipboard bridge to the host (see the
+# Wayland socket volume in docker-compose.override.yml). Best-effort: unlike the
+# image-based templates we don't own this Dockerfile, and terminal editors fall back
+# to OSC 52 without it.
+if ! command -v wl-copy >/dev/null 2>&1; then
+  sudo apt-get update && sudo apt-get install -y --no-install-recommends wl-clipboard \
+    || echo "WARN: could not install wl-clipboard — clipboard falls back to OSC 52" >&2
+fi
+
 # ⟨toolchain⟩ Add any repo-level restore / tool install the dev workflow needs
 # (the CI image already provides the language runtime itself).

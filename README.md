@@ -136,6 +136,13 @@ convention and how to add a new language.
   your dotfiles/editor step is per-developer and never committed. This is where
   `bootstrap-cli.sh --devcontainer` now runs (see a template's `local.example/setup.sh`):
   it installs Homebrew, bootstraps these dotfiles, and sets your git identity.
+- **A shared clipboard with the host** — `initializeCommand` publishes the host
+  compositor's Wayland socket at `~/.cache/devcontainer/clipboard/wayland-0`
+  (`scripts/host-clipboard-shim.sh`), the container mounts it as
+  `/run/host-clipboard/wayland-0` and points `WAYLAND_DISPLAY` at it, and
+  `wl-clipboard` ships in the image. So `wl-copy`/`wl-paste` — and with them nvim's
+  clipboard provider and nushell's `clip` — reach the host clipboard (the Windows
+  one on WSL). Hosts with no Wayland session fall back to OSC 52; nothing breaks.
 
 Deploy a template into a repo with `devcontainer-init` (installed to `~/.local/bin`
 on host/WSL setups — see `dot_local/bin/executable_devcontainer-init`):

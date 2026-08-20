@@ -25,6 +25,12 @@
     // `exec`/terminal (brew is installed by the personal hook, not a Feature).
     "PATH": "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${containerEnv:PATH}"
   },
+  // Runs on the HOST before the container is created: publishes the host's Wayland
+  // socket at a fixed path so the clipboard volume in docker-compose.override.yml is
+  // always valid, with or without a Wayland session (initializeCommand is a
+  // host-side hook, so it DOES apply to compose dev containers, unlike mounts/
+  // runArgs). See scripts/host-clipboard-shim.sh.
+  "initializeCommand": "bash .devcontainer/scripts/host-clipboard-shim.sh",
   // ⟨app⟩ add "forwardPorts": [ ... ] for your app's ports (or uncomment
   // network_mode: host in the override).
   "postCreateCommand": "bash .devcontainer/scripts/setup-repo.sh && bash .devcontainer/scripts/setup-local.sh"
